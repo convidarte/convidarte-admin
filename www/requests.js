@@ -1,0 +1,319 @@
+function get_groups(){
+	var urlAdminGroups = apiBaseUrl+"/admin/groups";
+	$.ajax({
+		method: "GET",
+		url: urlAdminGroups,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			groups = data.groups;
+		},
+		error: function() {
+			alert('Groups falló');
+		}
+	});
+	return groups;
+}
+
+
+function getUserGroups(uid){
+	var urlAdminUsersGroups = apiBaseUrl+"/users/"+uid.toString()+"/groups";
+	var userGroups;
+	$.ajax({
+		method: "GET",
+		url: urlAdminUsersGroups,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			userGroups = data.groups;
+		},
+		error: function() {
+			alert('User\'s Groups falló');
+		}
+	});
+	return userGroups;
+}
+
+
+
+function deleteGroupOnClick() {
+	// TODO separar en request y parte de leer html
+	boton = event.target;
+	gid = boton.value;
+	if (currentGroupId.toString()==gid.toString()){
+		currentGroupId=0;
+		if (currentTab=="groups"){
+			document.getElementById("ppal").innerHTML="<h2>Clickear en \"Detalle\" para ver el detalle de los usuarios de un grupo</h2>";
+		}
+	}
+	var r = confirm("Seguro que quiere eliminar el grupo "+ gid.toString() +"?");
+	if (r){
+		var url = apiBaseUrl+"/admin/groups/"+gid; 
+		$.ajax({
+			method: "DELETE",
+			url: url,
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert('El grupo fue eliminado.');
+				refreshEverything();
+			},
+			error: function() {
+				alert('Falló la eliminación del grupo.');
+			}
+		});
+	}
+}
+
+function changeGroupName(){
+	// TODO separar en request y parte de leer html
+	var groupName = document.getElementById("newName").value;
+	if (currentGroupId !=0 && groupName!=""){
+		var updateGroup = { name : groupName, users_to_add : [], users_to_remove : [] };
+		var url = apiBaseUrl+"/admin/groups/" + currentGroupId.toString(); 
+		$.ajax({
+			method: "PUT",
+			url: url,
+			data : JSON.stringify(updateGroup),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				refreshEverything();
+			},
+			error: function() {
+				alert('Error, no se pudo renombrar el grupo.');
+			}
+		});
+
+		refreshEverything();
+	}else{
+		alert("error");
+	}
+}
+
+function deleteMember(gid,uid,role){
+	groupName = getGroupNameById(gid);
+	if (gid!=""){
+		var uidnumber = parseInt(uid,10);
+		var updateGroup = { name : groupName, users_to_add : [  ], users_to_remove :[{user_id : uidnumber, role : role }] };
+		var url = apiBaseUrl+"/admin/groups/" + gid.toString(); 
+		$.ajax({
+			method: "PUT",
+			url: url,
+			data : JSON.stringify(updateGroup),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert( "El usuario " + uid + " en su rol de "+role+ " fue removido del grupo " + gid.toString()+": "+encodeHTML(groupName) ); 
+			},
+			error: function() {
+				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+			}
+		});
+	}else{
+		alert("error");
+	}
+}
+
+function newGroup(){
+	// TODO separar en request y parte de leer html
+	var url = apiBaseUrl+"/admin/groups"; 
+	name = document.getElementById("newGroupName").value;
+	if(name!=""){
+		var newGroupData = { name : name, users : [] };
+		$.ajax({
+			method: "POST",
+			url: url,
+			data : JSON.stringify(newGroupData),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert('Grupo creado correctamente!');
+				refreshEverything();
+			},
+			error: function() {
+				alert('Falló la creación del nuevo grupo.');
+			}
+		});
+	}else{
+		alert("El nombre del grupo no puede quedar vacío!");
+	}
+}
+
+
+function getGroup(groupId){
+	var urlAdminGroup = apiBaseUrl+"/groups/"+groupId.toString() ;
+	var group;
+	$.ajax({
+		method: "GET",
+		url: urlAdminGroup,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			group = data;
+		},
+		error: function() {
+			alert('Get group falló');
+		}
+	});
+	return group;
+}
+
+
+function addUserRoleToGroup(user_id, role, group_id, groupName){
+		var updateGroup = { name : groupName, users_to_add : [ {user_id : user_id, role : role } ], users_to_remove :[] };
+		var url = apiBaseUrl+"/admin/groups/" + group_id.toString(); 
+		$.ajax({
+			method: "PUT",
+			url: url,
+			data : JSON.stringify(updateGroup),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert( "El usuario " + user_id + " fue agregado al grupo " + group_id.toString()+": "+encodeHTML(groupName) ); 
+				refreshEverything();
+			},
+			error: function() {
+				alert('Error, no se pudo agregar el usuario al grupo.');
+			}
+		});
+}
+
+
+function get_users(){
+	var urlAdminUsers = apiBaseUrl+"/admin/users";
+	$.ajax({
+		method: "GET",
+		url: urlAdminUsers,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			users = data.users;
+		},
+		error: function() {
+			alert('Users falló');
+		}
+	});
+	return users;
+}
+
+function get_user_roles(){
+	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
+	$.ajax({
+		method: "GET",
+		url: urlAdminUsers,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			users = data.user_roles;
+		},
+		error: function() {
+			alert('Users falló');
+		}
+	});
+	return users;
+}
+
+
+function getUsersFiltered(){ //separar en request y leer el form
+	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
+	currentNeighborhood = document.getElementById("selectNeighborhood").value;
+	currentCity = document.getElementById("selectCity").value;
+	if(currentNeighborhood!=""){
+		urlAdminUsers+="&neighborhood="+currentNeighborhood;
+	}
+	if(currentCity!=""){
+		urlAdminUsers+="&city="+currentCity;
+	}
+	$.ajax({
+		method: "GET",
+		url: urlAdminUsers,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			users = data.user_roles;
+		},
+		error: function() {
+			alert('Users falló');
+		}
+	});
+	return users;
+}
+
+function addDelegateRole(){
+	if(currentUserId!=0){
+		var urlAddUserRole = apiBaseUrl+"/admin/users/"+ currentUserId.toString() +"/roles";
+		$.ajax({
+			method: "POST",
+			url: urlAddUserRole,
+			contentType: "application/json",
+			data :"{\"role\": \"delegate\"}",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				refreshEverything();
+			},
+			error: function() {
+				alert('Error no se pudo agregar el rol delegado al usuario.');
+			}
+		});
+	}
+}
+
+function inactivateUserRole(uid,role){
+	addUserRoleToGroup(parseInt(uid,10), role, 1, "Usuarios inactivos"); // esto tiene que coincidir con las constantes del back, mas adelante vamos a tener un endpoint para que el front no necesite saber constantes del back!
+}
+
+
+//------------------------------------------------------
+// TODO estas deberían ir en otro archivo, la pongo aca por el orden de carga
+
+
+function checkHasNoCoordinates(user){
+	return user.address.latitude.toString()=="0";
+}
+
+function getGroupNameById(groupId){
+	for (var i = 0; i < groups.length; i++) {
+		g = groups[i];
+		if(g.group_id.toString() == groupId){
+			return g.name;
+		}
+	}
+	return "";
+}
+
+function getGroupAdminEndpointById(groupId){
+	for (var i = 0; i < groups.length; i++) {
+		g = groups[i];
+		if(g.group_id.toString() == groupId){
+			return g;
+		}
+	}
+	return null;
+}
+
+
+function getUserById(uid){
+	for (var i = 0; i < users.length; i++) {
+		u = users[i];
+		if(u.user_id.toString() == uid.toString()){
+			return u;
+		}
+	}
+	return null;
+}
+
+
+
