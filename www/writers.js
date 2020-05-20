@@ -428,9 +428,9 @@ function refresh_user_list_users(){
 	driversTable = document.getElementById("driversTable");
 	delegatesTable = document.getElementById("delegatesTable");
 	genericHead = "<thead><tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Celular</th><th>email</th><th></th><th></th> </tr></thead>";
-	cooksTable.innerHTML= genericHead+"<tbody>";	
-	driversTable.innerHTML=genericHead+"<tbody>";	
-	delegatesTable.innerHTML=genericHead+"<tbody>";	
+	cooksTableInnerHTML = genericHead+"<tbody>";
+	driversTableInnerHTML = genericHead+"<tbody>";
+	delegatesTableInnerHTML = genericHead+"<tbody>";
 	var cookRows = new Array();
 	var driverRows = new Array();
 	var delegateRows = new Array();
@@ -469,10 +469,11 @@ function refresh_user_list_users(){
 			delegateRows[ndelegates++]=row;
 		}
 	}
-	cooksTable.innerHTML += cookRows.join('\n');
-	driversTable.innerHTML += driverRows.join('\n');
-	delegatesTable.innerHTML += delegateRows.join('\n');
-	cooksTable.innerHTML += "</tbody>";	
-	driversTable.innerHTML += "</tbody>";	
-	delegatesTable.innerHTML += "</tbody>";	
+	cooksTableInnerHTML += cookRows.join('\n') + "</tbody>";
+	driversTableInnerHTML += driverRows.join('\n') + "</tbody>";
+	delegatesTableInnerHTML += delegateRows.join('\n') + "</tbody>";
+
+	cooksTable.innerHTML =cooksTableInnerHTML;
+	driversTable.innerHTML = driversTableInnerHTML;
+	delegatesTable.innerHTML =delegatesTableInnerHTML;
 }
