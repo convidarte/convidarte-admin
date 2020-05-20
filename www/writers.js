@@ -200,7 +200,7 @@ function tableWithGroupsOfUser(u){
 		gid = g.group_id;
 		for (var j = 0; j < g.roles.length; j++){
 			role = g.roles[j];
-			t+= "<tr><td>" +gid.toString() +"</td><td>"+encodeHTML(g.name)+"</td><td>"+role+"</td><td>"+deleteRoleButton(gid,uid,role)+"</td></tr>";
+			t+= "<tr><td>" +gid.toString() +"</td><td>"+encodeHTML(g.name)+"</td><td>"+roleInSpanish(role)+"</td><td>"+deleteRoleButton(gid,uid,role)+"</td></tr>";
 		}
 	}
 	t+="</tbody></table>";
