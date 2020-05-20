@@ -218,6 +218,7 @@ function updateSelectUsers(){
 		optionList.push( u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")");
 	}
 	//document.getElementById("usersListContainer").innerHTML = getUsersSelectHTML("userList");
+	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ users.length.toString() + " usuarios registrados en Convidarte.</h3>";
 	autocomplete(document.getElementById("userList"), optionList);
 	return;
 }
