@@ -321,7 +321,7 @@ function getGroupCSV(g){
 	filename = "grupo " + g.group_id.toString() + " - " + name + " - " + getDateString() + ".csv";
 	var text = "";
 	csvSeparator = ";";
-	text += "Id,Nombre,Dirección,Celular,Email,Rol(es)\n"; 
+	text += "Id"+csvSeparator+"Nombre"+csvSeparator+"Dirección"+csvSeparator+"Celular"+csvSeparator+"Email"+csvSeparator+"Rol(es)\n"; 
 	for (var i = 0; i < members.length; i++){
 		u = members[i];
 		uid = u.user_id;
