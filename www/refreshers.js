@@ -68,7 +68,7 @@ function refreshEverythingMap(){
 		deleteMarkers();
 		refreshUserMarkers();
 		refreshGroupMarkers();
-		centerMapOn(-34.62, -58.46);
+		//centerMapOn(-34.62, -58.46);
 		document.getElementById("userDetail").innerHTML = "";
 	}
 }
