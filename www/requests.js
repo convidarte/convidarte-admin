@@ -263,6 +263,7 @@ function addDelegateRole(){
 			async: false,
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
+				all_users = get_users();
 				refreshEverything();
 			},
 			error: function() {
