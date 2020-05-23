@@ -3,18 +3,21 @@ function onLoginOk() {
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
+}
+
+function onTabChange() {
 	if(currentTab == "map"){
-		onLoginOkMap();
+		onTabChangeMap();
 	}else if (currentTab =="profile"){
-		 onLoginOkProfile();
+		 onTabChangeProfile();
 	}else if (currentTab =="groups"){
-		onLoginOkGroups();
+		onTabChangeGroups();
 	}else if (currentTab =="users"){
-		onLoginOkUsers();
+		onTabChangeUsers();
 	}
 }
 
-function onLoginOkMap(){
+function onTabChangeMap(){
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
 	getNeighborhoodList();
 	getCityList();
@@ -23,20 +26,20 @@ function onLoginOkMap(){
 	refreshEverything();
 }
 
-function onLoginOkProfile(){
+function onTabChangeProfile(){
 	document.getElementById("leftPanel").style="";
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
 }
 
-function onLoginOkGroups(){
+function onTabChangeGroups(){
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
 }
 
-function onLoginOkUsers(){
+function onTabChangeUsers(){
 	document.getElementById("leftPanel").style="";
 	getNeighborhoodList();
 	getCityList();

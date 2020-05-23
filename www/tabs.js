@@ -14,7 +14,7 @@ function changeUsersTab(){
 
 	document.getElementById("estilos").href="users.css";
 
-	onLoginOk();
+	onTabChange();
 }
 
 function changeMapTab(){
@@ -33,7 +33,7 @@ function changeMapTab(){
 
 	document.getElementById("estilos").href="map.css";
 
-	onLoginOk();
+	onTabChange();
 }
 
 function changeGroupsTab(){
@@ -52,7 +52,7 @@ function changeGroupsTab(){
 
 	document.getElementById("estilos").href="groups.css";
 
-	onLoginOk();
+	onTabChange();
 }
 
 function changeProfileTab(){
@@ -71,6 +71,6 @@ function changeProfileTab(){
 
 	document.getElementById("estilos").href="profile.css";
 
-	onLoginOk();
+	onTabChange();
 }
 
