@@ -23,18 +23,6 @@ function getGroupSelectHTML(selectId){
 	return s;
 }
 
-// devuelve el HTML de un select con los usuarios existentes
-function getUsersSelectHTML(selectId){
-	s = "<select id=\""+selectId+"\" onchange=\"showUserProfile()\" >\n";
-	s += "<option disabled selected value> seleccionar usuario </option>";
-	for (var i = 0; i < users.length; i++) {
-		u = users[i];
-		uid = u.user_id.toString();
-	   s+="<option value=\"" + uid + "\" >"+ uid + ": " + encodeHTML(u.user_name) +"</option>\n";
-	}
-	s+="</select>\n";
-	return s;
-}
 
 function getRoleSelectHTML(selectId,roles){
 	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n";
@@ -122,7 +110,7 @@ function getCityList(){
 
 // Escribe el elemento  userDetail a partir de un uid
 function markerClicked(uid){
-		u = getUserById(uid);
+		u = getUserWithRolesById(uid);
 		s = "<h2>Asignar grupo</h2>";
 		s += "Usuario: " + u.user_id.toString()+ " - "+ encodeHTML(u.user_name)+"<br/>";
 		s += "Rol: "+ roleInSpanish(u.role) +"<br/>";
@@ -211,14 +199,13 @@ function tableWithGroupsOfUser(u){
 
 // escribe el elemento usersListContainer con la lista de usuarios para seleccionar
 function updateSelectUsers(){
-	users = get_users();
+	all_users = get_users();
 	optionList = new Array();
-	for ( var i=0; i<users.length; i++){
-		u = users[i];
+	for ( var i=0; i<all_users.length; i++){
+		u = all_users[i];
 		optionList.push( u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")");
 	}
-	//document.getElementById("usersListContainer").innerHTML = getUsersSelectHTML("userList");
-	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ users.length.toString() + " usuarios registrados en Convidarte.</h3>";
+	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ all_users.length.toString() + " usuarios registrados en Convidarte.</h3>";
 	autocomplete(document.getElementById("userList"), optionList);
 	return;
 }

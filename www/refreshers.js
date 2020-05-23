@@ -3,6 +3,9 @@ function onLoginOk() {
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
+	updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+	getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+	getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 }
 
 function onTabChange() {
@@ -19,8 +22,6 @@ function onTabChange() {
 
 function onTabChangeMap(){
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
-	getNeighborhoodList();
-	getCityList();
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
@@ -41,8 +42,6 @@ function onTabChangeGroups(){
 
 function onTabChangeUsers(){
 	document.getElementById("leftPanel").style="";
-	getNeighborhoodList();
-	getCityList();
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
@@ -79,7 +78,6 @@ function refreshEverythingMap(){
 
 function refreshEverythingProfile(){
 	if(token!=""){
-		updateSelectUsers();
 		refresh_group_list();
 		if(currentUserId!=0){
 			showUserById(currentUserId);

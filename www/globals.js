@@ -8,7 +8,8 @@ var usernameAdmin = "";
 var currentTab="";
 
 var groups =[];
-var users =[];
+var all_users =[]; // todos los usuarios
+var users =[]; // se llama users pero es una lista de usuarios con sus roles (filtrada por barrio, etc)
 var neighborhoodList = [];
 
 var map;

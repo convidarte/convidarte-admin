@@ -190,6 +190,7 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 
 function get_users(){
 	var urlAdminUsers = apiBaseUrl+"/admin/users";
+	var all_users;
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
@@ -197,13 +198,13 @@ function get_users(){
 		async: false,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			users = data.users;
+			all_users = data.users;
 		},
 		error: function() {
 			alert('Users falló');
 		}
 	});
-	return users;
+	return all_users;
 }
 
 function get_user_roles(){
@@ -305,9 +306,19 @@ function getGroupAdminEndpointById(groupId){
 }
 
 
-function getUserById(uid){
+function getUserWithRolesById(uid){
 	for (var i = 0; i < users.length; i++) {
 		u = users[i];
+		if(u.user_id.toString() == uid.toString()){
+			return u;
+		}
+	}
+	return null;
+}
+
+function getUserById(uid){
+	for (var i = 0; i < all_users.length; i++) {
+		u = all_users[i];
 		if(u.user_id.toString() == uid.toString()){
 			return u;
 		}

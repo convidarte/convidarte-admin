@@ -135,7 +135,7 @@ function assignGroupGroups(){
 function assignGroupMap(){
 	boton = event.target;
 	uid = boton.value;
-	u = getUserById(uid);
+	u = getUserWithRolesById(uid);
 	role = u.role; // cook
 	user_role_id = u.role_id; // uint
 	user_id = u.user_id; // uint
