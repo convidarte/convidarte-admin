@@ -278,7 +278,7 @@ function inactivateUserRole(uid,role){
 
 
 //------------------------------------------------------
-// TODO estas deberían ir en otro archivo, la pongo aca por el orden de carga
+// TODO estas deberían ir en otro archivo, las pongo aca por el orden de carga
 
 
 function checkHasNoCoordinates(user){
@@ -286,47 +286,24 @@ function checkHasNoCoordinates(user){
 }
 
 function getGroupNameById(groupId){
-	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
-		if(g.group_id.toString() == groupId){
-			return g.name;
-		}
+	g = getElementInOrderedListById(groups, parseInt(groupId,10), "group_id");
+	if( g === null ){
+		return "";
 	}
-	return "";
+	return g.name
 }
 
 function getGroupAdminEndpointById(groupId){
-	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
-		if(g.group_id.toString() == groupId){
-			return g;
-		}
-	}
-	return null;
+	return getElementInOrderedListById(groups, parseInt(groupId,10), "group_id");
 }
 
 
 function getUserWithRolesById(uid){
-	for (var i = 0; i < users.length; i++) {
-		u = users[i];
-		if(u.user_id.toString() == uid.toString()){
-			return u;
-		}
-	}
-	return null;
+	return getElementInOrderedListById(users,uid,"user_id");
 }
 
 function getUserById(uid){
 	return getElementInOrderedListById(all_users,uid,"user_id");
-	/*
-	for (var i = 0; i < all_users.length; i++) {
-		u = all_users[i];
-		if(u.user_id.toString() == uid.toString()){
-			return u;
-		}
-	}
-	return null;
-	*/
 }
 
 // xs an array of x such that its elements are strictly ordered by x[keyName]
