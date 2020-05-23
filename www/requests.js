@@ -317,6 +317,8 @@ function getUserWithRolesById(uid){
 }
 
 function getUserById(uid){
+	return getElementInOrderedListById(all_users,uid,"user_id");
+	/*
 	for (var i = 0; i < all_users.length; i++) {
 		u = all_users[i];
 		if(u.user_id.toString() == uid.toString()){
@@ -324,7 +326,28 @@ function getUserById(uid){
 		}
 	}
 	return null;
+	*/
 }
 
-
+// xs an array of x such that its elements are strictly ordered by x[keyName]
+// returns the element x of xs such that x[keyName]=idElement
+// null if no  such element
+function getElementInOrderedListById(xs,idElement, keyName){
+	// busqueda binaria
+	a = 0;
+	b = xs.length;
+	while( b-a > 1){
+		c = Math.round( (a+b)/2 );
+		if ( xs[c][keyName] > idElement ){
+			b=c;
+		}else{
+			a=c;
+		}
+	}
+	x = xs[a];
+	if( x[keyName] == idElement ){
+		return x;
+	}
+	return null;
+}
 
