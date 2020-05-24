@@ -25,7 +25,7 @@ function initMap() {
 
 
 // Adds a marker to the collection and push to the array.
-function addMarker(marker_collection, location,label,color,infoWindowContent) {
+function addMarker(markerCollection, location,label,color,infoWindowContent) {
 	var marker = new google.maps.Marker({
 		position: location,
 		label: {text:label,fontWeight:"bold",fontSize: "18px"},
@@ -51,7 +51,7 @@ function addMarker(marker_collection, location,label,color,infoWindowContent) {
 			infowindow.open(map, marker);
 		});
 	}
-	marker_collection.push(marker);
+	markerCollection.push(marker);
 	return marker;
 }
 

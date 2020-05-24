@@ -1,4 +1,4 @@
-function get_groups(){
+function getGroups(){
 	var urlAdminGroups = apiBaseUrl+"/admin/groups";
 	$.ajax({
 		method: "GET",
@@ -188,9 +188,9 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 }
 
 
-function get_users(){
+function getUsers(){
 	var urlAdminUsers = apiBaseUrl+"/admin/users";
-	var all_users;
+	var allUsers;
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
@@ -198,16 +198,16 @@ function get_users(){
 		async: false,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			all_users = data.users;
+			allUsers = data.users;
 		},
 		error: function() {
 			alert('Users falló');
 		}
 	});
-	return all_users;
+	return allUsers;
 }
 
-function get_user_roles(){
+function getUserRoles(){
 	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
 	$.ajax({
 		method: "GET",
@@ -263,7 +263,7 @@ function addDelegateRole(){
 			async: false,
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
-				all_users = get_users();
+				allUsers = getUsers();
 				refreshEverything();
 			},
 			error: function() {
@@ -304,7 +304,7 @@ function getUserWithRolesById(uid){
 }
 
 function getUserById(uid){
-	return getElementInOrderedListById(all_users,uid,"user_id");
+	return getElementInOrderedListById(allUsers,uid,"user_id");
 }
 
 // xs an array of x such that its elements are strictly ordered by x[keyName]

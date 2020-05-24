@@ -63,46 +63,50 @@ function refreshEverything() {
 
 
 function refreshEverythingMap(){
-	if(token!=""){
-		//groups = get_groups();
-		refresh_group_list_map();
-		getUsersFiltered();
-		deleteMarkers();
-		refreshUserMarkers();
-		refreshGroupMarkers();
-		//centerMapOn(-34.62, -58.46);
-		document.getElementById("userDetail").innerHTML = "";
+	if(token==""){
+		return;
 	}
+	//groups = getGroups();
+	refreshGroupListMap();
+	getUsersFiltered();
+	deleteMarkers();
+	refreshUserMarkers();
+	refreshGroupMarkers();
+	//centerMapOn(-34.62, -58.46);
+	document.getElementById("userDetail").innerHTML = "";
 }
 
 
 function refreshEverythingProfile(){
-	if(token!=""){
-		refresh_group_list();
-		if(currentUserId!=0){
-			showUserById(currentUserId);
-		}
+	if(token==""){
+		return;
+	}
+	refreshGroupList();
+	if(currentUserId!=0){
+		showUserById(currentUserId);
 	}
 }
 
 
 function refreshEverythingGroups(){
-	if(token!=""){
-		refresh_group_list();
-		if(currentGroupId!=0){
-			showGroupById(currentGroupId);
-		}else{
-			deleteMarkers();
-		}
+	if(token==""){
+		return;
+	}
+	refreshGroupList();
+	if(currentGroupId!=0){
+		showGroupById(currentGroupId);
+	}else{
+		deleteMarkers();
 	}
 }
 
 function refreshEverythingUsers(){
-	if(token!=""){
-		refresh_group_list_nodetails();
-		refresh_user_list_users();
-		refreshPagination();
+	if(token==""){
+		return;
 	}
+	refreshGroupListNoDetails();
+	refreshUserListUsers();
+	refreshPagination();
 }
 
 function refreshPagination(){

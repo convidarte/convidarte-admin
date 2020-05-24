@@ -55,6 +55,7 @@ function addUserRoleInGroupProfileOnClick(){
 	role = document.getElementById("newRole").value;
 	groupName = getGroupNameById(gid);
 	addUserRoleToGroup(currentUserId, role, gid, groupName);
+
 }
 
 //  se llama al clickear "ver detalle de usuario"

@@ -52,7 +52,7 @@ function roleInSpanish(role){
 
 // escribe el elemento selectNeighborhood con la lista de barrios
 function getNeighborhoodList(){
-	get_user_roles();
+	getUserRoles();
 	neighborhoods = new Set([]);
 	for (var i =0; i< users.length; i++){
 		u = users[i];
@@ -81,7 +81,7 @@ function getNeighborhoodList(){
 
 // escribe el elemento selectCity con la lista de barrios
 function getCityList(){
-	//get_user_roles(); ya lo traemos en getNeighborhoodList :D
+	//getUserRoles(); ya lo traemos en getNeighborhoodList :D
 	cities = new Set([]);
 	for (var i =0; i< users.length; i++){
 		u = users[i];
@@ -199,13 +199,13 @@ function tableWithGroupsOfUser(u){
 
 // escribe el elemento usersListContainer con la lista de usuarios para seleccionar
 function updateSelectUsers(){
-	all_users = get_users();
+	allUsers = getUsers();
 	optionList = new Array();
-	for ( var i=0; i<all_users.length; i++){
-		u = all_users[i];
+	for ( var i=0; i<allUsers.length; i++){
+		u = allUsers[i];
 		optionList.push( u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")");
 	}
-	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ all_users.length.toString() + " usuarios registrados en Convidarte.</h3>";
+	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
 	autocomplete(document.getElementById("userList"), optionList);
 	return;
 }
@@ -338,9 +338,9 @@ function getGroupCSV(g){
 //=====================================================================================
 // las siguientes funciones escriben la lista de grupos, con mas o menos detalle dependiendo del Tab que queramos ver.
 // esta se usa en map
-function refresh_group_list_map(){
-	groups = get_groups();
-	groups_element = document.getElementById('grupos');
+function refreshGroupListMap(){
+	groups = getGroups();
+	groupsElement = document.getElementById('grupos');
 	s = "<table>";
 	s+="<thead><tr><td>Id</td><td>Nombre</td><td>#</td><td>Chefs</td><td>Distr.(s)</td><td>Deleg.</td></tr></thead>";
 	s+="<tbody>";
@@ -357,12 +357,12 @@ function refresh_group_list_map(){
 	}
 	s+="</tbody>";
 	s+="</table>";
-	groups_element.innerHTML = s;
+	groupsElement.innerHTML = s;
 }
 // esta se usa en groups
-function refresh_group_list(){
-	groups = get_groups();
-	groups_element = document.getElementById('grupos');
+function refreshGroupList(){
+	groups = getGroups();
+	groupsElement = document.getElementById('grupos');
 	s = "<table id=\"groupsTable\">\n";
 	s+= "<tr><th>Id</th> <th>Nombre</th> <th></th> <th>#</th> <th>Chefs</th> <th>Distr.</th> <th>Deleg.</th><th></th></tr>"; 
 	for (var i = 0; i < groups.length; i++) {
@@ -381,12 +381,12 @@ function refresh_group_list(){
 		s+= "</tr>";
 	}
 	s+="</table>";
-	groups_element.innerHTML = s;
+	groupsElement.innerHTML = s;
 }
 // esta se usa en users
-function refresh_group_list_nodetails(){
-	groups = get_groups();
-	groups_element = document.getElementById('grupos');
+function refreshGroupListNoDetails(){
+	groups = getGroups();
+	groupsElement = document.getElementById('grupos');
 	s = "<table id=\"groupsTable\">\n";
 	s+= "<tr><th>Id</th> <th>Nombre</th> <th>#</th> <th>Chefs</th> <th>Distr.</th> <th>Deleg.</th></tr>"; 
 	for (var i = 0; i < groups.length; i++) {
@@ -403,11 +403,11 @@ function refresh_group_list_nodetails(){
 		s+= "</tr>";
 	}
 	s+="</table>";
-	groups_element.innerHTML = s;
+	groupsElement.innerHTML = s;
 }
 //=====================================================================================
 
-function refresh_user_list_users(){
+function refreshUserListUsers(){
 	users = getUsersFiltered();
 	if (onlyUsersWithoutAddress){
 		users = users.filter(checkHasNoCoordinates);
