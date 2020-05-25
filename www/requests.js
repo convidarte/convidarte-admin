@@ -236,6 +236,24 @@ function getUsersFiltered(){ //separar en request y leer el form
 	if(currentCity!=""){
 		urlAdminUsers+="&city="+currentCity;
 	}
+	
+	showCooks = document.getElementById("cookCheckbox").checked;
+	showDrivers = document.getElementById("driverCheckbox").checked;
+	showDelegates = document.getElementById("delegateCheckbox").checked;
+
+	function filterRoles(u){
+		if(showCooks && (u.role == "cook")){
+			return true;
+		}
+		if(showDrivers && (u.role == "driver")){
+			return true;
+		}
+		if(showDelegates && (u.role=="delegate")){
+			return true;
+		}
+		return false;
+	};
+
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
@@ -243,7 +261,7 @@ function getUsersFiltered(){ //separar en request y leer el form
 		async: false,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			users = data.user_roles;
+			users = data.user_roles.filter(filterRoles);
 		},
 		error: function() {
 			alert('Users falló');

@@ -125,7 +125,12 @@
 				<!-- termina map right -->
 				<!-- empieza filterLocation (comun a users y map) -->
 				<div id="filterLocation" style = "display: none;" >
-					<h3>Es posible filtrar por localidad y por barrio.</h3>
+					<h3>Es posible filtrar por rol, localidad y por barrio.</h3>
+					<strong>Mostrar:</strong>
+					<input type="checkbox" id="cookCheckbox" value="cook" onchange="refreshEverything();"> Cocineros
+					<input type="checkbox" id="driverCheckbox" value="driver" onchange="refreshEverything();"> Distribuidores
+					<input type="checkbox" id="delegateCheckbox" value="delegate" onchange="refreshEverything();"> Delegados
+
 					<h3> Mostrar usuarios de:</h3>
 					Localidad: <select id="selectCity" onchange="selectCityChanged()">
 					</select><br/><br/>
