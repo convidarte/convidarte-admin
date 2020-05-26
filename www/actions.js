@@ -150,3 +150,12 @@ function assignGroupMap(){
 	}
 }
 
+
+function addRoleToCurrentUserOnClick(){
+	boton = event.target;
+	role = boton.value;
+	addRole(currentUserId,role);
+	refreshEverything();
+}
+
+

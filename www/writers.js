@@ -158,10 +158,18 @@ function showUserById(uid){
 
 	s+=selectRoleAndGroupForUser(u);
 
-	if(u.roles.indexOf("delegate")<0){
-		s+="<br/> <button id=\"addDelegateRole\" onclick=\"addDelegateRole()\"> Agregar delegado como rol asumible</button><br/>";
+	s+="<h3>Agregar roles asumibles:</h3>";
+	if(u.roles.indexOf("cook")<0){
+		s+="<button id=\"addCookRole\" value=\"cook\" style=\"background-color:Salmon;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar chef como rol asumible</button><br/><br/>";
 	}
-	s+="<br/> <button id=\"inactivateUser\" value=\""+ u.user_id +" "+ u.roles[0] +"\" onclick=\"inactivateUserRoleOnClick()\"> Inactivar usuario</button> Atención: inactivar un usuario no lo elimina de los grupos, solamente lo agrega al grupo de inactivos!<br/>";
+	if(u.roles.indexOf("driver")<0){
+		s+="<button id=\"addDriverRole\" value=\"driver\" style=\"background-color:SpringGreen;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar distribuidor como rol asumible</button><br/><br/>";
+	}
+	if(u.roles.indexOf("delegate")<0){
+		s+="<button id=\"addDelegateRole\" value=\"delegate\" style=\"background-color:MediumPurple;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar delegado como rol asumible</button><br/><br/>";
+	}
+	s+="<h3>Inactivar:</h3>";
+	s+="<button id=\"inactivateUser\" value=\""+ u.user_id +" "+ u.roles[0] +"\" onclick=\"inactivateUserRoleOnClick()\"> Inactivar usuario</button> Atención: inactivar un usuario no lo elimina de los grupos, solamente lo agrega al grupo de inactivos!<br/>";
 
 	document.getElementById("profile").innerHTML = s;
 }

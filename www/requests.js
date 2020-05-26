@@ -270,14 +270,15 @@ function getUsersFiltered(){ //separar en request y leer el form
 	return users;
 }
 
-function addDelegateRole(){
-	if(currentUserId!=0){
-		var urlAddUserRole = apiBaseUrl+"/admin/users/"+ currentUserId.toString() +"/roles";
+
+function addRole(uid,role){
+	if(uid!=0){
+		var urlAddUserRole = apiBaseUrl+"/admin/users/"+ uid.toString() +"/roles";
 		$.ajax({
 			method: "POST",
 			url: urlAddUserRole,
 			contentType: "application/json",
-			data :"{\"role\": \"delegate\"}",
+			data :"{\"role\": \"" + role + "\"}",
 			async: false,
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
