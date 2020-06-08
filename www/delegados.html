@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
+
+
+
+		<meta charset="utf-8">
+		<title>Convidarte - Panel de Delegado</title>
+		<link id="estilos" rel="stylesheet" type="text/css" href="map.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+	<body>
+
+
+		<div id="ppal" style="display: none;"><h2>Clickear en "Detalle" para ver el detalle de los usuarios de un grupo</h2></div>
+		<div id="map" style="display: none;"></div> <!-- map -->
+
+		<script async defer src="apikey.js"></script>
+		<script async defer src="autocomplete.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+		<script src="html_to_pdf.js"></script>
+		<script src="globals.js"></script>
+		<script src="requests.js"></script>
+		<script src="map.js"></script>
+		<script src="writers.js"></script>
+		<script src="refreshers.js"></script>
+		<script src="actions.js"></script>
+		<script src="common.js"></script>
+		<script src="tabs.js"></script>
+		<script src="delegate.js"></script>
+
+		<div id="costado">		
+			<div id=loginDiv>
+				<img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%"><br/>
+				<h2>Panel de delegado</h2>
+				<form id="login">
+					Username: <input type="text" id="username" name="username" ><br/>
+					Password: <input type="password" id="password" name="password" ><br/>
+				</form>
+				<input type="submit" value="Loguear" onclick="login()"><br/>
+			</div>
+
+			<div id="protectedDiv" style="display: none;">
+
+				<strong id= "adminUserName" >Bienvenido </strong> <input type="submit" value="Salir" onclick="logout()"> <img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%">
+				<br/>
+				<hr style="width:95%;text-align:left;margin-left:0">
+				<div>
+				<h2> Grupos donde soy delegado:</h2>
+				<div id="groupsRightMenu" style="">
+					<div id="groupsPanel">
+						<div id="gruposDelegado"></div><br/>
+					</div>
+				</div>
+
+			</div>
+			<br/><br/>
+		</div>
+	</body>
+</html>

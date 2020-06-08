@@ -3,9 +3,18 @@ function onLoginOk() {
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
-	updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-	getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-	getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+	if (currentSystem=="admin"){
+		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+	}
+	if (currentSystem=="delegate"){
+		currentGroupId=0;
+		document.getElementById("map").style="";
+		document.getElementById("ppal").style="";
+		document.getElementById("estilos").href="groups.css";
+		refreshEverything();
+	}
 }
 
 function onTabChange() {
@@ -58,6 +67,8 @@ function refreshEverything() {
 		refreshEverythingGroups();
 	}else if (currentTab =="users"){
 		refreshEverythingUsers();
+	}else if (currentTab =="delegate"){
+		refreshEverythingDelegate();
 	}
 }
 
@@ -107,6 +118,18 @@ function refreshEverythingUsers(){
 	refreshGroupListNoDetails();
 	refreshUserListUsers();
 	refreshPagination();
+}
+
+function refreshEverythingDelegate(){
+	if(token==""){
+		return;
+	}
+	refreshGroupListDelegate();
+	if(currentGroupId!=0){
+		showGroupById(currentGroupId);
+	}else{
+		deleteMarkers();
+	}
 }
 
 function refreshPagination(){

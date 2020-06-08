@@ -21,7 +21,7 @@ function getCookie(cname) {
   return "";
 }
 
-function loguear(){
+function login(){
 	var user = document.getElementById("username").value;
 	var pass = document.getElementById("password").value;
 	var loginData = { user_name: user, password : pass };
@@ -50,7 +50,7 @@ function loguear(){
 	});
 }
 
-function salir(){
+function logout(){
 	setCookie("token-convidarte","",59*60*1000);
 	setCookie("username-convidarte","",59*60*1000);
 	setCookie("userid-convidarte","",59*60*1000);
@@ -68,9 +68,11 @@ window.addEventListener("focus", function(event){
 window.addEventListener('load', function () {
 	tokenCookie = getCookie("token-convidarte");
 	usernameCookie = getCookie("username-convidarte");
+	adminUserIdCookie = getCookie("userid-convidarte");
 	if( tokenCookie != ""){
 		token = tokenCookie;
 		usernameAdmin = usernameCookie;
+		adminUserId = adminUserIdCookie;
 		onLoginOk();	
 	}
 })
