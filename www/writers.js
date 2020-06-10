@@ -122,7 +122,7 @@ function markerClicked(uid){
 		s += "Celular: "+ encodeHTML(u.cellphone.toString()) + "<br/>";
 		s += "Email: "+ encodeHTML(u.email.toString()) + "<br/>";
 		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
-		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroupMap()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 	document.getElementById("userDetail").innerHTML = s;
 }
 
@@ -483,8 +483,8 @@ function refreshUserListUsers(){
 		row+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
 		row+="<td>"+encodeHTML(u.cellphone)+"</td>";
 		row+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
-		row += "<td>" + getGroupSelectHTML( "selectGroup" + i.toString() ) + "</td>";
-		row += "<td><button id=\"agregar"+ i.toString() + "\" onclick=\"assignGroupGroups()\" value=\""+ i.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+		row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "</td>";
+		row += "<td><button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 		row += "</tr>\n";
 		if (u.role == "cook") {
 			cookRows[ncooks++]=row;

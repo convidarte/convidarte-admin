@@ -115,25 +115,7 @@ function getDateString() {
 }
 
 
-//TODO esta es muy parecida a la que sigue!!!
-function assignGroupGroups(){
-	boton = event.target;
-	i = boton.value;
-	u = users[i];
-	role = u.role; // cook
-	user_role_id = u.role_id; // uint
-	user_id = u.user_id; // uint
-	group_id = document.getElementById("selectGroup"+i.toString()).value;
-	groupName = getGroupNameById(group_id);
-	if (group_id!=""){
-		addUserRoleToGroup(u.user_id, u.role, group_id, groupName);
-		refreshEverything();
-	}else{
-		alert("Debe seleccionar un grupo.");
-	}
-}
-
-function assignGroupMap(){
+function assignGroup(){
 	boton = event.target;
 	uid = boton.value;
 	u = getUserWithRolesById(uid);
