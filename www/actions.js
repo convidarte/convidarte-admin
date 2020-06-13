@@ -24,9 +24,15 @@ function deleteMemberOnClick(){
 	gid = s.split(" ")[0];
 	uid = s.split(" ")[1];
 	role = s.split(" ")[2];
-	deleteMember(gid,uid,role);
+	if(currentSystem=="admin"){
+		deleteMember(gid,uid,role);
+	}
+	if (currentSystem=="delegate"){
+		deleteMemberDelegate(gid,uid,role);
+	}
 	refreshEverything();
 }
+
 
 // borra un user-role de un grupo, agreega el usuario a inactivos
 function deleteMemberAndInactivateOnClick(){
@@ -35,8 +41,13 @@ function deleteMemberAndInactivateOnClick(){
 	gid = s.split(" ")[0];
 	uid = s.split(" ")[1];
 	role = s.split(" ")[2];
-	deleteMember(gid,uid,role);
-	inactivateUserRole(uid,role);
+	if (currentSystem=="admin"){
+		deleteMember(gid,uid,role);
+		inactivateUserRole(uid,role);
+	}
+	if (currentSystem=="delegate"){
+		deleteMemberAndDeactivateDelegate(gid,uid,role);
+	}
 	refreshEverything();
 }
 
@@ -46,6 +57,18 @@ function inactivateUserRoleOnClick(){
 	uid = s.split(" ")[0];
 	role = s.split(" ")[1];
 	inactivateUserRole(uid,role);
+	refreshEverything();
+}
+
+function ackDelegateOnClick(){
+	boton = event.target;
+	s = boton.value;
+	gid = s.split(" ")[0];
+	uid = s.split(" ")[1];
+	role = s.split(" ")[2];
+	if (currentSystem=="delegate"){
+		ackDelegate(gid,uid,role);
+	}
 	refreshEverything();
 }
 

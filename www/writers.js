@@ -10,6 +10,11 @@ function deleteAndInactivateRoleButton(gid,uid,role){
 	return s;
 }
 
+function buttonAckDelegate(gid,uid,role){
+	var s = "<button id=\"button_ack_delegate_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"buttonAckDelegate();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Ya me contacté!</button>";
+	return s;
+}
+
 // devuelve el HTML de un select con los grupos existentes y el id especificado.
 function getGroupSelectHTML(selectId){
 	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
@@ -236,13 +241,23 @@ function showGroupById(groupId){
 		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
 		addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
 		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-		s+="<tr>\n";
-		s+="<td>"+uid+"</td>";
-		if (u.name!="" || u.last_name!="" ){
-			s+="<td>"+encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")</td>";
+		ackDelegate = false;
+		if (ackDelegate){
+			s+="<tr>\n";
 		}else{
-			s+="<td>"+encodeHTML(u.user_name)+"</td>";
+			s+="<tr style=\"background-color:lightgreen;\" >\n";
 		}
+		s+="<td>"+uid+"</td>";
+		s+="<td>"
+		if (u.name!="" || u.last_name!="" ){
+			s+= encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")";
+		}else{
+			s+= encodeHTML(u.user_name);
+		}
+		if (!ackDelegate){
+			s+=buttonAckDelegate(g.group_id,uid,role);
+		}
+		s+="</td>";
 		s+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
 		s+="<td>"+encodeHTML(u.cellphone)+"</td>";
 		s+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
@@ -259,9 +274,7 @@ function showGroupById(groupId){
 				roleSpanish= "Delegado";			
 			}
 			s += "<tr><td>" + roleSpanish + "</td>";
-			if (currentSystem=="admin"){	
-				s+="<td>"+ deleteRoleButton(g.group_id,uid,role)+"</td><td>"+ deleteAndInactivateRoleButton(g.group_id,uid,role)+"</td>";
-			}
+			s+="<td>"+ deleteRoleButton(g.group_id,uid,role)+"</td><td>"+ deleteAndInactivateRoleButton(g.group_id,uid,role)+"</td>";
 			s+="</tr>";
 		}
 		s+="</table></td>";//termina roles

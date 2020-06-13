@@ -120,6 +120,84 @@ function deleteMember(gid,uid,role){
 	}
 }
 
+function deleteMemberDelegate(gid,uid,role){
+	groupName = getGroupNameById(gid);
+	if (gid!=""){
+		var uidnumber = parseInt(uid,10);
+		var payload = { user_id : uidnumber, role : role };
+		var url = apiBaseUrl+"/delegate/remove/" + gid.toString(); 
+		$.ajax({
+			method: "DELETE",
+			url: url,
+			data : JSON.stringify(payload),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert( "El usuario " + uid + " en su rol de "+role+ " fue removido del grupo " + gid.toString()+": "+encodeHTML(groupName) ); 
+			},
+			error: function() {
+				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+			}
+		});
+	}else{
+		alert("error");
+	}
+}
+
+function deleteMemberAndDeactivateDelegate(gid,uid,role){
+	groupName = getGroupNameById(gid);
+	if (gid!=""){
+		var uidnumber = parseInt(uid,10);
+		var payload = { user_id : uidnumber, role : role };
+		var url = apiBaseUrl+"/delegate/deactivate/" + gid.toString(); 
+		$.ajax({
+			method: "DELETE",
+			url: url,
+			data : JSON.stringify(payload),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
+			},
+			error: function() {
+				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+			}
+		});
+	}else{
+		alert("error");
+	}
+}
+
+function ackDelegate(gid,uid,role){
+	groupName = getGroupNameById(gid);
+	if (gid!=""){
+		var uidnumber = parseInt(uid,10);
+		var payload = { user_id : uidnumber, role : role };
+		var url = apiBaseUrl+"/delegate/ack/" + gid.toString(); 
+		$.ajax({
+			method: "POST",
+			url: url,
+			data : JSON.stringify(payload),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
+			},
+			error: function() {
+				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+			}
+		});
+	}else{
+		alert("error");
+	}
+}
+
+
+
+
 function newGroup(){
 	// TODO separar en request y parte de leer html
 	var url = apiBaseUrl+"/admin/groups"; 
