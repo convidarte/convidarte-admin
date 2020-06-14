@@ -162,7 +162,7 @@ function deleteMemberAndDeactivateDelegate(gid,uid,role){
 				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
 			},
 			error: function() {
-				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+				alert('Error, no se pudo quitar e inactivar.');
 			}
 		});
 	}else{
@@ -184,10 +184,10 @@ function ackDelegate(gid,uid,role){
 			async: false,
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
-				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
+				alert( "El usuario " + uid + " fue marcado como contactado."); 
 			},
 			error: function() {
-				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+				alert('Error, no se pudo marcar al usuario como contactado.');
 			}
 		});
 	}else{

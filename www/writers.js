@@ -11,7 +11,7 @@ function deleteAndInactivateRoleButton(gid,uid,role){
 }
 
 function buttonAckDelegate(gid,uid,role){
-	var s = "<button id=\"button_ack_delegate_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"buttonAckDelegate();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Ya me contacté!</button>";
+	var s = "<button id=\"button_ack_delegate_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"ackDelegateOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Ya me contacté!</button>";
 	return s;
 }
 
@@ -241,8 +241,8 @@ function showGroupById(groupId){
 		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
 		addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
 		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-		ackDelegate = false;
-		if (ackDelegate){
+		ack = false;// el ack del primer rol que tenga el usuario en el grupo. definir que pasa si tiene mas de un rol!
+		if (ack){
 			s+="<tr>\n";
 		}else{
 			s+="<tr style=\"background-color:lightgreen;\" >\n";
@@ -254,8 +254,8 @@ function showGroupById(groupId){
 		}else{
 			s+= encodeHTML(u.user_name);
 		}
-		if (!ackDelegate){
-			s+=buttonAckDelegate(g.group_id,uid,role);
+		if (!ack){
+			s+=buttonAckDelegate(g.group_id,uid,u.roles[0]);
 		}
 		s+="</td>";
 		s+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
