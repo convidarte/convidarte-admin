@@ -241,7 +241,7 @@ function showGroupById(groupId){
 		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
 		addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
 		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-		ack = false;// el ack del primer rol que tenga el usuario en el grupo. definir que pasa si tiene mas de un rol!
+		ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo. definir que pasa si tiene mas de un rol!
 		if (ack){
 			s+="<tr>\n";
 		}else{
@@ -255,7 +255,7 @@ function showGroupById(groupId){
 			s+= encodeHTML(u.user_name);
 		}
 		if (!ack){
-			s+=buttonAckDelegate(g.group_id,uid,u.roles[0]);
+			s+=buttonAckDelegate(g.group_id,uid,u.roles_in_group[0].role);
 		}
 		s+="</td>";
 		s+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
@@ -263,8 +263,8 @@ function showGroupById(groupId){
 		s+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
 		// comienza roles:		
 		s+="<td><table>";
-		for (var j =0;  j< u.roles.length; j++){
-			var role = u.roles[j];
+		for (var j =0;  j< u.roles_in_group.length; j++){
+			var role = u.roles_in_group[j].role;
 			var roleSpanish="";
 			if(role=="cook"){
 				roleSpanish ="Chef";
@@ -324,7 +324,7 @@ function groupDetailPrintable(g){
 		s+="<td>"+encodeHTML(u.cellphone)+"</td>";
 		s+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
 		// comienza roles:		
-		s+="<td>"+u.roles.map(roleInSpanish).join( " ")+"</td>";
+		s+="<td>"+u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ")+"</td>";
 		s+= "</tr>";
 	}
 	s+="</tbody></table></div></div>";
@@ -348,7 +348,7 @@ function getGroupCSV(g){
 		}
 		cellphone= u.cellphone;
 		email = u.email;
-		roles = u.roles.map(roleInSpanish).join( " ");
+		roles = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");
 		row = "\"" + uid + "\""+csvSeparator+"\"" + fullname + "\""+csvSeparator+"\"" + address + "\""+csvSeparator+"\"" + cellphone + "\""+csvSeparator+"\"" + email + "\""+csvSeparator+"\"" + roles + "\"\n";
 		text+=row;
 	}

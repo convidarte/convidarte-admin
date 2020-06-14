@@ -142,8 +142,8 @@ function displayGroupOnMap(g){
 
 	for (var i=0; i< g.members.length; i++){
 		u = g.members[i];
-		for (var j=0; j<u.roles.length;j++){
-			r = u.roles[j];
+		for (var j=0; j<u.roles_in_group.length;j++){
+			r = u.roles_in_group[j].role;
 			ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
 			createMarkerByUser(ur);
