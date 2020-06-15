@@ -58,8 +58,8 @@ function logout(){
 }
 
 function onLoginOk() {
+	p = getUserProfile(adminUserId);
 	if (currentSystem=="admin"){
-		p = getUserProfile(adminUserId);
 		if (p.roles.indexOf("admin")<0){
 			alert("Error: debe ser administrador para usar este sistema!")
 			logout();
@@ -70,6 +70,11 @@ function onLoginOk() {
 		getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 	}
 	if (currentSystem=="delegate"){
+		if (p.roles.indexOf("delegate")<0){
+			alert("Error: debe ser delegado para usar este sistema!")
+			logout();
+			return;
+		}
 		currentGroupId=0;
 		document.getElementById("map").style="";
 		document.getElementById("ppal").style="";
