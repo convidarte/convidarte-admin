@@ -16,6 +16,25 @@ function getGroups(){
 	return groups;
 }
 
+function getUserProfile(uid){
+	var urlAdminGroups = apiBaseUrl+"/users/"+uid.toString();
+	var response;
+	$.ajax({
+		method: "GET",
+		url: urlAdminGroups,
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+			response = data;
+		},
+		error: function() {
+			alert('Groups falló');
+		}
+	});
+	return response;
+}
+
 
 function getUserGroups(uid){
 	var urlAdminUsersGroups = apiBaseUrl+"/users/"+uid.toString()+"/groups";
