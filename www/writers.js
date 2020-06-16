@@ -335,14 +335,16 @@ function groupDetailPrintable(g){
 
 function getGroupCSV(g){
 	members = g.members;
-	filename = "grupo " + g.group_id.toString() + " - " + name + " - " + getDateString() + ".csv";
-	var text = "";
+	filename = "grupo " + g.group_id.toString() + " - " + g.name + " - " + getDateString() + ".csv";
 	csvSeparator = ";";
-	text += "Id"+csvSeparator+"Nombre"+csvSeparator+"Dirección"+csvSeparator+"Celular"+csvSeparator+"Email"+csvSeparator+"Rol(es)\n"; 
+	var text = ["Id","Nombre","Dirección","Barrio","Ciudad","Provincia","Celular","Email","Rol(es)"].join(csvSeparator)+"\n"; 
 	for (var i = 0; i < members.length; i++){
 		u = members[i];
-		uid = u.user_id;
-		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
+		uid = u.user_id.toString();
+		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment;
+		neighborhood = u.address.neighborhood;
+		city = u.address.city;
+		province = u.address.province;
 		if (u.name!="" ){ // el delegado no necesita saber el apellido
 			fullname=u.user_name+" ("+u.name+")";
 		}else{
@@ -351,8 +353,8 @@ function getGroupCSV(g){
 		cellphone= u.cellphone;
 		email = u.email;
 		roles = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");
-		row = "\"" + uid + "\""+csvSeparator+"\"" + fullname + "\""+csvSeparator+"\"" + address + "\""+csvSeparator+"\"" + cellphone + "\""+csvSeparator+"\"" + email + "\""+csvSeparator+"\"" + roles + "\"\n";
-		text+=row;
+		row = [uid,fullname,address,neighborhood,city,province,email,roles].map( x => '"' + x.replace(/"/g, '""') + '"' ).join(csvSeparator)
+		text+=row+"\n";
 	}
 	var fileBlob = new Blob([text], {type: "application/octet-binary"});
 
