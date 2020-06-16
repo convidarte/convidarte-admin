@@ -218,7 +218,7 @@ function updateSelectUsers(){
 	optionList = new Array();
 	for ( var i=0; i<allUsers.length; i++){
 		u = allUsers[i];
-		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")"));
+		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+" " +encodeHTML(u.cellphone) +")"));
 	}
 	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
 	autocomplete(document.getElementById("userList"), optionList);
