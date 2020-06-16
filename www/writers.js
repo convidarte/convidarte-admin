@@ -256,7 +256,7 @@ function showGroupById(groupId){
 		}else{
 			s+= encodeHTML(u.user_name);
 		}
-		if (!ack){
+		if ( currentSystem=="delegate" && (!ack)   ){
 			s+=buttonAckDelegate(g.group_id,uid,u.roles_in_group[0].role);
 		}
 		s+="</td>";
