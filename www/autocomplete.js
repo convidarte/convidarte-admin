@@ -1,3 +1,7 @@
+function textNormalization(s){
+	return s.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -19,11 +23,11 @@ function autocomplete(inp, arr) {
       for (i = 0; i < arr.length; i++) {
         /*check if the item starts with the same letters as the text field value:*/
         /*if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {*/
-		if (arr[i].toUpperCase().includes(val.toUpperCase())) { // mejor chequeamos substring :D
+		if (textNormalization(arr[i]).includes(textNormalization(val))) { // mejor chequeamos substring :D
           /*create a DIV element for each matching element:*/
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
-		  var k = arr[i].toUpperCase().indexOf(val.toUpperCase());
+		  var k = textNormalization(arr[i]).indexOf(textNormalization(val));
           b.innerHTML = arr[i].substr(0, k);
 		  b.innerHTML += "<strong>" + arr[i].substr(k, (val.length)) + "</strong>";
           b.innerHTML += arr[i].substr(k+(val.length));

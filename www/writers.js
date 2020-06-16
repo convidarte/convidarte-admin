@@ -208,7 +208,9 @@ function tableWithGroupsOfUser(u){
 	return t;
 }
 
-
+function tidySpaces(s){
+	return s.replace(/\s+/g, ' ').trim();
+}
 
 // escribe el elemento usersListContainer con la lista de usuarios para seleccionar
 function updateSelectUsers(){
@@ -216,7 +218,7 @@ function updateSelectUsers(){
 	optionList = new Array();
 	for ( var i=0; i<allUsers.length; i++){
 		u = allUsers[i];
-		optionList.push( u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")");
+		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+")"));
 	}
 	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
 	autocomplete(document.getElementById("userList"), optionList);
