@@ -27,12 +27,13 @@ function login(){
 	var loginData = { user_name: user, password : pass };
 	var urlLogin = apiBaseUrl+"/auth/login";
 	var data = JSON.stringify(loginData);
+	document.getElementById("loadingLogin").style="";
 	$.ajax({
 		method: "POST",
 		url: urlLogin,
 		contentType: "application/json",
 		data : data,
-		async: false,
+		async: true,
 		success: function(data) {
 			adminUserId = data.user.user_id;
 			token = data.token;
@@ -44,7 +45,8 @@ function login(){
 			onLoginOk();
 		},
 		error: function() {
-			alert('Datos de login incorrectos');
+			document.getElementById("loadingLogin").style="display: none;";
+			alert('Datos de login incorrectos');			
 		}
 
 	});
@@ -64,10 +66,11 @@ function onLoginOk() {
 			alert("Error: debe ser administrador para usar este sistema!")
 			logout();
 			return;
-		}
+		}		
 		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		refreshEverything();
 	}
 	if (currentSystem=="delegate"){
 		if (p.roles.indexOf("delegate")<0){
@@ -81,10 +84,10 @@ function onLoginOk() {
 		document.getElementById("estilos").href="groups.css";
 		refreshEverything();
 	}
+	document.getElementById("loadingLogin").style="display: none";
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
-
 }
 
 function onTabChange() {

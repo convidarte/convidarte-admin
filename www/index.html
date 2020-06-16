@@ -13,8 +13,9 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 	<body>
-		<!-- MAIN CONTENT -->
-		<div id="ppal" style="display: none;"><h2>Clickear en "HOLA" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
+
+		
+		<div id="ppal" style="display: none;"><h2>Clickear en "Detalle" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
 
 		<div id="leftPanel" style="display: none;">
 			<div id="usersLeftPanel" style="display: none;">
@@ -78,7 +79,8 @@
 					Username: <input type="text" id="username" name="username" ><br/>
 					Password: <input type="password" id="password" name="password" ><br/>
 				</form>
-				<input type="submit" value="Loguear" onclick="login()"><br/>
+				<input type="submit" value="Acceder" onclick="login()" ><br/><br/>
+				<div id="loadingLogin" style="display: none;"><img src="./loading.gif" style="width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;"> </div>
 			</div>
 
 			<div id="protectedDiv" style="display: none;">
