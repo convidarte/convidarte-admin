@@ -229,12 +229,42 @@ function prepareAddressGoogleMaps(street,number,city,province){
 	return street +" "+number.toString()+", " +city+", "+province;
 }
 
+function divideGroupForm(){
+	s = "<hr style=\"width:95%;\">";
+	s+="<div id=\"divDividirGrupo\" style=\"margin-left:15px;\">";
+	if (currentlyDividingGroup){
+		s+="<h3>Dividir grupo</h3>";
+		s+="Instrucciones: seleccionar los miembros del nuevo grupo, luego elegir el nombre del nuevo grupo y finalmente clickear en Dividir grupo.<br/>";
+		s+="Nombre para el nuevo grupo:&nbsp;&nbsp; <input id=\"dividedGroupNewName\" type=\"text\"></input><br/><br/>";
+		s+="<button id=\"divideGroup\" onclick=\"divideGroupOnClick();\">Dividir grupo</button>&nbsp;&nbsp;&nbsp;&nbsp;";
+		s+="<button id=\"cancelDivideGroup\" onclick=\"stopDividingGroupOnClick();\">Cancelar la división</button><br/>";
+
+	}else{
+		s+="<button id=\"startDividingGroupButton\" onclick=\"startDividingGroupOnClick();\"> Quiero dividir el grupo</button><br/>";
+	}
+	s+="</div>";
+	s+="<hr style=\"width:95%;\">";
+	return s;
+}
+
 // escribe el elemento "ppal" con la data detallada de un grupo
 function showGroupById(groupId){
 	g = getGroup(groupId);
 	members = g.members;
-	s = "<h1>"+encodeHTML(g.name)+"</h1>";
-	s+="<button id=\"downloadPDF\" onclick=\"downloadGroupDetailTable()\">Bajar en formato PDF</button><div id=\"downloadCSVLinkDiv\"></div><br/><br/>";
+	s= "<div>";
+	s += "<h1>"+"&nbsp;&nbsp;"+encodeHTML(g.name)+"</h1>";
+	s+= "<div style=\"margin-left:15px;\"><a id=\"bajarPDF\" href=\"#\" onclick=\"downloadGroupDetailTable();return false;\">Bajar en formato PDF</a></div>";
+	s+="<div id=\"downloadCSVLinkDiv\" style=\"margin-left:15px;\"></div>";
+	s+="</div>";
+	if (currentSystem == "admin"){
+
+		s+="<div style=\"margin-left:15px;\">";
+		s+="<h3> Cambiar el nombre del grupo</h3>\n";
+		s+="Nuevo nombre: <input id=\"newName\"></input>\n";
+		s+="<button id=\"changeName\" onclick=\"changeGroupName()\">Cambiar nombre</button>";
+		s+="</div>";
+		s+=divideGroupForm();
+	}
 	s += "<table id=\"groupDetailTable\">\n";
 	s+= "<tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Celular</th><th>email</th><th>Rol(es)</th> </tr>"; 
 	for (var i = 0; i < members.length; i++){
@@ -276,7 +306,15 @@ function showGroupById(groupId){
 				roleSpanish= "Delegado";			
 			}
 			s += "<tr><td>" + roleSpanish + "</td>";
-			s+="<td>"+ deleteRoleButton(g.group_id,uid,role)+"</td><td>"+ deleteAndInactivateRoleButton(g.group_id,uid,role)+"</td>";
+			if (currentlyDividingGroup){
+				checked = "";
+				if( [uid,role] in userRolesNewGroup){
+					checked="checked ";
+				}
+				s+="<td><input value=\""+uid.toString() +"_"+ role  +"\" type=\"checkbox\" "+checked+"onchange=\"checkboxDivideGroupChange();\"></input> </td>";			
+			}else{
+				s+="<td>"+ deleteRoleButton(g.group_id,uid,role)+"</td><td>"+ deleteAndInactivateRoleButton(g.group_id,uid,role)+"</td>";
+			}
 			s+="</tr>";
 		}
 		s+="</table></td>";//termina roles
@@ -284,11 +322,6 @@ function showGroupById(groupId){
 		s+= "</tr>";
 	}
 	s+="</table>";
-	if (currentSystem=="admin"){	
-		s+="<h2> Cambiar nombre de grupo</h2>\n";
-		s+="Nuevo nombre: <input id=\"newName\"></input>\n";
-		s+="<button id=\"changeName\" onclick=\"changeGroupName()\">Cambiar nombre</button>";
-	}
 	s+="<br/><br/>";
 	s+= groupDetailPrintable(g);
 	groupDetailElement = document.getElementById('ppal');

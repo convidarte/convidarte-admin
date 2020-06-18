@@ -177,7 +177,7 @@ function refreshEverythingGroups(){
 		return;
 	}
 	refreshGroupList();
-	if(currentGroupId!=0){
+	if(currentGroupId!=0 ){
 		showGroupById(currentGroupId);
 	}else{
 		deleteMarkers();

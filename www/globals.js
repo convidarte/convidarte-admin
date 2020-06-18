@@ -21,6 +21,10 @@ var currentUserId=0;
 
 var onlyUsersWithoutAddress = false;
 
+// divide group
+var currentlyDividingGroup = false;
+var userRolesNewGroup = {};
+
 // Pagination
 var numberPages = 0;
 var currentPage = 0;
@@ -29,3 +33,4 @@ var rowsPerPage = 15;
 function encodeHTML(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
+

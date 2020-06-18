@@ -216,7 +216,7 @@ function ackDelegate(gid,uid,role){
 
 
 
-
+// TODO seria mejor que las siguientes tres funciones no tripliquen codigo ;)
 function newGroup(){
 	// TODO separar en request y parte de leer html
 	var url = apiBaseUrl+"/admin/groups"; 
@@ -241,6 +241,50 @@ function newGroup(){
 	}else{
 		alert("El nombre del grupo no puede quedar vacío!");
 	}
+}
+function postGroup(name, userRoles ){
+	var url = apiBaseUrl+"/admin/groups";
+	var response;
+	if(name!=""){
+		var newGroupData = { name : name, users : userRoles };
+		$.ajax({
+			method: "POST",
+			url: url,
+			data : JSON.stringify(newGroupData),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data,statusText,xhr) {
+				response = xhr.status;
+			},
+			error: function() {
+				response = xhr.status;
+			}
+		});
+		return response;
+	}else{
+		return 401;
+	}
+}
+function removeUserRolesFromGroup(group_id, groupName, userRoles){
+	var updateGroup = { name : groupName, users_to_add : [ ], users_to_remove : userRoles };
+	var url = apiBaseUrl+"/admin/groups/" + group_id.toString(); 
+	var response;
+	$.ajax({
+		method: "PUT",
+		url: url,
+		data : JSON.stringify(updateGroup),
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data,statusText,xhr) {
+			response = xhr.status;
+		},
+		error: function() {
+			response = xhr.status;
+		}
+	});
+	return response;
 }
 
 

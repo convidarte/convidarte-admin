@@ -3,6 +3,8 @@
 //  se llama al clickear "ver detalle de grupo"
 function showGroup(){
 	currentGroupId = event.target.value;
+	currentlyDividingGroup = false;
+	userRolesNewGroup = {};
 	showGroupById(currentGroupId);
 }
 
@@ -106,6 +108,55 @@ function toggleWithoutAddress(){
 	refreshEverything();
 }
 
+// BEGIN DIVIDING GROUP
+function startDividingGroupOnClick(){
+	currentlyDividingGroup = true;
+	userRolesNewGroup = {};
+	refreshEverything();
+}
+function stopDividingGroupOnClick(){
+	currentlyDividingGroup = false;
+	userRolesNewGroup = {};
+	refreshEverything();
+}
+function divideGroupOnClick(){
+	newName = document.getElementById("dividedGroupNewName").value;
+	if(newName!=""){
+		userRoles = []
+		for(x in userRolesNewGroup){
+			uid = parseInt(x.split(",")[0],10);
+			role = x.split(",")[1];
+			userRoles.push({user_id: uid ,role: role});
+		}
+		res = postGroup(newName,userRoles);
+		if(res==201){
+			currentGroupName  = getGroupNameById(currentGroupId);
+			res = removeUserRolesFromGroup(currentGroupId,currentGroupName,userRoles);
+			if (res== 200){
+				alert("El grupo fue dividido correctamente.");
+			}else{
+				alert("El grupo nuevo fue creado. Error al quitar a los usuarios del grupo actual. Removerlos a mano.");
+			}
+			stopDividingGroupOnClick();
+		}else{
+			alert("Error: no se pudo dividir el grupo");
+		}
+	}else{
+		alert("Error: el nombre del nuevo grupo no puede quedar vacío");
+	}
+}
+function checkboxDivideGroupChange(){
+	v = event.target.value;
+	uid = parseInt(v.split("_")[0],10);
+	role = v.split("_")[1];
+	if (event.target.checked){
+		userRolesNewGroup[ [uid,role] ]=true;
+	}else{
+		delete userRolesNewGroup[ [uid,role] ];
+	}
+}
+// END DIVIDING GROUP
+
 // paginacion +1
 function nextPage(){
 	if(currentPage+1 < numberPages){
@@ -177,7 +228,7 @@ window.addEventListener('load', function () {
 		token = tokenCookie;
 		usernameAdmin = usernameCookie;
 		adminUserId = adminUserIdCookie;
-		onLoginOk();	
+		onLoginOk();
 	}
 })
 
