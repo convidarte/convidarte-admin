@@ -317,8 +317,8 @@ function groupDetailPrintable(g){
 		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
 		s+="<tr>\n";
 		s+="<td>"+uid+"</td>";
-		if (u.name!="" ){ // el delegado no necesita saber el apellido
-			s+="<td>"+encodeHTML(u.user_name)+" ("+encodeHTML(u.name)+")</td>";
+		if (u.name!="" ){
+			s+="<td>"+encodeHTML(u.user_name)+" ("+encodeHTML(u.name)+" "+encodeHTML(u.last_name) +")</td>";
 		}else{
 			s+="<td>"+encodeHTML(u.user_name)+"</td>";
 		}
@@ -345,8 +345,8 @@ function getGroupCSV(g){
 		neighborhood = u.address.neighborhood;
 		city = u.address.city;
 		province = u.address.province;
-		if (u.name!="" ){ // el delegado no necesita saber el apellido
-			fullname=u.user_name+" ("+u.name+")";
+		if (u.name!="" ){
+			fullname=u.user_name+" ("+u.name+" "+u.last_name+")";
 		}else{
 			fullname=u.user_name;
 		}
