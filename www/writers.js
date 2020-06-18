@@ -232,8 +232,8 @@ function prepareAddressGoogleMaps(street,number,city,province){
 function divideGroupForm(){
 	s = "<hr style=\"width:95%;\">";
 	s+="<div id=\"divDividirGrupo\" style=\"margin-left:15px;\">";
-	if (currentlyDividingGroup){
 		s+="<h3>Dividir grupo</h3>";
+	if (currentlyDividingGroup){
 		s+="Instrucciones: seleccionar los miembros del nuevo grupo, luego elegir el nombre del nuevo grupo y finalmente clickear en Dividir grupo.<br/>";
 		s+="Nombre para el nuevo grupo:&nbsp;&nbsp; <input id=\"dividedGroupNewName\" type=\"text\"></input><br/><br/>";
 		s+="<button id=\"divideGroup\" onclick=\"divideGroupOnClick();\">Dividir grupo</button>&nbsp;&nbsp;&nbsp;&nbsp;";
