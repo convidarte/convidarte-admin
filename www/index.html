@@ -1,33 +1,32 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
+		<title>Convidarte - Panel de administración</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
 		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
 		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
-
-
-
-		<meta charset="utf-8">
-		<title>Convidarte - Panel de administración</title>
-		<link id="estilos" rel="stylesheet" type="text/css" href="map.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link id="estilos" rel="stylesheet" type="text/css" href="css/map.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 	<body>
-
-
+		<!-- MAIN CONTENT -->
 		<div id="ppal" style="display: none;"><h2>Clickear en "HOLA" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
 
 		<div id="leftPanel" style="display: none;">
 			<div id="usersLeftPanel" style="display: none;">
+				<!-- USUARIOS SIN GRUPOS -->
 				<h2> Usuarios disponibles (no están en ningún grupo)</h2><br/>
 				<div id="pagination">
 					<table style="border: none; margin: 0 auto; ">
-					<tr>
-					<td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
-					<td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
-					<td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
-					</tr>
+						<tr>
+							<td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
+							<td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
+							<td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
+						</tr>
 					</table>
 				</div>
 				<div id="cooks">
@@ -47,6 +46,7 @@
 				</div>
 				<br/><br/>
 			</div>
+			<!-- BUSCAR UN USUARIO -->
 			<div id = "profileLeftPanel" style="display: none;">
 				<h2> Perfil de usuario:</h2><br/>
 				<div id="profile"><h3>Seleccionar un usuario para ver el perfil</h3></div>

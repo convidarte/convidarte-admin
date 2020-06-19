@@ -12,7 +12,7 @@ function changeUsersTab(){
 	document.getElementById("ppal").style="display: none;";
 	document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="users.css";
+	document.getElementById("estilos").href="css/users.css";
 
 	onTabChange();
 }
@@ -31,7 +31,7 @@ function changeMapTab(){
 	document.getElementById("ppal").style="display: none;";
 	document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="map.css";
+	document.getElementById("estilos").href="css/map.css";
 
 	onTabChange();
 }
@@ -50,7 +50,7 @@ function changeGroupsTab(){
 	document.getElementById("ppal").style="";
 	document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="groups.css";
+	document.getElementById("estilos").href="css/groups.css";
 
 	onTabChange();
 }
@@ -69,7 +69,7 @@ function changeProfileTab(){
 	document.getElementById("ppal").style="display: none;";
 	document.getElementById("profileLeftPanel").style="";
 
-	document.getElementById("estilos").href="profile.css";
+	document.getElementById("estilos").href="css/profile.css";
 
 	onTabChange();
 }
