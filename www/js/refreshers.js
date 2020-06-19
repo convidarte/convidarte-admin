@@ -95,7 +95,12 @@ function onLoginOk() {
 }
 
 function onTabChange() {
-	if (currentTab =="groups"){
+	stopDividingGroupOnClick();
+	if(currentTab == "map"){
+		onTabChangeMap();
+	}else if (currentTab =="profile"){
+		 onTabChangeProfile();
+	}else if (currentTab =="groups"){
 		onTabChangeGroups();
 	}else if (currentTab =="users"){
 		onTabChangeUsers();
