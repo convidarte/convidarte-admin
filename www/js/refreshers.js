@@ -95,7 +95,6 @@ function onLoginOk() {
 }
 
 function onTabChange() {
-	stopDividingGroupOnClick();
 	if(currentTab == "map"){
 		onTabChangeMap();
 	}else if (currentTab =="profile"){
@@ -189,3 +188,15 @@ function refreshPagination(){
 	}
 }
 
+//==============================================================
+// Group division:
+function startDividingGroupOnClick(){
+	currentlyDividingGroup = true;
+	userRolesNewGroup = {};
+	refreshEverything();
+}
+function stopDividingGroupOnClick(){
+	currentlyDividingGroup = false;
+	userRolesNewGroup = {};
+	refreshEverything();
+}

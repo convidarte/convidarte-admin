@@ -106,16 +106,6 @@ function toggleWithoutAddress(){
 }
 
 // BEGIN DIVIDING GROUP
-function startDividingGroupOnClick(){
-	currentlyDividingGroup = true;
-	userRolesNewGroup = {};
-	refreshEverything();
-}
-function stopDividingGroupOnClick(){
-	currentlyDividingGroup = false;
-	userRolesNewGroup = {};
-	refreshEverything();
-}
 function divideGroupOnClick(){
 	newName = document.getElementById("dividedGroupNewName").value;
 	if(newName!=""){
