@@ -353,6 +353,11 @@ function divideGroupForm(){
 
 // escribe el elemento "ppal" con la data detallada de un grupo
 function showGroupById(groupId){
+	groupDetailElement = document.getElementById('ppal');
+	if (groupId==0){
+		groupDetailElement.innerHTML="";
+		return;
+	}
 	g = getGroup(groupId);
 	members = g.members;
 	s= "<div>";
@@ -434,7 +439,6 @@ function showGroupById(groupId){
 	s+="</table>";
 	s+="<br/><br/>";
 	s+= groupDetailPrintable(g);
-	groupDetailElement = document.getElementById('groupMembers');
 	groupDetailElement.innerHTML = s;
 	$("."+"viewProfileLink").click(
 		function(e){

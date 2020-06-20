@@ -95,6 +95,7 @@ function onLoginOk() {
 }
 
 function onTabChange() {
+	stopDividingGroupOnClick();
 	if(currentTab == "map"){
 		onTabChangeMap();
 	}else if (currentTab =="profile"){
@@ -149,12 +150,11 @@ function refreshEverythingGroups(){
 	if(token==""){
 		return;
 	}
-	updateSelectGroups();
-	if(currentGroupId!=0 ){
-		showGroupById(currentGroupId);
-	}else{
+	refreshGroupList();
+	if( currentGroupId==0 ){
 		deleteMarkers();
 	}
+	showGroupById(currentGroupId);
 }
 
 function refreshEverythingUsers(){
@@ -173,11 +173,10 @@ function refreshEverythingDelegate(){
 		return;
 	}
 	refreshGroupListDelegate();
-	if(currentGroupId!=0){
-		showGroupById(currentGroupId);
-	}else{
+	if(currentGroupId==0){
 		deleteMarkers();
 	}
+	showGroupById(currentGroupId);
 }
 
 function refreshPagination(){
