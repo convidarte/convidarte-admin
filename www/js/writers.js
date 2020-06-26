@@ -508,7 +508,7 @@ function getGroupCSV(g){
 		cellphone= u.cellphone;
 		email = u.email;
 		roles = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");
-		row = [uid,fullname,address,neighborhood,city,province,email,cellphone,roles].map( x => '"' + x.replace(/"/g, '""') + '"' ).join(csvSeparator)
+		row = [uid,fullname,address,neighborhood,city,province,cellphone,email,roles].map( x => '"' + x.replace(/"/g, '""') + '"' ).join(csvSeparator)
 		text+=row+"\n";
 	}
 	var fileBlob = new Blob([text], {type: "application/octet-binary"});
