@@ -1,229 +1,189 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Convidarte - Panel de administración</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
-	<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
-	<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
-
-
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"><!--autocomplete -->
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script><!--autocomplete -->
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
 
 
 
-<script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
-</head>
-<body>
+		<meta charset="utf-8">
+		<title>Convidarte - Panel de administración</title>
+		<link id="estilos" rel="stylesheet" type="text/css" href="map.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163205380-3"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
 
-  <div id="loadingLogin" style="display:none"><img src="./img/loading.gif"> </div>
-  <div id="protectedDiv" class="h-100">
-    <div id="costado" style="display: none"></div>
-    <div id="mapRightMenu" style="display: none">
-      <div id="userDetail"></div>
-    </div>
-    <div id="groupsRightMenu" style="display: none"></div>
-    <div id="profileRightMenu" style="display: none"></div>
+		  gtag('config', 'UA-163205380-3');
+		</script>
 
 
-    <!-- NAV -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-     <a class="navbar-brand" href="#">
-      <img src="img/convidarte-logo.svg" alt="Convidarte" height="40">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-       <li class="nav-item active">
-        <a id="nav-link-users"  class="nav-link" href="#" onclick="changeUsersTab()" >Usuarios sin grupo<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a id="nav-link-groups" class="nav-link" href="#" onclick="changeGroupsTab()" >Grupos</a>
-      </li>
-    </ul>
+	</head>
+	<body>
 
-    <ul class="navbar-nav">
-	<div id=loginDiv>
-		<form id="login">
-			<table>
-				<tbody>
-					<tr><td><span style="color:white"> Usuario:</span></td><td><input type="text" id="username" name="username" style="padding:3px"></td></tr>
-					<tr><td><span style="color:white"> Contraseña:</span></td><td> <input type="password" id="password" name="password" style="width:100%"></td></tr>
-				</tbody>
-			</table>
-		</form>
-		<input type="submit" value="Acceder" onclick="login()" >
-	</div>
+		
+		<div id="ppal" style="display: none;"><h2>Clickear en "Detalle" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
 
-     <li class="nav-link" id="adminUserName" style="display:none"></li>
-     <li>
-      <a id="logout-link" class="nav-link" href="#" onclick="logout()" style="display:none">
-       <i class="fas fa-sign-out-alt"></i>
-     </a>
-   </li>
- </ul>
-</div>
-</nav>
-<!-- end NAV -->
+		<div id="leftPanel" style="display: none;">
+			<div id="usersLeftPanel" style="display: none;">
+				<h2> Usuarios disponibles (no están en ningún grupo)</h2><br/>
+				<div id="pagination">
+					<table style="border: none; margin: 0 auto; ">
+					<tr>
+					<td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
+					<td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
+					<td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
+					</tr>
+					</table>
+				</div>
+				<div id="cooks">
+					<h1 style="background-color:salmon;" >Cocineros:</h1>
+					<table id="cooksTable">
+					</table>
+				</div>
+				<div id="delegates">
+					<h1 style="background-color:blueviolet;">Delegados:</h1>
+					<table id="delegatesTable">
+					</table>
+				</div>
+				<div id="drivers" >
+					<h1 style="background-color:lawngreen;">Distribuidores:</h1>
+					<table id="driversTable">
+					</table>
+				</div>
+				<br/><br/>
+			</div>
+			<div id = "profileLeftPanel" style="display: none;">
+				<h2> Perfil de usuario:</h2><br/>
+				<div id="profile"><h3>Seleccionar un usuario para ver el perfil</h3></div>
+				<br/><br/>
+			</div>
+		</div>
 
-<!-- FILTER BAR -->
-<div class="container-fluid">
-  <div class="row">
-    <div id="filter-bar">
-      <div id="filterLocation" style = "display: none;" >
-        <div class="filter-group">
-          <label>Rol:</label>
-          <select id="selectRole" onchange="refreshEverything();">
-            <option value="cooks" selected>Cocineros</option>
-            <option value="drivers">Distribuidores</option>
-            <option value="delegates">Delegados</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Localidad:</label><select id="selectCity" onchange="selectCityChanged()"></select>
-        </div>
-        <div class="filter-group">
-          <label>Barrio:</label><select id="selectNeighborhood" onchange="selectNeighborhoodChanged()"></select>
-        </div>
-      </div>
-      <div id="selectGroupContainer" class="ui-widget"  style = "display: none;">
-		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-		<input id="groupList">
-	  </div>
-	  <div id="userSearchBoxContainer" class="ui-widget" style = "display: none;">
-		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
-		<input id="userList">
-	  </div>
-	</div>
-  </div>
-</div>
-<!-- end FILTER BAR -->
+		<div id="map" style="display: none;"></div> <!-- map -->
 
-<!-- MAIN -->
-<main role="main" class="container-list-map">
+		<script async defer src="apikey.js"></script>
+		<script async defer src="autocomplete.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>-->
+		<script src="html_to_pdf.js"></script>
+		<script src="globals.js"></script>
+		<script src="requests.js"></script>
+		<script src="map.js"></script>
+		<script src="writers.js"></script>
+		<script src="refreshers.js"></script>
+		<script src="actions.js"></script>
+		<script src="tabs.js"></script>
+		<script src="admin.js"></script>
 
-<div class="list-container">
-<!--<div id="usersRightMenu" style="display: none;"></div>-->
+		<div id="costado">		
+			<div id=loginDiv>
+				<img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%"><br/>
+				<h2>Panel de administración</h2>
+				<form id="login">
+					Username: <input type="text" id="username" name="username" ><br/>
+					Password: <input type="password" id="password" name="password" ><br/>
+				</form>
+				<input type="submit" value="Acceder" onclick="login()" ><br/><br/>
+				<div id="loadingLogin" style="display: none;"><img src="./loading.gif" style="width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;"> </div>
+			</div>
 
-  <div id="usersLeftPanel" style="display: none;">  <!-- USUARIOS SIN GRUPO -->
-    <h2 id="usersListTitle"></h2>
-    <div id="usersList">
-      <table id="usersListTable" class="table table-striped">
-      </table>
-    </div>
-    <div id="pagination">
-      <table style="border: none; margin: 0 auto; ">
-        <tr>
-          <td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
-          <td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
-          <td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
-        </tr>
-      </table>
-    </div>
-  </div>  <!-- end USUARIOS SIN GRUPO -->
+			<div id="protectedDiv" style="display: none;">
 
-  <div id="groupsLeftPanel" style="display: none;">  <!-- GRUPOS -->
-     <div id="grupos" style="display:none;"></div>
-     <div id="groupMembers"></div>
-  </div><!-- end GRUPOS-->
-  
-</div>
+				<strong id= "adminUserName" >Bienvenido </strong> <input type="submit" value="Salir" onclick="logout()"> <img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%">
+				<br/>
+				<hr style="width:95%;text-align:left;margin-left:0">
+				<div>
+				<h2> Navegación</h2>
+				<button id="buttonUsersTab" onclick="changeUsersTab()">Usuarios sin grupo </button>
+				<button id="buttonTab" onclick="changeMapTab()"> Mapa </button>
+				<button id="buttonGroupsTab" onclick="changeGroupsTab()">Ver grupos </button>
+				<button id="buttonProfileTab" onclick="changeProfileTab()">Buscar un usuario </button>
+				</div>
+				<br/>
+				<hr style="width:95%;text-align:left;margin-left:0">
+				<br/>
+				<!-- comienza users right -->
+				<div id="usersRightMenu" style="display: none;">
+					<h3>Las direcciones de unos pocos usuarios no son procesadas correctamente y por lo tanto no aparecen en el mapa.</h3>
+					<button id="toggle" onclick="toggleWithoutAddress()">Mostrar solamente usuarios que no aparecen en el mapa</button> <br/>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
+				<!-- termina users right -->
 
-<div class="map-container"><!-- MAPA -->
-  <div id="map"></div>
-</div><!-- end MAPA -->
+				<!-- comienza map right -->
+				<div id="mapRightMenu" style="display: none;">
+					<div id="userDetail"></div>
+					<h3>En el mapa se muestran los usuarios que aún no están en un grupo.
+						Clickear sobre un usuario para agregarlo a un grupo.
+						Clickear sobre un grupo para verlo en detalle.</h3>
 
-</main>
-<!-- end MAIN -->
+					<hr style="width:95%;text-align:left;margin-left:0">
+					<div id="colorCode">
+						<h3>Código de colores:
+							<strong style="background-color:salmon;" >Chef</strong>
+							<strong style="background-color:blueviolet;">Delegado</strong>
+							<strong style="background-color:lawngreen;">Distribuidor</strong>
+  							<strong style="background-color:khaki;"> Grupo</strong></h3>
+					</div>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
 
-<!-- MODAL PROFILE -->
-<div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4">
-           <h2 id="modalProfileFullName"></h2>
-           <div id="modalProfileAlias"></div>
-         </div>
-         <div class="col-md-8">
-          <ul class="profileActions">
-            <li><button type="button" class="btn btn-primary float-right">Compartir</button></li>
-            <li><button type="button" class="btn btn-primary float-right">Agregar a grupo</button></li>
-            <li><button type="button" class="btn btn-primary float-right">Asignar rol asumible</button></li>
-          </ul>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <ul>
-            <li id="modalProfileUserId"></li>
-            <li id="modalProfileRoles"></li>
-            <li id="modalProfileCellphone"></li>
-            <li id="modalProfileEmail"></li>
-          </ul>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8" id="modalProfileFullAdress"></div>
-        <div class="col-md-4"><a id="modalProfileUrlGoogleMaps" class="btn btn-primary float-right mb-1" target="_blank" href="" role="button">Ver en Google maps</a></div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div id="profileMap"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <h3>Grupos</h3>
-          <p id="modalProfileUsersGroups"> Este usuario pertenence a NOMBRE DE GRUPO</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <h3>Inactivar ususario</h3>
-          <p>Si procedes, este usuario quedará inactivado. Podrás encontrarlo luego en usuarios inactivos.</p>
-          <button id ="modalProfileInactivateUser" type="button" class="btn btn-danger" onclick="inactivateUserRoleOnClickModal()">Inactivar usuario</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-<!-- GOOGLE MAPS FUNCTION AND SCRIPT FOR MODAL PROFILE -->
-<script>
-function profileMap() {
-var mapProp= {
-  center:new google.maps.LatLng(-34.608558, -58.392617),
-  zoom:5,
-};
-var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
-}
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD-__W-HWHW8b7VKeACWC_t8elR6cNEfE&callback=profileMap"></script>
-<!-- end MODAL PROFILE -->
-</div>
+				<!-- termina map right -->
+				<!-- empieza filterLocation (comun a users y map) -->
+				<div id="filterLocation" style = "display: none;" >
+					<h3>Es posible filtrar por rol, localidad y por barrio.</h3>
+					<strong>Mostrar:</strong>
+					<input type="checkbox" id="cookCheckbox" value="cook" onchange="refreshEverything();"> Cocineros
+					<input type="checkbox" id="driverCheckbox" value="driver" onchange="refreshEverything();"> Distribuidores
+					<input type="checkbox" id="delegateCheckbox" value="delegate" onchange="refreshEverything();"> Delegados
 
-<script src="js/vendor/bootstrap.bundle.min.js"></script>
-<script async defer src="apikey.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<script>currentSystem = "admin";</script>
-<script src="mainCompiled.js"></script>
-</body>
+					<h3> Mostrar usuarios de:</h3>
+					Localidad: <select id="selectCity" onchange="selectCityChanged()">
+					</select><br/><br/>
+					Barrio: <select id="selectNeighborhood" onchange="selectNeighborhoodChanged()">
+					</select>
+					<h4>Tip: si la localidad no es CABA debe seleccionar "Todos los barrios".</h4>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
+				<!-- termina filterLocation -->
+
+				<!-- comienza groups right (esta es comun a maps,users y groups!) -->
+				<div id="groupsRightMenu" style="display: none;">
+					<div id="groupsPanel">
+						<h2> Grupos:</h2>
+						<div id="grupos"></div><br/>
+						<div id="createGroup">					
+							<h3>Crear nuevo grupo</h3>
+							<form id="newGroup">
+								<input type="text" id="newGroupName" name="newGroupName" >
+							</form>
+							<input type="submit" value="Crear nuevo grupo" onclick="newGroup()">
+						</div>
+					</div>
+				</div>
+				<!-- termina groups right -->
+
+				<!-- comienza profile right -->
+				<div id="profileRightMenu" style="display: none;">
+					<div id="usersPanel">
+						<div id="numberUsers"></div>
+						<h2> Ver el perfil de:</h2><br/>
+					  <div id="usersListContainer" class="autocomplete" style="width:300px;">
+				      <input id="userList" type="text" placeholder="Escriba un nombre de usuario" onchange="showUserProfile()">
+					  </div>
+					  <h3>Tip: puede escribir un ID, nombre, apellido, celular o nombre de usuario.</h3>
+					</div>
+				</div>
+				<!-- termina profile right -->
+			</div>
+			<br/><br/>
+		</div>
+	</body>
 </html>
