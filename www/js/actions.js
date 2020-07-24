@@ -26,13 +26,15 @@ function deleteMemberOnClick(){
 	gid = s.split(" ")[0];
 	uid = s.split(" ")[1];
 	role = s.split(" ")[2];
-	if(currentSystem=="admin"){
-		deleteMember(gid,uid,role);
+	if ( confirm("Seguro que quiere quitar del grupo al usuario "+ uid.toString() +"?") ){
+		if(currentSystem=="admin"){
+			deleteMember(gid,uid,role);
+		}
+		if (currentSystem=="delegate"){
+			deleteMemberDelegate(gid,uid,role);
+		}
+		refreshEverything();
 	}
-	if (currentSystem=="delegate"){
-		deleteMemberDelegate(gid,uid,role);
-	}
-	refreshEverything();
 }
 
 
@@ -43,14 +45,16 @@ function deleteMemberAndInactivateOnClick(){
 	gid = s.split(" ")[0];
 	uid = s.split(" ")[1];
 	role = s.split(" ")[2];
-	if (currentSystem=="admin"){
-		deleteMember(gid,uid,role);
-		inactivateUserRole(uid,role);
+	if ( confirm("Seguro que quiere quitar e inactivar al usuario "+ uid.toString() +"?") ){
+		if (currentSystem=="admin"){
+			deleteMember(gid,uid,role);
+			inactivateUserRole(uid,role);
+		}
+		if (currentSystem=="delegate"){
+			deleteMemberAndDeactivateDelegate(gid,uid,role);
+		}
+		refreshEverything();
 	}
-	if (currentSystem=="delegate"){
-		deleteMemberAndDeactivateDelegate(gid,uid,role);
-	}
-	refreshEverything();
 }
 
 function inactivateUserRoleOnClick(){
