@@ -47,8 +47,7 @@ function deleteMemberAndInactivateOnClick(){
 	role = s.split(" ")[2];
 	if ( confirm("Seguro que quiere quitar e inactivar al usuario "+ uid.toString() +"?") ){
 		if (currentSystem=="admin"){
-			deleteMember(gid,uid,role);
-			inactivateUserRole(uid,role);
+			deleteMemberAndDeactivateAdmin(gid,uid,role);
 		}
 		if (currentSystem=="delegate"){
 			deleteMemberAndDeactivateDelegate(gid,uid,role);

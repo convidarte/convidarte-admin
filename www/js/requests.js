@@ -164,6 +164,57 @@ function deleteMemberDelegate(gid,uid,role){
 	}
 }
 
+function deleteMemberAndDeactivateAdmin(gid,uid,role){
+	var error = false;
+	groupName = getGroupNameById(gid);
+	var uidnumber = parseInt(uid,10);
+	if (gid!=""){
+		var updateGroup = { name : groupName, users_to_add : [  ], users_to_remove :[{user_id : uidnumber, role : role }] };
+		var url = apiBaseUrl+"/admin/groups/" + gid.toString(); 
+		$.ajax({
+			method: "PUT",
+			url: url,
+			data : JSON.stringify(updateGroup),
+			contentType: "application/json",
+			async: false,
+			headers : { "authorization" : ("Bearer " + token) },
+			success: function(data) {
+				return 0;
+			},
+			error: function() {
+				error = true;
+			}
+		});
+	}else{
+		error = true;
+	}
+
+	var updateGroup = { name : "Usuarios inactivos", users_to_add : [ {user_id : uidnumber, role : role } ], users_to_remove :[] };
+	var url = apiBaseUrl+"/admin/groups/1"; 
+	$.ajax({
+		method: "PUT",
+		url: url,
+		data : JSON.stringify(updateGroup),
+		contentType: "application/json",
+		async: false,
+		headers : { "authorization" : ("Bearer " + token) },
+		success: function(data) {
+
+		},
+		error: function() {
+			error = true;
+		}
+	});
+	if (error){
+		alert("Error al quitar e inactivar.");
+		return;
+	}
+	alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role);
+	refreshEverything();
+}
+
+
+
 function deleteMemberAndDeactivateDelegate(gid,uid,role){
 	groupName = getGroupNameById(gid);
 	if (gid!=""){
