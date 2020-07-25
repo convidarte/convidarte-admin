@@ -1,0 +1,14 @@
+html,body { height: 100% }
+.row-more .dropdown-toggle::after {
+  display: none;
+}
+
+#filter-bar { background: #ECECEC }
+
+#loadingLogin {background-color: white; width: 100%;position: absolute; z-index: 10;opacity: 0.5;}
+#loadingLogin img {width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;}
+
+.container-list-map { height: calc(100% - 98px); position: relative; }
+.list-container {overflow-y: scroll; padding: 0; position: absolute; top: 0; bottom: 0; width: 50%; padding: 20px}
+.map-container { height: 100%; position: absolute;right: 0; width: 50%; top: 0; }
+#map {height: 100%; position: relative; overflow: hidden;}

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Convidarte - Panel de administración</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link id="estilos" rel="stylesheet" type="text/css" href="css/map.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	</head>
+	<body>
+
+		<div id="ppal" style="display: none;"><h2>Clickear en "Detalle" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
+
+		<div id="leftPanel" style="display: none;">
+			<div id="usersLeftPanel" style="display: none;">
+				<!-- USUARIOS SIN GRUPOS -->
+				<h2> Usuarios disponibles (no están en ningún grupo)</h2><br/>
+				<div id="pagination">
+					<table style="border: none; margin: 0 auto; ">
+						<tr>
+							<td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
+							<td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
+							<td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
+						</tr>
+					</table>
+				</div>
+				<div id="cooks">
+					<h1 style="background-color:salmon;" >Cocineros:</h1>
+					<table id="cooksTable">
+					</table>
+				</div>
+				<div id="delegates">
+					<h1 style="background-color:blueviolet;">Delegados:</h1>
+					<table id="delegatesTable">
+					</table>
+				</div>
+				<div id="drivers" >
+					<h1 style="background-color:lawngreen;">Distribuidores:</h1>
+					<table id="driversTable">
+					</table>
+				</div>
+				<br/><br/>
+			</div>
+			<!-- BUSCAR UN USUARIO -->
+			<div id = "profileLeftPanel" style="display: none;">
+				<h2> Perfil de usuario:</h2><br/>
+				<div id="profile"><h3>Seleccionar un usuario para ver el perfil</h3></div>
+				<br/><br/>
+			</div>
+		</div>
+
+		<div id="map" style="display: none;"></div> <!-- map -->
+
+		<script async defer src="apikey.js"></script>
+		<script async defer src="autocomplete.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>-->
+		<script src="html_to_pdf.js"></script>
+		<script src="globals.js"></script>
+		<script src="requests.js"></script>
+		<script src="map.js"></script>
+		<script src="writers.js"></script>
+		<script src="refreshers.js"></script>
+		<script src="actions.js"></script>
+		<script src="tabs.js"></script>
+		<script src="admin.js"></script>
+
+		<div id="costado">		
+			<div id=loginDiv>
+				<img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%"><br/>
+				<h2>Panel de administración</h2>
+				<form id="login">
+					Username: <input type="text" id="username" name="username" ><br/>
+					Password: <input type="password" id="password" name="password" ><br/>
+				</form>
+				<input type="submit" value="Acceder" onclick="login()" ><br/><br/>
+				<div id="loadingLogin" style="display: none;"><img src="./loading.gif" style="width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;"> </div>
+			</div>
+
+			<div id="protectedDiv" style="display: none;">
+
+				<strong id= "adminUserName" >Bienvenido </strong> <input type="submit" value="Salir" onclick="logout()"> <img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%">
+				<br/>
+				<hr style="width:95%;text-align:left;margin-left:0">
+				<div>
+				<h2> Navegación</h2>
+				<button id="buttonUsersTab" onclick="changeUsersTab()">Usuarios sin grupo </button>
+				<button id="buttonTab" onclick="changeMapTab()"> Mapa </button>
+				<button id="buttonGroupsTab" onclick="changeGroupsTab()">Ver grupos </button>
+				<button id="buttonProfileTab" onclick="changeProfileTab()">Buscar un usuario </button>
+				</div>
+				<br/>
+				<hr style="width:95%;text-align:left;margin-left:0">
+				<br/>
+				<!-- comienza users right -->
+				<div id="usersRightMenu" style="display: none;">
+					<h3>Las direcciones de unos pocos usuarios no son procesadas correctamente y por lo tanto no aparecen en el mapa.</h3>
+					<button id="toggle" onclick="toggleWithoutAddress()">Mostrar solamente usuarios que no aparecen en el mapa</button> <br/>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
+				<!-- termina users right -->
+
+				<!-- comienza map right -->
+				<div id="mapRightMenu" style="display: none;">
+					<div id="userDetail"></div>
+					<h3>En el mapa se muestran los usuarios que aún no están en un grupo.
+						Clickear sobre un usuario para agregarlo a un grupo.
+						Clickear sobre un grupo para verlo en detalle.</h3>
+
+					<hr style="width:95%;text-align:left;margin-left:0">
+					<div id="colorCode">
+						<h3>Código de colores:
+							<strong style="background-color:salmon;" >Chef</strong>
+							<strong style="background-color:blueviolet;">Delegado</strong>
+							<strong style="background-color:lawngreen;">Distribuidor</strong>
+  							<strong style="background-color:khaki;"> Grupo</strong></h3>
+					</div>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
+
+				<!-- termina map right -->
+				<!-- empieza filterLocation (comun a users y map) -->
+				<div id="filterLocation" style = "display: none;" >
+					<h3>Es posible filtrar por rol, localidad y por barrio.</h3>
+					<strong>Mostrar:</strong>
+					<input type="checkbox" id="cookCheckbox" value="cook" onchange="refreshEverything();"> Cocineros
+					<input type="checkbox" id="driverCheckbox" value="driver" onchange="refreshEverything();"> Distribuidores
+					<input type="checkbox" id="delegateCheckbox" value="delegate" onchange="refreshEverything();"> Delegados
+
+					<h3> Mostrar usuarios de:</h3>
+					Localidad: <select id="selectCity" onchange="selectCityChanged()">
+					</select><br/><br/>
+					Barrio: <select id="selectNeighborhood" onchange="selectNeighborhoodChanged()">
+					</select>
+					<h4>Tip: si la localidad no es CABA debe seleccionar "Todos los barrios".</h4>
+					<hr style="width:95%;text-align:left;margin-left:0">
+				</div>
+				<!-- termina filterLocation -->
+
+				<!-- comienza groups right (esta es comun a maps,users y groups!) -->
+				<div id="groupsRightMenu" style="display: none;">
+					<div id="groupsPanel">
+						<h2> Grupos:</h2>
+						<div id="grupos"></div><br/>
+						<div id="createGroup">					
+							<h3>Crear nuevo grupo</h3>
+							<form id="newGroup">
+								<input type="text" id="newGroupName" name="newGroupName" >
+							</form>
+							<input type="submit" value="Crear nuevo grupo" onclick="newGroup()">
+						</div>
+					</div>
+				</div>
+				<!-- termina groups right -->
+
+				<!-- comienza profile right -->
+				<div id="profileRightMenu" style="display: none;">
+					<div id="usersPanel">
+						<div id="numberUsers"></div>
+						<h2> Ver el perfil de:</h2><br/>
+					  <div id="usersListContainer" class="autocomplete" style="width:300px;">
+				      <input id="userList" type="text" placeholder="Escriba un nombre de usuario" onchange="showUserProfile()">
+					  </div>
+					  <h3>Tip: puede escribir un ID, nombre, apellido, celular o nombre de usuario.</h3>
+					</div>
+				</div>
+				<!-- termina profile right -->
+			</div>
+			<br/><br/>
+		</div>
+		<button type="" onclick="miFuncion()">HOLA</button>
+		<div id="grupos"></div>
+		<script type="text/javascript">
+    function miFuncion(){
+      groups = getGroups();
+      groupsElement = document.getElementById('grupos');
+      s = "<table id=\"groupsTable\">\n";
+      s+= "<tr><th>Id</th> <th>Nombre</th> <th></th> <th>#</th> <th>Chefs</th> <th>Distr.</th> <th>Deleg.</th><th></th></tr>"; 
+      for (var i = 0; i < groups.length; i++) {
+        g= groups[i];
+        details = "<button id=\"viewDetailGroup"+g.group_id.toString() +"\" type=\"button\" onclick=\"showGroup();\" value=\""+g.group_id.toString() + "\">Detalle</button>";
+        deleteGroup = "<button id=\"DeleteGroup"+g.group_id.toString() +"\" type=\"button\" onclick=\"deleteGroupOnClick();\" value=\""+g.group_id.toString() + "\">Borrar grupo</button>";
+        s+="<tr>\n";
+        s+="<td>"+g.group_id.toString()+"</td>";
+        s += "<td style=\"max-width:160px; word-wrap: break-word;overflow-y:auto; \">"+ encodeHTML(g.name)+"</td>";
+        s+= "<td>"+ details + "</td>";
+        s+= "<td>"+ g.member_count.toString()+ "</td>";
+        s+= "<td>"+ g.role_count.cook+ "</td>";
+        s+= "<td>"+ g.role_count.driver+ "</td>";
+        s+= "<td>"+ g.role_count.delegate+ "</td>";
+        s+= "<td>"+ deleteGroup + "</td>";
+        s+= "</tr>";
+      }
+      s+="</table>";
+      groupsElement.innerHTML = s;
+      dale= groups[5];
+      alert(dale.name);
+    }
+  </script>
+	</body>
+</html>

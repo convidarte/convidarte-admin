@@ -2,17 +2,17 @@ function changeUsersTab(){
 	//alert("cambio a users");
 	currentTab = "users";
 	document.getElementById("usersRightMenu").style="";
-	document.getElementById("mapRightMenu").style="display: none;";
-	document.getElementById("groupsRightMenu").style="";
-	document.getElementById("profileRightMenu").style="display: none;";
+	document.getElementById("mapRightMenu").style="";
+	//document.getElementById("groupsRightMenu").style="";
+	//document.getElementById("profileRightMenu").style="display: none;";
 	document.getElementById("filterLocation").style="";
 
-	document.getElementById("map").style="display: none;";
+	document.getElementById("map").style="";
 	document.getElementById("usersLeftPanel").style="";
-	document.getElementById("ppal").style="display: none;";
-	document.getElementById("profileLeftPanel").style="display: none;";
+	//document.getElementById("ppal").style="display: none;";
+	//document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="css/users.css";
+	// document.getElementById("estilos").href="css/users.css";
 
 	onTabChange();
 }
@@ -31,7 +31,7 @@ function changeMapTab(){
 	document.getElementById("ppal").style="display: none;";
 	document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="css/map.css";
+	// document.getElementById("estilos").href="css/map.css";
 
 	onTabChange();
 }
@@ -50,7 +50,7 @@ function changeGroupsTab(){
 	document.getElementById("ppal").style="";
 	document.getElementById("profileLeftPanel").style="display: none;";
 
-	document.getElementById("estilos").href="css/groups.css";
+	// document.getElementById("estilos").href="css/groups.css";
 
 	onTabChange();
 }
@@ -69,7 +69,7 @@ function changeProfileTab(){
 	document.getElementById("ppal").style="display: none;";
 	document.getElementById("profileLeftPanel").style="";
 
-	document.getElementById("estilos").href="css/profile.css";
+	// document.getElementById("estilos").href="css/profile.css";
 
 	onTabChange();
 }

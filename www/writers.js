@@ -22,7 +22,7 @@ function getGroupSelectHTML(selectId){
 	for (var i = 0; i < groups.length; i++) {
 		g = groups[i];
 		group_id = g.group_id.toString();
-	   s+="<option value=\"" + group_id + "\" >"+ group_id + " - " + encodeHTML(g.name) +"</option>\n";
+		s+="<option value=\"" + group_id + "\" >"+ group_id + " - " + encodeHTML(g.name) +"</option>\n";
 	}
 	s+="</select>";
 	return s;
@@ -35,7 +35,7 @@ function getRoleSelectHTML(selectId,roles){
 	for (var i = 0; i < roles.length; i++) {
 		r = roles[i];
 		if (r!="admin"){
-		  	s+="<option value=\"" + r + "\" >"+ roleInSpanish(r) +"</option>\n";
+			s+="<option value=\"" + r + "\" >"+ roleInSpanish(r) +"</option>\n";
 		}
 	}
 	s+="</select>";
@@ -75,8 +75,8 @@ function getNeighborhoodList(){
 	//alert(neighborhoodList.join(", "));
 
 	//s="<option value=\"SHOWNOUSERS\">Ninguno</option>";
-	s="<option value=\"SHOWNOUSERS\" selected disabled hidden>Seleccionar un barrio</option>";
-	s+="<option value=\"\">Todos los barrios</option>";
+	s="<option value=\"SHOWNOUSERS\" disabled hidden>Seleccionar un barrio</option>";
+	s+="<option value=\"\" selected>Todos los barrios</option>";
 	for (var i =0; i<neighborhoodList.length;i++){
 		neigh = neighborhoodList[i].toString();
 		s+=	"<option value=\""+ encodeHTML(neigh) +"\">"+ encodeHTML(neigh)+"</option>";
@@ -102,7 +102,7 @@ function getCityList(){
 	}
 	cityList.sort();
 	s="";
-	s+="<option value=\"\">Todas las localidades</option>";
+	s+="<option value=\"\" selected>Todas las localidades</option>";
 	//s+="<option value=\"SHOWNOUSERS\">Ninguno</option>";
 	for (var i =0; i<cityList.length;i++){
 		city = cityList[i].toString();
@@ -115,19 +115,19 @@ function getCityList(){
 
 // Escribe el elemento  userDetail a partir de un uid
 function markerClicked(uid){
-		u = getUserWithRolesById(uid);
-		s = "<h2>Asignar grupo</h2>";
-		s += "Usuario: " + u.user_id.toString()+ " - "+ encodeHTML(u.user_name)+"<br/>";
-		s += "Rol: "+ roleInSpanish(u.role) +"<br/>";
-		s += "Nombre: "+ encodeHTML(u.name) + " " + encodeHTML(u.last_name) + "<br/>";
-		s += "Dirección: "+ encodeHTML(u.address.street) + " " + u.address.number.toString() + "<br/>";
-		s += "Localidad: "+ encodeHTML(u.address.city) + "<br/>";
-		s += "Departamento: "+ encodeHTML(u.address.commune) + "<br/>";
-		s += "Provincia: "+ encodeHTML(u.address.province) + "<br/>";
-		s += "Celular: "+ encodeHTML(u.cellphone.toString()) + "<br/>";
-		s += "Email: "+ encodeHTML(u.email.toString()) + "<br/>";
-		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
-		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+	u = getUserWithRolesById(uid);
+	s = "<h2>Asignar grupo</h2>";
+	s += "Usuario: " + u.user_id.toString()+ " - "+ encodeHTML(u.user_name)+"<br/>";
+	s += "Rol: "+ roleInSpanish(u.role) +"<br/>";
+	s += "Nombre: "+ encodeHTML(u.name) + " " + encodeHTML(u.last_name) + "<br/>";
+	s += "Dirección: "+ encodeHTML(u.address.street) + " " + u.address.number.toString() + "<br/>";
+	s += "Localidad: "+ encodeHTML(u.address.city) + "<br/>";
+	s += "Departamento: "+ encodeHTML(u.address.commune) + "<br/>";
+	s += "Provincia: "+ encodeHTML(u.address.province) + "<br/>";
+	s += "Celular: "+ encodeHTML(u.cellphone.toString()) + "<br/>";
+	s += "Email: "+ encodeHTML(u.email.toString()) + "<br/>";
+	s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
+	s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 	document.getElementById("userDetail").innerHTML = s;
 }
 
@@ -208,6 +208,28 @@ function tableWithGroupsOfUser(u){
 	return t;
 }
 
+// Obtiene los grupos del usuario para mostrar en la tabla general
+function groupsOfUser(u){
+	uid = u.user_id;
+	userGroups = getUserGroups(uid);
+	g = userGroups[0];
+	t = "<td>";
+	if (typeof g === "undefined") {
+		t+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button>";
+	} else {
+		for ( var i=0; i<userGroups.length; i++){
+			g = userGroups[i];
+			gid = g.group_id;
+			for (var j = 0; j < g.roles.length; j++){
+				role = g.roles[j];
+				t+= encodeHTML(g.name);
+			}
+		}
+	}
+	t+="</td>";
+	return t;
+}
+
 function tidySpaces(s){
 	return s.replace(/\s+/g, ' ').trim();
 }
@@ -232,7 +254,7 @@ function prepareAddressGoogleMaps(street,number,city,province){
 function divideGroupForm(){
 	s = "<hr style=\"width:95%;\">";
 	s+="<div id=\"divDividirGrupo\" style=\"margin-left:15px;\">";
-		s+="<h3>Dividir grupo</h3>";
+	s+="<h3>Dividir grupo</h3>";
 	if (currentlyDividingGroup){
 		s+="Instrucciones: seleccionar los miembros del nuevo grupo, luego elegir el nombre del nuevo grupo y finalmente clickear en Dividir grupo.<br/>";
 		s+="Nombre para el nuevo grupo:&nbsp;&nbsp; <input id=\"dividedGroupNewName\" type=\"text\"></input><br/><br/>";
@@ -502,19 +524,11 @@ function refreshUserListUsers(){
 	if (onlyUsersWithoutAddress){
 		users = users.filter(checkHasNoCoordinates);
 	}
-	cooksTable = document.getElementById("cooksTable");
-	driversTable = document.getElementById("driversTable");
-	delegatesTable = document.getElementById("delegatesTable");
-	genericHead = "<thead><tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Celular</th><th>email</th><th></th><th></th> </tr></thead>";
-	cooksTableInnerHTML = genericHead+"<tbody>";
-	driversTableInnerHTML = genericHead+"<tbody>";
-	delegatesTableInnerHTML = genericHead+"<tbody>";
-	var cookRows = new Array();
-	var driverRows = new Array();
-	var delegateRows = new Array();
-	var ncooks = 0;
-	var ndrivers = 0;
-	var ndelegates = 0;
+	usersListTable = document.getElementById("usersListTable");
+	genericHead = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Rol</th><th scope=\"col\">Nombre y apellido</th><th scope=\"col\">Dirección</th><th scope=\"col\">Grupos</th><th scope=\"col\"></th></tr></thead>";
+	usersListTableInnerHTML = genericHead+"<tbody>";
+	var userRows = new Array();
+	var nUsers = 0;
 	var numberUsers = users.length;
 	numberPages = Math.ceil(numberUsers/rowsPerPage);
 	for (var i = currentPage*rowsPerPage; i < Math.min(numberUsers,(currentPage+1)*rowsPerPage) ; i++) {
@@ -524,34 +538,45 @@ function refreshUserListUsers(){
 		addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
 		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
 		row="<tr>";
-		row+="<td>"+uid+"</td>";
+		row+="<th scope=\"row\">"+uid+"</th>";
+		if (u.role == "cook") {
+			row+="<td>Cocinero</td>";
+		}
+		if (u.role == "driver") {
+			row+="<td>Distribuidor</td>";
+		}
+		if (u.role == "delegate") {
+			row+="<td>Delegado</td>";
+		}
 		if (u.name!="" || u.last_name!="" ){
 			row+="<td>"+encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")</td>";
 		}else{
 			row+="<td>"+encodeHTML(u.user_name)+"</td>";
 		}
 		row+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
-		row+="<td>"+encodeHTML(u.cellphone)+"</td>";
-		row+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
-		row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "</td>";
-		row += "<td><button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+		if(showOnlyAvailable){
+			row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+		}else{
+			row+= groupsOfUser(u);
+		}
 		row += "</tr>\n";
-		if (u.role == "cook") {
-			cookRows[ncooks++]=row;
-
-		}
-		if (u.role == "driver") {
-			driverRows[ndrivers++]=row;
-		}
-		if (u.role == "delegate") {
-			delegateRows[ndelegates++]=row;
-		}
+		userRows[nUsers++]=row;
 	}
-	cooksTableInnerHTML += cookRows.join('\n') + "</tbody>";
-	driversTableInnerHTML += driverRows.join('\n') + "</tbody>";
-	delegatesTableInnerHTML += delegateRows.join('\n') + "</tbody>";
+	usersListTableInnerHTML += userRows.join('\n') + "</tbody>";
+	usersListTable.innerHTML =usersListTableInnerHTML;
+}
 
-	cooksTable.innerHTML =cooksTableInnerHTML;
-	driversTable.innerHTML = driversTableInnerHTML;
-	delegatesTable.innerHTML =delegatesTableInnerHTML;
+//FUNCIONES NICO PRUEBAS
+
+//Carga la lista de grupos en el los filtros
+function getGroupList(){
+	groups = getGroups();
+	groupsElement = document.getElementById('grupos');
+	s = "";
+	s+="<option value=\"\">Todos los grupos</option>"; 
+	for (var i = 0; i < groups.length; i++) {
+		g= groups[i];
+		s+=	"<option value=\""+encodeHTML(g.name)+"\">"+g.group_id.toString()+" - "+encodeHTML(g.name)+"</option>";
+	}
+	document.getElementById("selectGroupFilter").innerHTML = s;
 }

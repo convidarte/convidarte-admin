@@ -66,10 +66,12 @@ function onLoginOk() {
 			alert("Error: debe ser administrador para usar este sistema!")
 			logout();
 			return;
-		}		
+		}
 		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		getGroupList();
+		changeUsersTab();
 		refreshEverything();
 	}
 	if (currentSystem=="delegate"){
@@ -171,7 +173,6 @@ function refreshEverythingProfile(){
 	}
 }
 
-
 function refreshEverythingGroups(){
 	if(token==""){
 		return;
@@ -191,6 +192,9 @@ function refreshEverythingUsers(){
 	refreshGroupListNoDetails();
 	refreshUserListUsers();
 	refreshPagination();
+	deleteMarkers();
+	refreshUserMarkers();
+	refreshGroupMarkers();
 }
 
 function refreshEverythingDelegate(){

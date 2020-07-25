@@ -368,7 +368,12 @@ function getUserRoles(){
 
 
 function getUsersFiltered(){ //separar en request y leer el form
-	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
+	showOnlyAvailable = document.getElementById("onlyAvailable").checked;
+	if(showOnlyAvailable){
+		var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
+	}else{
+		var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=false";
+	}
 	currentNeighborhood = document.getElementById("selectNeighborhood").value;
 	currentCity = document.getElementById("selectCity").value;
 	if(currentNeighborhood!=""){

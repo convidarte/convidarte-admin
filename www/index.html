@@ -1,178 +1,227 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Convidarte - Panel de administración</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-		<!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
-		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
-		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<link id="estilos" rel="stylesheet" type="text/css" href="css/map.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	</head>
-	<body>
+<!doctype html>
+<html class="no-js" lang="">
 
-		
-		<div id="ppal" style="display: none;"><h2>Clickear en "Detalle" para ver el detalle de los usuarios de un grupo</h2></div><!-- groups -->
+<head>
+  <meta charset="utf-8">
+  <title>Convidarte</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<div id="leftPanel" style="display: none;">
-			<div id="usersLeftPanel" style="display: none;">
-				<!-- USUARIOS SIN GRUPOS -->
-				<h2> Usuarios disponibles (no están en ningún grupo)</h2><br/>
-				<div id="pagination">
-					<table style="border: none; margin: 0 auto; ">
-						<tr>
-							<td style="border: none;"><button id="buttonPreviousPage" onclick="previousPage()">Página anterior</button></td>
-							<td style="border: none;"><div id="currentPageDiv">Página 1 de 1</div></td>
-							<td style="border: none;"> <button id="buttonNextPage" onclick="nextPage()">Página siguiente</button></td>
-						</tr>
-					</table>
-				</div>
-				<div id="cooks">
-					<h1 style="background-color:salmon;" >Cocineros:</h1>
-					<table id="cooksTable">
-					</table>
-				</div>
-				<div id="delegates">
-					<h1 style="background-color:blueviolet;">Delegados:</h1>
-					<table id="delegatesTable">
-					</table>
-				</div>
-				<div id="drivers" >
-					<h1 style="background-color:lawngreen;">Distribuidores:</h1>
-					<table id="driversTable">
-					</table>
-				</div>
-				<br/><br/>
-			</div>
-			<!-- BUSCAR UN USUARIO -->
-			<div id = "profileLeftPanel" style="display: none;">
-				<h2> Perfil de usuario:</h2><br/>
-				<div id="profile"><h3>Seleccionar un usuario para ver el perfil</h3></div>
-				<br/><br/>
-			</div>
-		</div>
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
 
-		<div id="map" style="display: none;"></div> <!-- map -->
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
+  <!-- SCRIPTS HEREDADOS -->
+  <script async defer src="apikey.js"></script>
+  <script async defer src="autocomplete.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script src="html_to_pdf.js"></script>
+  <script src="globals.js"></script>
+  <script src="requests.js"></script>
+  <script src="map.js"></script>
+  <script src="writers.js"></script>
+  <script src="refreshers.js"></script>
+  <script src="actions.js"></script>
+  <script src="tabs.js"></script>
+  <script src="delegate.js"></script>
 
-		<script async defer src="apikey.js"></script>
-		<script async defer src="autocomplete.js"></script>
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-		<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>-->
-		<script src="html_to_pdf.js"></script>
-		<script src="globals.js"></script>
-		<script src="requests.js"></script>
-		<script src="map.js"></script>
-		<script src="writers.js"></script>
-		<script src="refreshers.js"></script>
-		<script src="actions.js"></script>
-		<script src="tabs.js"></script>
-		<script src="admin.js"></script>
+</head>
 
-		<div id="costado">		
-			<div id=loginDiv>
-				<img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%"><br/>
-				<h2>Panel de administración</h2>
-				<form id="login">
-					Username: <input type="text" id="username" name="username" ><br/>
-					Password: <input type="password" id="password" name="password" ><br/>
-				</form>
-				<input type="submit" value="Acceder" onclick="login()" ><br/><br/>
-				<div id="loadingLogin" style="display: none;"><img src="./loading.gif" style="width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;"> </div>
-			</div>
+<body>
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+      <img src="img/convidarte-logo.png" alt="Convidarte" height="40">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Usuarios<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Grupos</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-link">Juan Martinez</li>
+        <li>
+          <a class="nav-link" href="#">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <!-- FILTER BAR -->
+  <div id="filter-bar">
+    <form class="form-inline mr-auto">
+      <div class="form-group p-2">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group p-2">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+      <div class="form-group p-2">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <select class="form-control" id="exampleFormControlSelect1">
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
+      </div>
+    </form>
+    <form class="form-inline mt-2 mt-md-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+  <!-- end FILTER BAR -->
+  <!-- MAIN -->
+  <main role="main" class="container-fluid">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1>Cocineros en todas las localidades</h1>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Rol</th>
+              <th scope="col">Nombre y apellido</th>
+              <th scope="col">Dirección</th>
+              <th scope="col">Grupos</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--  -->
+            <tr>
+              <th scope="row">21</th>
+              <td>Icono</td>
+              <td>Mirtha Casanoba<br>@mirtha</td>
+              <td>Pueyrredon 1233 pb B (RECOLETA) CABA, Ciudad Autónoma de Buenos Aires</td>
+              <td>Almirante brown</td>
+              <td>
+                <!-- MORE dropdown -->
+                <div class="btn-group row-more">
+                  <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!--  -->
+            <tr>
+              <th scope="row">21</th>
+              <td>Icono</td>
+              <td>Mirtha Casanoba<br>@mirtha</td>
+              <td>Pueyrredon 1233 pb B (RECOLETA) CABA, Ciudad Autónoma de Buenos Aires</td>
+              <td>Almirante brown</td>
+              <td>
+                <!-- MORE dropdown -->
+                <div class="btn-group row-more">
+                  <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!--  -->
+            <tr>
+              <th scope="row">21</th>
+              <td>Icono</td>
+              <td>Mirtha Casanoba<br>@mirtha</td>
+              <td>Pueyrredon 1233 pb B (RECOLETA) CABA, Ciudad Autónoma de Buenos Aires</td>
+              <td>Almirante brown</td>
+              <td>
+                <!-- MORE dropdown -->
+                <div class="btn-group row-more">
+                  <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <!--  -->
+            <tr>
+              <th scope="row">21</th>
+              <td>Icono</td>
+              <td>Mirtha Casanoba<br>@mirtha</td>
+              <td>Pueyrredon 1233 pb B (RECOLETA) CABA, Ciudad Autónoma de Buenos Aires</td>
+              <td>Almirante brown</td>
+              <td>
+                <!-- MORE dropdown -->
+                <div class="btn-group row-more">
+                  <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-4">
+        One of three columns
+      </div>
+    </div>
+  </main>
+  <!-- end MAIN -->
 
-			<div id="protectedDiv" style="display: none;">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
 
-				<strong id= "adminUserName" >Bienvenido </strong> <input type="submit" value="Salir" onclick="logout()"> <img src="https://convidarte.com.ar/wp-content/uploads/2020/04/log-nuev-recort-e1588046991740.png"  style="width: 50%; height: 50%">
-				<br/>
-				<hr style="width:95%;text-align:left;margin-left:0">
-				<div>
-				<h2> Navegación</h2>
-				<button id="buttonUsersTab" onclick="changeUsersTab()">Usuarios sin grupo </button>
-				<button id="buttonTab" onclick="changeMapTab()"> Mapa </button>
-				<button id="buttonGroupsTab" onclick="changeGroupsTab()">Ver grupos </button>
-				<button id="buttonProfileTab" onclick="changeProfileTab()">Buscar un usuario </button>
-				</div>
-				<br/>
-				<hr style="width:95%;text-align:left;margin-left:0">
-				<br/>
-				<!-- comienza users right -->
-				<div id="usersRightMenu" style="display: none;">
-					<h3>Las direcciones de unos pocos usuarios no son procesadas correctamente y por lo tanto no aparecen en el mapa.</h3>
-					<button id="toggle" onclick="toggleWithoutAddress()">Mostrar solamente usuarios que no aparecen en el mapa</button> <br/>
-					<hr style="width:95%;text-align:left;margin-left:0">
-				</div>
-				<!-- termina users right -->
+</body>
 
-				<!-- comienza map right -->
-				<div id="mapRightMenu" style="display: none;">
-					<div id="userDetail"></div>
-					<h3>En el mapa se muestran los usuarios que aún no están en un grupo.
-						Clickear sobre un usuario para agregarlo a un grupo.
-						Clickear sobre un grupo para verlo en detalle.</h3>
-
-					<hr style="width:95%;text-align:left;margin-left:0">
-					<div id="colorCode">
-						<h3>Código de colores:
-							<strong style="background-color:salmon;" >Chef</strong>
-							<strong style="background-color:blueviolet;">Delegado</strong>
-							<strong style="background-color:lawngreen;">Distribuidor</strong>
-  							<strong style="background-color:khaki;"> Grupo</strong></h3>
-					</div>
-					<hr style="width:95%;text-align:left;margin-left:0">
-				</div>
-
-				<!-- termina map right -->
-				<!-- empieza filterLocation (comun a users y map) -->
-				<div id="filterLocation" style = "display: none;" >
-					<h3>Es posible filtrar por rol, localidad y por barrio.</h3>
-					<strong>Mostrar:</strong>
-					<input type="checkbox" id="cookCheckbox" value="cook" onchange="refreshEverything();"> Cocineros
-					<input type="checkbox" id="driverCheckbox" value="driver" onchange="refreshEverything();"> Distribuidores
-					<input type="checkbox" id="delegateCheckbox" value="delegate" onchange="refreshEverything();"> Delegados
-
-					<h3> Mostrar usuarios de:</h3>
-					Localidad: <select id="selectCity" onchange="selectCityChanged()">
-					</select><br/><br/>
-					Barrio: <select id="selectNeighborhood" onchange="selectNeighborhoodChanged()">
-					</select>
-					<h4>Tip: si la localidad no es CABA debe seleccionar "Todos los barrios".</h4>
-					<hr style="width:95%;text-align:left;margin-left:0">
-				</div>
-				<!-- termina filterLocation -->
-
-				<!-- comienza groups right (esta es comun a maps,users y groups!) -->
-				<div id="groupsRightMenu" style="display: none;">
-					<div id="groupsPanel">
-						<h2> Grupos:</h2>
-						<div id="grupos"></div><br/>
-						<div id="createGroup">					
-							<h3>Crear nuevo grupo</h3>
-							<form id="newGroup">
-								<input type="text" id="newGroupName" name="newGroupName" >
-							</form>
-							<input type="submit" value="Crear nuevo grupo" onclick="newGroup()">
-						</div>
-					</div>
-				</div>
-				<!-- termina groups right -->
-
-				<!-- comienza profile right -->
-				<div id="profileRightMenu" style="display: none;">
-					<div id="usersPanel">
-						<div id="numberUsers"></div>
-						<h2> Ver el perfil de:</h2><br/>
-					  <div id="usersListContainer" class="autocomplete" style="width:300px;">
-				      <input id="userList" type="text" placeholder="Escriba un nombre de usuario" onchange="showUserProfile()">
-					  </div>
-					  <h3>Tip: puede escribir un ID, nombre, apellido, celular o nombre de usuario.</h3>
-					</div>
-				</div>
-				<!-- termina profile right -->
-			</div>
-			<br/><br/>
-		</div>
-	</body>
 </html>
