@@ -230,6 +230,21 @@ function groupsOfUser(u){
 	return t;
 }
 
+
+//Carga la lista de grupos en los filtros
+function getGroupList(){
+	groups = getGroups();
+	groupsElement = document.getElementById('grupos');
+	s = "";
+	s+="<option value=\"\">Todos los grupos</option>"; 
+	for (var i = 0; i < groups.length; i++) {
+		g= groups[i];
+		s+=	"<option value=\""+encodeHTML(g.name)+"\">"+g.group_id.toString()+" - "+encodeHTML(g.name)+"</option>";
+	}
+	document.getElementById("selectGroupFilter").innerHTML = s;
+}
+
+
 function tidySpaces(s){
 	return s.replace(/\s+/g, ' ').trim();
 }
@@ -564,19 +579,4 @@ function refreshUserListUsers(){
 	}
 	usersListTableInnerHTML += userRows.join('\n') + "</tbody>";
 	usersListTable.innerHTML =usersListTableInnerHTML;
-}
-
-//FUNCIONES NICO PRUEBAS
-
-//Carga la lista de grupos en el los filtros
-function getGroupList(){
-	groups = getGroups();
-	groupsElement = document.getElementById('grupos');
-	s = "";
-	s+="<option value=\"\">Todos los grupos</option>"; 
-	for (var i = 0; i < groups.length; i++) {
-		g= groups[i];
-		s+=	"<option value=\""+encodeHTML(g.name)+"\">"+g.group_id.toString()+" - "+encodeHTML(g.name)+"</option>";
-	}
-	document.getElementById("selectGroupFilter").innerHTML = s;
 }
