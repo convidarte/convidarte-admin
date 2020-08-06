@@ -15,6 +15,7 @@ var neighborhoodList = [];
 var map;
 var markers = [];
 var groupMarkers = [];
+var currentInfoWindow = null;
 
 var currentGroupId=0;
 var currentUserId=0;

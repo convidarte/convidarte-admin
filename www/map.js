@@ -48,7 +48,12 @@ function addMarker(markerCollection, location,label,color,infoWindowContent) {
 			content: infoWindowContent
 		});
 		marker.addListener('click', function() {
+			if (currentInfoWindow!= null){
+				currentInfoWindow.close();
+			}
+			currentInfoWindow=infowindow;
 			infowindow.open(map, marker);
+
 		});
 	}
 	markerCollection.push(marker);
