@@ -79,10 +79,9 @@ function createMarkerByUser(u){
 	if (u.role=="delegate"){
 		color = "purple";
 	}
-	infoUser = "";
+	infoUser = userMarkerContent( u.user_id.toString() );
 	marker = addMarker(markers,coords,label,color,infoUser);
-	var j = u.user_id.toString();
-	marker.addListener('click', function(){markerClicked(j);} );
+
 	if (u.role=="admin"){ // ocultamos los markers para los roles de admin
 		marker.setMap(null);
 	}

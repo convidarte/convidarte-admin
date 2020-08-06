@@ -114,7 +114,7 @@ function getCityList(){
 
 
 // Escribe el elemento  userDetail a partir de un uid
-function markerClicked(uid){
+function userMarkerContent(uid){
 	u = getUserWithRolesById(uid);
 	s = "<h2>Asignar grupo</h2>";
 	s += "Usuario: " + u.user_id.toString()+ " - "+ encodeHTML(u.user_name)+"<br/>";
@@ -128,7 +128,8 @@ function markerClicked(uid){
 	s += "Email: "+ encodeHTML(u.email.toString()) + "<br/>";
 	s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
 	s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
-	document.getElementById("userDetail").innerHTML = s;
+	//document.getElementById("userDetail").innerHTML = s;
+	return s;
 }
 
 
