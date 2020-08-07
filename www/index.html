@@ -77,16 +77,24 @@
     <div class="row">
       <div id="filter-bar">
         <div id="filterLocation" style = "display: none;" >
-          <input type="checkbox" id="onlyAvailable" value="" onchange="refreshEverything();" checked><label>Sólo usuarios sin grupos</label>
-          <input type="checkbox" id="cookCheckbox" value="cook" onchange="refreshEverything();" checked><label>Cocineros</label>
-          <input type="checkbox" id="driverCheckbox" value="driver" onchange="refreshEverything();"><label>Distribuidores</label>
-          <input type="checkbox" id="delegateCheckbox" value="delegate" onchange="refreshEverything();"><label>Delegados</label>
-          <label>Localidad:</label><select id="selectCity" onchange="selectCityChanged()">
-          </select>
-          <label>Barrio:</label><select id="selectNeighborhood" onchange="selectNeighborhoodChanged()">
-          </select>
-          <label>Grupo:</label><select id="selectGroupFilter" onchange="()">
-          </select>
+          <div class="filter-group">
+            <label>Rol:</label>
+            <select id="selectRole" onchange="refreshEverything();">
+              <option value="cooks" selected>Cocineros</option>
+              <option value="drivers">Distribuidores</option>
+              <option value="delegates">Delegados</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Localidad:</label><select id="selectCity" onchange="selectCityChanged()"></select>
+          </div>
+          <div class="filter-group">
+            <label>Barrio:</label><select id="selectNeighborhood" onchange="selectNeighborhoodChanged()"></select>
+          </div>
+          <div class="filter-group">
+            <label>Grupo:</label><select id="selectGroupFilter" onchange="()"></select>
+            <input type="checkbox" id="onlyAvailable" value="" onchange="refreshEverything();" checked><label>Sólo usuarios sin grupos</label>
+          </div>
         </div>
       </div>
     </div>

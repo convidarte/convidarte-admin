@@ -382,24 +382,19 @@ function getUsersFiltered(){ //separar en request y leer el form
 	if(currentCity!=""){
 		urlAdminUsers+="&city="+currentCity;
 	}
-	
-	showCooks = document.getElementById("cookCheckbox").checked;
-	showDrivers = document.getElementById("driverCheckbox").checked;
-	showDelegates = document.getElementById("delegateCheckbox").checked;
-
+	currentRole = document.getElementById("selectRole").value;
 	function filterRoles(u){
-		if(showCooks && (u.role == "cook")){
+		if((currentRole == "cooks") && (u.role == "cook")){
 			return true;
 		}
-		if(showDrivers && (u.role == "driver")){
+		if((currentRole == "drivers") && (u.role == "driver")){
 			return true;
 		}
-		if(showDelegates && (u.role=="delegate")){
+		if((currentRole == "delegates") && (u.role=="delegate")){
 			return true;
 		}
 		return false;
 	};
-
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
