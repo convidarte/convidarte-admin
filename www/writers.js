@@ -533,6 +533,31 @@ function refreshGroupListDelegate(){
 	groupsElement.innerHTML = s;
 }
 
+// Titulo para resultados de busqueda
+function usersListTitle(numberUsers){
+	listTitle = document.getElementById("usersListTitle");
+	showOnlyAvailable = document.getElementById("onlyAvailable").checked;
+	currentRole = document.getElementById("selectRole");
+	currentRoleText= currentRole.options[currentRole.selectedIndex].text;
+	currentNeighborhood = document.getElementById("selectNeighborhood").value;
+	currentCity = document.getElementById("selectCity").value;
+	usersFiltered = currentRoleText;
+	if (showOnlyAvailable) {
+		usersFiltered+=" sin grupo ";
+	}
+	if(currentCity!=""){
+		if(currentNeighborhood!=""){
+			usersFiltered+=" en "+currentNeighborhood+", "+currentCity;
+		}else{
+			usersFiltered+=" en "+currentCity;
+		}
+	}else{
+		usersFiltered+=" en todas las localidades";
+	}
+	usersFiltered+=" ("+numberUsers+")";
+	listTitle.innerHTML = usersFiltered;
+}
+
 //=====================================================================================
 
 function refreshUserListUsers(){
@@ -580,4 +605,5 @@ function refreshUserListUsers(){
 	}
 	usersListTableInnerHTML += userRows.join('\n') + "</tbody>";
 	usersListTable.innerHTML =usersListTableInnerHTML;
+	usersListTitle(numberUsers);
 }
