@@ -116,16 +116,10 @@ function getCityList(){
 // Escribe el elemento  userDetail a partir de un uid
 function userMarkerContent(uid){
 	u = getUserWithRolesById(uid);
-	s = "<h2>Asignar grupo</h2>";
-	s += "Usuario: " + u.user_id.toString()+ " - "+ encodeHTML(u.user_name)+"<br/>";
-	s += "Rol: "+ roleInSpanish(u.role) +"<br/>";
-	s += "Nombre: "+ encodeHTML(u.name) + " " + encodeHTML(u.last_name) + "<br/>";
-	s += "Dirección: "+ encodeHTML(u.address.street) + " " + u.address.number.toString() + "<br/>";
-	s += "Localidad: "+ encodeHTML(u.address.city) + "<br/>";
-	s += "Departamento: "+ encodeHTML(u.address.commune) + "<br/>";
-	s += "Provincia: "+ encodeHTML(u.address.province) + "<br/>";
-	s += "Celular: "+ encodeHTML(u.cellphone.toString()) + "<br/>";
-	s += "Email: "+ encodeHTML(u.email.toString()) + "<br/>";
+	s = "<a href=\"\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
+	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
+	s += "<div>" + roleInSpanish(u.role) + "</div>";
+	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
 	s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
 	s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 	//document.getElementById("userDetail").innerHTML = s;
