@@ -111,12 +111,17 @@ function getCityList(){
 	document.getElementById("selectCity").innerHTML = s;
 }
 
-
+function showModalProfileTooltip(){
+	event.preventDefault();
+	uid = event.target.getAttribute("data-userid");
+	showModalProfile(uid);
+	return false;
+}
 
 // Escribe el elemento  userDetail a partir de un uid
 function userMarkerContent(uid){
 	u = getUserWithRolesById(uid);
-	s = "<a href=\"\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
+	s = "<a href=\"#\" data-userid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
 	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
 	s += "<div>" + roleInSpanish(u.role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
@@ -173,6 +178,34 @@ function showUserById(uid){
 
 	document.getElementById("profile").innerHTML = s;
 }
+
+function showModalProfile(uid){
+	u = getUserById(uid);
+	address = (u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment).trim();
+
+	if(u.address.province=="CABA"){
+		neighborhoodCityProvince = u.address.neighborhood+", "+"CABA";
+	}else{
+		neighborhoodCityProvince = u.address.city + ", " + u.address.province;
+	}
+
+	addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
+	urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
+
+	$("#modalProfileUserId").html( "#" + u.user_id );
+	$("#modalProfileAlias").html( "@" + encodeHTML(u.user_name) );
+	$("#modalProfileRoles").html( u.roles.map(roleInSpanish).join( ", " ) );
+	$("#modalProfileFullName").html( encodeHTML(u.name) +" "+ encodeHTML(u.last_name) );
+	$("#modalProfileCellphone").html( encodeHTML(u.cellphone) );
+	$("#modalProfileEmail").html( encodeHTML(u.email) );
+	$("#modalProfileFullAdress").html( encodeHTML(address+", "+neighborhoodCityProvince) );
+	$("#modalProfileUrlGoogleMaps").attr("href", urlMaps);
+	$("#modalProfileUsersGroups").html( tableWithGroupsOfUser(u) );
+	$("#modalProfileInactivateUser").attr("data-userid-inactivate", u.user_id);
+	$("#modalProfileInactivateUser").attr("role-inactivate", u.roles[0]);
+	$("#modalProfile").modal();
+}
+
 
 function selectRoleAndGroupForUser(u){
 	s="<br/><h3>Agregar a un grupo:</h3><br/>";
@@ -583,16 +616,18 @@ function refreshUserListUsers(){
 		if (u.role == "delegate") {
 			row+="<td>Delegado</td>";
 		}
+		nameToShow = encodeHTML(u.user_name);
 		if (u.name!="" || u.last_name!="" ){
-			row+="<td>"+encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")</td>";
-		}else{
-			row+="<td>"+encodeHTML(u.user_name)+"</td>";
+			nameToShow =encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")"; 
 		}
+
+		viewProfileLink = "viewProfileLink_"+uid.toString();
+		row+="<td><a id=\"" + viewProfileLink + "\" href=\"#\" class=\"viewProfileLink\" >" + nameToShow + "</a></td>";
 		row+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
 		if(showOnlyAvailable){
 			row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 		}else{
-			row+= groupsOfUser(u);
+			//row+= groupsOfUser(u);
 		}
 		row += "</tr>\n";
 		userRows[nUsers++]=row;
@@ -600,4 +635,12 @@ function refreshUserListUsers(){
 	usersListTableInnerHTML += userRows.join('\n') + "</tbody>";
 	usersListTable.innerHTML =usersListTableInnerHTML;
 	usersListTitle(numberUsers);
+	$("."+"viewProfileLink").click(
+		function(e){
+			e.preventDefault(); 
+			uid = e.target.id.split("_")[1];
+			showModalProfile(uid);
+			return false;
+		} 
+	); 
 }

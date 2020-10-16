@@ -13,9 +13,8 @@
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<!-- OLD CSS -->
-<!-- 	<link id="estilos" rel="stylesheet" type="text/css" href="css/map.css">
--->	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<!-- OLD CSS --><!-- 	<link id="estilos" rel="stylesheet" type="text/css" href="css/map.css">-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -44,7 +43,7 @@
     <!-- NAV -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
      <a class="navbar-brand" href="#">
-      <img src="img/convidarte-logo.png" alt="Convidarte" height="40">
+      <img src="img/convidarte-logo.svg" alt="Convidarte" height="40">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -56,9 +55,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Grupos</a>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProfile">
-          Launch demo modal
-        </button>
+		<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalProfile"> Launch demo modal </button> -->
       </li>
       <!-- <li><button id="buttonUsersTab" onclick="changeUsersTab()">Usuarios sin grupo </button></li>
       <li><button id="buttonGroupsTab" onclick="changeGroupsTab()">Ver grupos </button></li>
@@ -139,6 +136,7 @@
 <div id="leftPanel" style="display: none"></div>
 </main>
 <!-- end MAIN -->
+
 <!-- MODAL PROFILE -->
 <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -151,8 +149,8 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-4">
-           <h2>Maria Casanova</h2>
-           <div>@maria214</div>
+           <h2 id="modalProfileFullName"></h2>
+           <div id="modalProfileAlias"></div>
          </div>
          <div class="col-md-8">
           <ul class="profileActions">
@@ -165,16 +163,16 @@
       <div class="row">
         <div class="col">
           <ul>
-            <li>#234</li>
-            <li>Cocinero</li>
-            <li>114233523</li>
-            <li>mariacasanova@gmail.com</li>
+            <li id="modalProfileUserId"></li>
+            <li id="modalProfileRoles"></li>
+            <li id="modalProfileCellphone"></li>
+            <li id="modalProfileEmail"></li>
           </ul>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-8">Soler 3493 7b Palermo, CABA</div>
-        <div class="col-md-4"><a class="btn btn-primary float-right mb-1" href="#" role="button">Ver en Google maps</a></div>
+        <div class="col-md-8" id="modalProfileFullAdress"></div>
+        <div class="col-md-4"><a id="modalProfileUrlGoogleMaps" class="btn btn-primary float-right mb-1" target="_blank" href="" role="button">Ver en Google maps</a></div>
       </div>
       <div class="row">
         <div class="col">
@@ -184,14 +182,14 @@
       <div class="row">
         <div class="col">
           <h3>Grupos</h3>
-          <p>Este usuario pertenence a NOMBRE DE GRUPO</p>
+          <p id="modalProfileUsersGroups"> Este usuario pertenence a NOMBRE DE GRUPO</p>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <h3>Inactivar ususarios</h3>
-          <p>Si procedes, este usuario quedará fuera del grupo. Podrás encontrarlo luego en usuarios inactivos.</p>
-          <button type="button" class="btn btn-danger">Inactivar usuario</button>
+          <p>Si procedes, este usuario quedará inactivado. Podrás encontrarlo luego en usuarios inactivos.</p>
+          <button id ="modalProfileInactivateUser" type="button" class="btn btn-danger" onclick="inactivateUserRoleOnClickModal()">Inactivar usuario</button>
         </div>
       </div>
     </div>
@@ -210,6 +208,8 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD-__W-HWHW8b7VKeACWC_t8elR6cNEfE&callback=profileMap"></script>
 <!-- end MODAL PROFILE -->
+
+
 </div>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script async defer src="apikey.js"></script>

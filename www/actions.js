@@ -62,6 +62,15 @@ function inactivateUserRoleOnClick(){
 	refreshEverything();
 }
 
+function inactivateUserRoleOnClickModal(){
+	boton = event.target;
+	uid = boton.getAttribute("data-userid-inactivate");
+	role = boton.getAttribute("data-role-inactivate");
+	inactivateUserRole(uid, role);
+	refreshEverything();
+}
+
+
 function ackDelegateOnClick(){
 	boton = event.target;
 	s = boton.value;
