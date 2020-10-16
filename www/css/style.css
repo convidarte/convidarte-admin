@@ -8,8 +8,23 @@ ul{list-style: none; margin: 0; padding: 0 }
 #filter-bar { background: #ECECEC }
 .filter-group { display: inline-block; }
 
-#loadingLogin {background-color: white; width: 100%;position: absolute; z-index: 10;opacity: 0.5;}
-#loadingLogin img {width: 20%; height: 20%;display: block;margin-left: auto;margin-right: auto;}
+#loadingLogin {
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	opacity: 0.5;
+	position: absolute;
+	z-index:10;
+}
+#loadingLogin img {
+	width: 100%;
+	height: 100%;
+	display: block;
+	margin-top:auto;
+	margin-left: auto;
+	margin-right: auto;
+	position:relative;
+}
 
 .container-list-map { height: calc(100% - 98px); position: relative; }
 .list-container {overflow-y: scroll; padding: 0; position: absolute; top: 0; bottom: 0; width: 50%; padding: 20px}

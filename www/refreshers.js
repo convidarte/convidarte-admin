@@ -90,6 +90,8 @@ function onLoginOk() {
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
+	document.getElementById("adminUserName").style="";
+	document.getElementById("logout-link").style="";
 }
 
 function onTabChange() {
@@ -105,7 +107,6 @@ function onTabChange() {
 }
 
 function onTabChangeMap(){
-	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
