@@ -2,7 +2,7 @@
 
 Para testear localmente los pasos son:
 
-- Levantar un servidor http, por ejemplo con:
+- Ir a `www` y levantar el servidor http con:
 ```
 python2 webserver.py
 ```
