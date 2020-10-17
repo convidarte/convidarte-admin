@@ -103,15 +103,16 @@ function autocomplete(inp, arr) {
 	  //document.getElementById("userList").dispatchEvent(new Event("change"));
   });
 
-  document.getElementById("costado").addEventListener("click", function (e) {
+  document.getElementById("usersListContainer").addEventListener("click", function (e) {
       closeAllLists(e.target);
 	  document.getElementById("userList").dispatchEvent(new Event("change"));
   });
+
    function clearText(){
 		document.getElementById("userList").value="";
 	}
 
-  document.getElementById("userList").addEventListener("click", clearText);
+  //document.getElementById("userList").addEventListener("click", clearText);
 
 }
 

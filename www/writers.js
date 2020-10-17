@@ -286,9 +286,27 @@ function updateSelectUsers(){
 		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+" " +encodeHTML(u.cellphone) +")"));
 	}
 	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
-	autocomplete(document.getElementById("userList"), optionList);
-	return;
+	//autocomplete(document.getElementById("userList"), optionList);
+    $( "#userList" ).autocomplete({
+		source: optionList,
+		select: function(event,ui){
+					selectedOption = ui.item.label
+					document.getElementById("userList").value = selectedOption;
+					num = parseFloat(selectedOption.split(":")[0]);
+					if (num.toString()!="NaN"){
+						currentUserId = num;
+						showModalProfile(currentUserId);
+					}
+				},
+	});
+	$("#userList").click(
+		function(){
+			document.getElementById("userList").value="";
+		}
+	)
 }
+
+
 
 function prepareAddressGoogleMaps(street,number,city,province){
 	return street +" "+number.toString()+", " +city+", "+province;

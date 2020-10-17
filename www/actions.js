@@ -92,18 +92,6 @@ function addUserRoleInGroupProfileOnClick(){
 
 }
 
-//  se llama al clickear "ver detalle de usuario"
-function showUserProfile(){
-	if(currentTab=="profile"){
-		s = event.target.value;
-		num = parseFloat(s.split(":")[0]);
-		if (num.toString()!="NaN"){
-			currentUserId = num;
-			showUserById(currentUserId);
-		}
-	}
-}
-
 // se llama cuando se clickea el boton de "mostrar solo los que no tienen lat/long"
 function toggleWithoutAddress(){
 	if(onlyUsersWithoutAddress){
