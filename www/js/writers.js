@@ -119,11 +119,11 @@ function showModalProfileTooltip(){
 }
 
 // Escribe el elemento  userDetail a partir de un uid
-function userMarkerContent(uid){
-	u = getUserWithRolesById(uid);
+function userMarkerContent(uid,role){
+	u = getUserById(uid);
 	s = "<a href=\"#\" data-userid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
 	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
-	s += "<div>" + roleInSpanish(u.role) + "</div>";
+	s += "<div>" + roleInSpanish(role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
 	s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
 	s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
@@ -260,6 +260,7 @@ function groupsOfUser(u){
 
 
 //Carga la lista de grupos en los filtros
+/*
 function getGroupList(){
 	groups = getGroups();
 	groupsElement = document.getElementById('grupos');
@@ -270,7 +271,7 @@ function getGroupList(){
 		s+=	"<option value=\""+encodeHTML(g.name)+"\">"+g.group_id.toString()+" - "+encodeHTML(g.name)+"</option>";
 	}
 	document.getElementById("selectGroupFilter").innerHTML = s;
-}
+}*/
 
 
 function tidySpaces(s){
@@ -374,8 +375,8 @@ function showGroupById(groupId){
 		//dividir:
 		s+=divideGroupForm();
 	}
-	s += "<table id=\"groupDetailTable\">\n";
-	s+= "<tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Celular</th><th>email</th><th>Rol(es)</th> </tr>"; 
+	s += "<table id=\"groupDetailTable\" class=\"table table-striped\">\n";
+	s+= "<tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Rol(es)</th> </tr>"; 
 	for (var i = 0; i < members.length; i++){
 		u= members[i];
 		uid = u.user_id;
@@ -390,18 +391,18 @@ function showGroupById(groupId){
 		}
 		s+="<td>"+uid+"</td>";
 		s+="<td>"
+		nameToShow = encodeHTML(u.user_name);
 		if (u.name!="" || u.last_name!="" ){
-			s+= encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")";
-		}else{
-			s+= encodeHTML(u.user_name);
+			nameToShow = encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")";
 		}
+		viewProfileLink = "viewProfileLink_"+uid.toString();
+		s+= "<a id=\"" + viewProfileLink + "\" href=\"#\" class=\"viewProfileLink\" >" + nameToShow + "</a>";
 		if ( currentSystem=="delegate" && (!ack)   ){
 			s+=buttonAckDelegate(g.group_id,uid,u.roles_in_group[0].role);
 		}
 		s+="</td>";
 		s+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
-		s+="<td>"+encodeHTML(u.cellphone)+"</td>";
-		s+="<td style=\"word-wrap: break-word;\">"+encodeHTML(u.email)+"</td>";
+
 		// comienza roles:		
 		s+="<td><table>";
 		for (var j =0;  j< u.roles_in_group.length; j++){
@@ -435,6 +436,14 @@ function showGroupById(groupId){
 	s+= groupDetailPrintable(g);
 	groupDetailElement = document.getElementById('groupMembers');
 	groupDetailElement.innerHTML = s;
+	$("."+"viewProfileLink").click(
+		function(e){
+			e.preventDefault(); 
+			uid = e.target.id.split("_")[1];
+			showModalProfile(uid);
+			return false;
+		} 
+	); 
 	getGroupCSV(g);
 	displayGroupOnMap(g);
 }
@@ -495,7 +504,7 @@ function getGroupCSV(g){
 		cellphone= u.cellphone;
 		email = u.email;
 		roles = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");
-		row = [uid,fullname,address,neighborhood,city,province,email,roles].map( x => '"' + x.replace(/"/g, '""') + '"' ).join(csvSeparator)
+		row = [uid,fullname,address,neighborhood,city,province,email,cellphone,roles].map( x => '"' + x.replace(/"/g, '""') + '"' ).join(csvSeparator)
 		text+=row+"\n";
 	}
 	var fileBlob = new Blob([text], {type: "application/octet-binary"});
@@ -607,7 +616,7 @@ function refreshGroupListDelegate(){
 // Titulo para resultados de busqueda
 function usersListTitle(numberUsers){
 	listTitle = document.getElementById("usersListTitle");
-	showOnlyAvailable = document.getElementById("onlyAvailable").checked;
+	showOnlyAvailable = true; //document.getElementById("onlyAvailable").checked;
 	currentRole = document.getElementById("selectRole");
 	currentRoleText= currentRole.options[currentRole.selectedIndex].text;
 	currentNeighborhood = document.getElementById("selectNeighborhood").value;
@@ -637,7 +646,7 @@ function refreshUserListUsers(){
 		users = users.filter(checkHasNoCoordinates);
 	}
 	usersListTable = document.getElementById("usersListTable");
-	genericHead = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Rol</th><th scope=\"col\">Nombre y apellido</th><th scope=\"col\">Dirección</th><th scope=\"col\">Grupos</th><th scope=\"col\"></th></tr></thead>";
+	genericHead = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Rol</th><th scope=\"col\">Nombre y apellido</th><th scope=\"col\">Dirección</th><th scope=\"col\">Asignar grupo</th><th scope=\"col\"></th></tr></thead>";
 	usersListTableInnerHTML = genericHead+"<tbody>";
 	var userRows = new Array();
 	var nUsers = 0;

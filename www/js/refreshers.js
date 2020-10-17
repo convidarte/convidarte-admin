@@ -70,7 +70,7 @@ function onLoginOk() {
 		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getNeighborhoodList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getCityList();// esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-		getGroupList();
+		//getGroupList();
 		changeUsersTab();
 		refreshEverything();
 	}

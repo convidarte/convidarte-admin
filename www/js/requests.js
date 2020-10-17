@@ -368,7 +368,7 @@ function getUserRoles(){
 
 
 function getUsersFiltered(){ //separar en request y leer el form
-	showOnlyAvailable = document.getElementById("onlyAvailable").checked;
+	showOnlyAvailable = true;//document.getElementById("onlyAvailable").checked;
 	if(showOnlyAvailable){
 		var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
 	}else{
