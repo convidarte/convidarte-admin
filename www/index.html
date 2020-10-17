@@ -25,16 +25,6 @@
 </head>
 <body>
 
-<div class="ui-widget">
-	<label for="userList"><span style="color:black">Buscar usuario:</span></label>
-	<input id="userList">
-</div>
-<div class="ui-widget">
-	<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-	<input id="groupList">
-</div>
-
-
   <div id="loadingLogin" style="display:none"><img src="./img/loading.gif"> </div>
   <div id="protectedDiv" class="h-100">
     <div id="costado" style="display: none"></div>
@@ -106,14 +96,16 @@
         <div class="filter-group">
           <label>Barrio:</label><select id="selectNeighborhood" onchange="selectNeighborhoodChanged()"></select>
         </div>
-		<!--
-        <div class="filter-group">
-          <label>Grupo:</label><select id="selectGroupFilter" onchange="()"></select>
-          <input type="checkbox" id="onlyAvailable" value="" onchange="refreshEverything();" checked><label>Sólo usuarios sin grupos</label>
-        </div>
-		-->
       </div>
-    </div>
+      <div id="selectGroupContainer" class="ui-widget"  style = "display: none;">
+		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
+		<input id="groupList">
+	  </div>
+	  <div id="userSearchBoxContainer" class="ui-widget" style = "display: none;">
+		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
+		<input id="userList">
+	  </div>
+	</div>
   </div>
 </div>
 <!-- end FILTER BAR -->

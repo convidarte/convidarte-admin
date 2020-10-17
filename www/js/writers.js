@@ -517,6 +517,7 @@ function getGroupCSV(g){
 }
 
 
+/*
 //=====================================================================================
 // las siguientes funciones escriben la lista de grupos, con mas o menos detalle dependiendo del Tab que queramos ver.
 // esta se usa en map
@@ -587,7 +588,7 @@ function refreshGroupListNoDetails(){
 	s+="</table>";
 	groupsElement.innerHTML = s;
 }
-
+*/
 
 // esta se usa para el sistema de delegados
 function refreshGroupListDelegate(){

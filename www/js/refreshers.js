@@ -132,7 +132,6 @@ function refreshEverythingMap(){
 		return;
 	}
 	//groups = getGroups();
-	refreshGroupListMap();
 	getUsersFiltered();
 	deleteMarkers();
 	refreshUserMarkers();
@@ -158,7 +157,6 @@ function refreshEverythingUsers(){
 	if(token==""){
 		return;
 	}
-	refreshGroupListNoDetails();
 	refreshUserListUsers();
 	refreshPagination();
 	deleteMarkers();
