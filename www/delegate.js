@@ -1,2 +1,0 @@
-currentSystem="delegate";
-currentTab = "delegate";

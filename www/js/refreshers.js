@@ -95,28 +95,11 @@ function onLoginOk() {
 }
 
 function onTabChange() {
-	if(currentTab == "map"){
-		onTabChangeMap();
-	}else if (currentTab =="profile"){
-		 onTabChangeProfile();
-	}else if (currentTab =="groups"){
+	if (currentTab =="groups"){
 		onTabChangeGroups();
 	}else if (currentTab =="users"){
 		onTabChangeUsers();
 	}
-}
-
-function onTabChangeMap(){
-	currentGroupId=0;
-	currentUserId=0;
-	refreshEverything();
-}
-
-function onTabChangeProfile(){
-	document.getElementById("leftPanel").style="";
-	currentGroupId=0;
-	currentUserId=0;
-	refreshEverything();
 }
 
 function onTabChangeGroups(){
@@ -126,7 +109,6 @@ function onTabChangeGroups(){
 }
 
 function onTabChangeUsers(){
-	document.getElementById("leftPanel").style="";
 	currentGroupId=0;
 	currentUserId=0;
 	refreshEverything();
@@ -135,11 +117,7 @@ function onTabChangeUsers(){
 //==============================================================================
 
 function refreshEverything() {
-	if(currentTab == "map"){
-		refreshEverythingMap();
-	}else if (currentTab =="profile"){
-		 refreshEverythingProfile();
-	}else if (currentTab =="groups"){
+	if (currentTab =="groups"){
 		refreshEverythingGroups();
 	}else if (currentTab =="users"){
 		refreshEverythingUsers();
@@ -164,21 +142,11 @@ function refreshEverythingMap(){
 }
 
 
-function refreshEverythingProfile(){
-	if(token==""){
-		return;
-	}
-	refreshGroupList();
-	if(currentUserId!=0){
-		showUserById(currentUserId);
-	}
-}
-
 function refreshEverythingGroups(){
 	if(token==""){
 		return;
 	}
-	refreshGroupList();
+	updateSelectGroups();
 	if(currentGroupId!=0 ){
 		showGroupById(currentGroupId);
 	}else{

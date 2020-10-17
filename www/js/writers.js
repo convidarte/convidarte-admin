@@ -285,8 +285,7 @@ function updateSelectUsers(){
 		u = allUsers[i];
 		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+" " +encodeHTML(u.cellphone) +")"));
 	}
-	document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
-	//autocomplete(document.getElementById("userList"), optionList);
+	//document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
     $( "#userList" ).autocomplete({
 		source: optionList,
 		select: function(event,ui){
@@ -306,6 +305,27 @@ function updateSelectUsers(){
 	)
 }
 
+function updateSelectGroups(){
+	groups = getGroups();
+	options= groups.map( g => g["group_id"]+": " + g["name"] );
+	$("#groupList").autocomplete({
+		source: options,
+		select: function(event,ui){
+					selectedOption = ui.item.label
+					document.getElementById("groupList").value = selectedOption;
+					num = parseFloat(selectedOption.split(":")[0]);
+					if (num.toString()!="NaN"){
+						currentGroupId = num;
+						showGroupById(currentGroupId);
+					}
+				}
+	});
+	$("#groupList").click(
+		function(){
+			document.getElementById("groupList").value="";
+		}
+	)
+}
 
 
 function prepareAddressGoogleMaps(street,number,city,province){
@@ -340,12 +360,18 @@ function showGroupById(groupId){
 	s+="<div id=\"downloadCSVLinkDiv\" style=\"margin-left:15px;\"></div>";
 	s+="</div>";
 	if (currentSystem == "admin"){
-
+		// renombrar:
 		s+="<div style=\"margin-left:15px;\">";
 		s+="<h3> Cambiar el nombre del grupo</h3>\n";
 		s+="Nuevo nombre: <input id=\"newName\"></input>\n";
 		s+="<button id=\"changeName\" onclick=\"changeGroupName()\">Cambiar nombre</button>";
 		s+="</div>";
+		//borrar:
+		s+="<div style=\"margin-left:15px;\">";
+		s+="<h3> Borrar grupo</h3>\n";
+		s+= "<button id=\"DeleteGroup"+g.group_id.toString() +"\" type=\"button\" onclick=\"deleteGroupOnClick();\" value=\""+g.group_id.toString() + "\">Borrar grupo</button>";
+		s+="</div>";
+		//dividir:
 		s+=divideGroupForm();
 	}
 	s += "<table id=\"groupDetailTable\">\n";
@@ -407,7 +433,7 @@ function showGroupById(groupId){
 	s+="</table>";
 	s+="<br/><br/>";
 	s+= groupDetailPrintable(g);
-	groupDetailElement = document.getElementById('ppal');
+	groupDetailElement = document.getElementById('groupMembers');
 	groupDetailElement.innerHTML = s;
 	getGroupCSV(g);
 	displayGroupOnMap(g);

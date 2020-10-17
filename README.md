@@ -7,6 +7,9 @@ Para testear localmente los pasos son:
 python2 webserver.py
 ```
 
+- Cada vez que se cambia algo en los js hay que recompilar. Desde `www` se recompila con
+```make```
+
 - Ir a 
 ```http://localhost:8000/```
 con el navegador.
