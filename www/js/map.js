@@ -96,6 +96,7 @@ function createMarkerByUser(u){
 
 
 function refreshGroupMarkers(){
+	groups = getGroups();
 	for (var i = 0; i < groups.length; i++) {
 		g = groups[i];
 		createGroupMarker(g);

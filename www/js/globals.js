@@ -1,4 +1,4 @@
-var apiBaseUrl = "https://testing.convidarte.com.ar/api/v1";
+var apiBaseUrl = "https://admin.testing.convidarte.com.ar/api/v1";
 
 var token = "";
 var tokenExpiration = "";
@@ -7,8 +7,6 @@ var usernameAdmin = "";
 
 var currentTab="";
 
-var groups =[];
-var allUsers =[]; // todos los usuarios
 var users =[]; // se llama users pero es una lista de usuarios con sus roles (filtrada por barrio, etc)
 var neighborhoodList = [];
 

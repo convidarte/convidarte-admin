@@ -1,20 +1,31 @@
-function getGroups(){
+function getGroupsBackend(async=true){
 	var urlAdminGroups = apiBaseUrl+"/admin/groups";
 	$.ajax({
 		method: "GET",
 		url: urlAdminGroups,
 		contentType: "application/json",
-		async: false,
+		async: async,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			groups = data.groups;
+			localStorage.setItem("groups",JSON.stringify(data.groups));
 		},
 		error: function() {
 			alert('Groups falló');
 		}
 	});
-	return groups;
 }
+setInterval(getGroupsBackend, 90 * 1000);
+function getGroupsLocalStorage(){
+	return JSON.parse(localStorage.getItem("groups"));
+}
+function getGroups(refresh=false){
+	groups = getGroupsLocalStorage();
+	if(groups==null || refresh){
+		getGroupsBackend(false);
+	}
+	return getGroupsLocalStorage();
+}
+
 
 function getUserProfile(uid){
 	var urlAdminGroups = apiBaseUrl+"/users/"+uid.toString();
@@ -379,25 +390,38 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 		});
 }
 
-
-function getUsers(){
+//----------------------------------------------------------------------
+// userList 
+function getUserListBackend( async=true ){
 	var urlAdminUsers = apiBaseUrl+"/admin/users";
-	var allUsers;
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
 		contentType: "application/json",
-		async: false,
+		async: async,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			allUsers = data.users;
+			localStorage.setItem("userList",JSON.stringify(data.users));
 		},
 		error: function() {
 			alert('Users falló');
 		}
 	});
-	return allUsers;
 }
+setInterval(getUserListBackend, 90 * 1000);
+function getUserListLocalStorage(){
+	return JSON.parse(localStorage.getItem("userList"));
+}
+function userList(refresh=false){
+	users = getUserListLocalStorage();
+	if(users==null || refresh){
+		getUserListBackend(false);
+	}
+	return getUserListLocalStorage();
+}
+//----------------------------------------------------------------------
+
+
 
 function getUserRoles(){
 	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
@@ -474,7 +498,7 @@ function addRole(uid,role){
 			async: false,
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
-				allUsers = getUsers();
+				userList(refresh=true);
 				refreshEverything();
 			},
 			error: function() {
@@ -498,7 +522,7 @@ function checkHasNoCoordinates(user){
 }
 
 function getGroupNameById(groupId){
-	g = getElementInOrderedListById(groups, parseInt(groupId,10), "group_id");
+	g = getElementInOrderedListById(getGroups(), parseInt(groupId,10), "group_id");
 	if( g === null ){
 		return "";
 	}
@@ -506,7 +530,7 @@ function getGroupNameById(groupId){
 }
 
 function getGroupAdminEndpointById(groupId){
-	return getElementInOrderedListById(groups, parseInt(groupId,10), "group_id");
+	return getElementInOrderedListById(getGroups(), parseInt(groupId,10), "group_id");
 }
 
 
@@ -515,7 +539,7 @@ function getUserWithRolesById(uid){
 }
 
 function getUserById(uid){
-	return getElementInOrderedListById(allUsers,uid,"user_id");
+	return getElementInOrderedListById(userList(),uid,"user_id");
 }
 
 // xs an array of x such that its elements are strictly ordered by x[keyName]

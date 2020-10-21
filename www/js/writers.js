@@ -17,6 +17,7 @@ function buttonAckDelegate(gid,uid,role){
 
 // devuelve el HTML de un select con los grupos existentes y el id especificado.
 function getGroupSelectHTML(selectId){
+	groups = getGroups();
 	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
 	s += "<option disabled selected value> elegir grupo </option>"
 	//groups = getGroups();
@@ -200,7 +201,7 @@ function tidySpaces(s){
 
 // escribe el elemento usersListContainer con la lista de usuarios para seleccionar
 function updateSelectUsers(){
-	allUsers = getUsers();
+	allUsers = userList();
 	optionList = new Array();
 	for ( var i=0; i<allUsers.length; i++){
 		u = allUsers[i];

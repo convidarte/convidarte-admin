@@ -56,6 +56,7 @@ function logout(){
 	setCookie("token-convidarte","",59*60*1000);
 	setCookie("username-convidarte","",59*60*1000);
 	setCookie("userid-convidarte","",59*60*1000);
+	localStorage.clear();
 	location.reload();
 }
 
