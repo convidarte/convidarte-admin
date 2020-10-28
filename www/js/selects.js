@@ -79,7 +79,7 @@ function updateSelectGroups(){
 
 // escribe el elemento selectNeighborhood con la lista de barrios
 function getNeighborhoodList(){
-	getUserRoles();
+	var availableUsers = getUserRoles();
 	neighborhoods = new Set([]);
 	for (var i =0; i< availableUsers.length; i++){
 		u = availableUsers[i];
@@ -108,7 +108,7 @@ function getNeighborhoodList(){
 
 // escribe el elemento selectCity con la lista de barrios
 function getCityList(){
-	//getUserRoles(); ya lo traemos en getNeighborhoodList :D
+	var availableUsers = getUserRoles();
 	cities = new Set([]);
 	for (var i =0; i< availableUsers.length; i++){
 		u = availableUsers[i];

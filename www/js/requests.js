@@ -421,26 +421,36 @@ function userList(refresh=false){
 }
 //----------------------------------------------------------------------
 
-
-
-function getUserRoles(){
+// userRoles
+function getUserRolesBackend( async=true ){
 	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
 	$.ajax({
 		method: "GET",
 		url: urlAdminUsers,
 		contentType: "application/json",
-		async: false,
+		async: async,
 		headers : { "authorization" : ("Bearer " + token) },
 		success: function(data) {
-			users = data.user_roles;
+			localStorage.setItem("userRoles",JSON.stringify(data.user_roles));
 		},
 		error: function() {
 			alert('Users falló');
 		}
 	});
-	return users;
+}
+setInterval(getUserRolesBackend, 90 * 1000);
+function getUserRolesLocalStorage(){
+	return JSON.parse(localStorage.getItem("userRoles"));
+}
+function getUserRoles(refresh=false){
+	userRoles = getUserRolesLocalStorage();
+	if(userRoles==null || refresh){
+		getUserRolesBackend(false);
+	}
+	return getUserRolesLocalStorage();
 }
 
+//----------------------------------------------------------------------
 
 function getUsersFiltered(){ //separar en request y leer el form
 	showOnlyAvailable = true;//document.getElementById("onlyAvailable").checked;

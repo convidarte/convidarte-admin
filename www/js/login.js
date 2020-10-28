@@ -1,0 +1,75 @@
+// LOGIN /  LOGOUT
+
+function login(){
+	var user = document.getElementById("username").value;
+	var pass = document.getElementById("password").value;
+	var loginData = { user_name: user, password : pass };
+	var urlLogin = apiBaseUrl+"/auth/login";
+	var data = JSON.stringify(loginData);
+	document.getElementById("loadingLogin").style="";
+	$.ajax({
+		method: "POST",
+		url: urlLogin,
+		contentType: "application/json",
+		data : data,
+		async: true,
+		success: function(data){
+			adminUserId = data.user.user_id;
+			token = data.token;
+			usernameAdmin = data.user.user_name;
+			//tokenExpiration = data.expiration;
+			setCookie("token-convidarte",token,59*60*1000);
+			setCookie("username-convidarte",usernameAdmin,59*60*1000);
+			setCookie("userid-convidarte",adminUserId,59*60*1000);
+			onLoginOk(adminUserId);
+		},
+		error: function() {
+			document.getElementById("loadingLogin").style="display: none;";
+			alert('Datos de login incorrectos');			
+		}
+
+	});
+}
+
+function logout(){
+	setCookie("token-convidarte","",59*60*1000);
+	setCookie("username-convidarte","",59*60*1000);
+	setCookie("userid-convidarte","",59*60*1000);
+	localStorage.clear();
+	location.reload();
+}
+
+function onLoginOk(adminUserId) {
+	p = getUserProfile(adminUserId);
+	document.getElementById("protectedDiv").style="";
+	document.getElementById("loginDiv").style="display: none;";
+	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
+	document.getElementById("adminUserName").style="";
+	document.getElementById("logout-link").style="";
+
+	if (currentSystem=="admin"){
+		if (p.roles.indexOf("admin")<0){
+			alert("Error: debe ser administrador para usar este sistema!")
+			logout();
+			return;
+		}
+		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		getNeighborhoodList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		getCityList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+		changeUsersTab();
+		refreshEverything();
+	}
+	if (currentSystem=="delegate"){
+		if (p.roles.indexOf("delegate")<0){
+			alert("Error: debe ser delegado para usar este sistema!")
+			logout();
+			return;
+		}
+		currentGroupId=0;
+		document.getElementById("map").style="";
+		document.getElementById("ppal").style="";
+		document.getElementById("estilos").href="groups.css";
+		refreshEverything();
+	}
+	document.getElementById("loadingLogin").style="display: none";
+}

@@ -10,11 +10,3 @@ window.addEventListener('load', function () {
 	}
 })
 
-
-/*
-window.addEventListener("focus", function(event){ 
-	if(token != ""){
-		refreshEverything();
-	}
-}, false);
-*/
