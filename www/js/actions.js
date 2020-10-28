@@ -67,7 +67,7 @@ function inactivateUserRoleOnClick(){
 
 function inactivateUserRoleOnClickModal(){
 	boton = event.target;
-	uid = boton.getAttribute("data-userid-inactivate");
+	uid = boton.getAttribute("data-uid-inactivate");
 	role = boton.getAttribute("data-role-inactivate");
 	inactivateUserRole(uid, role);
 	refreshEverything();
@@ -87,13 +87,7 @@ function ackDelegateOnClick(){
 }
 
 
-function addUserRoleInGroupProfileOnClick(){
-	gid = document.getElementById("newGroupId").value;
-	role = document.getElementById("newRole").value;
-	groupName = getGroupNameById(gid);
-	addUserRoleToGroup(currentUserId, role, gid, groupName);
 
-}
 
 // se llama cuando se clickea el boton de "mostrar solo los que no tienen lat/long"
 function toggleWithoutAddress(){

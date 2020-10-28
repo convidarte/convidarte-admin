@@ -19,6 +19,7 @@ function buttonAckDelegate(gid,uid,role){
 function getGroupSelectHTML(selectId){
 	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
 	s += "<option disabled selected value> elegir grupo </option>"
+	//groups = getGroups();
 	for (var i = 0; i < groups.length; i++) {
 		g = groups[i];
 		group_id = g.group_id.toString();
@@ -113,7 +114,7 @@ function getCityList(){
 
 function showModalProfileTooltip(){
 	event.preventDefault();
-	uid = event.target.getAttribute("data-userid");
+	uid = event.target.getAttribute("data-uid");
 	showModalProfile(uid);
 	return false;
 }
@@ -121,7 +122,7 @@ function showModalProfileTooltip(){
 // Escribe el elemento  userDetail a partir de un uid
 function userMarkerContent(uid,role){
 	u = getUserById(uid);
-	s = "<a href=\"#\" data-userid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
+	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
 	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
 	s += "<div>" + roleInSpanish(role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
@@ -132,92 +133,11 @@ function userMarkerContent(uid,role){
 }
 
 
-// escribe el elemento profile con los datos de un usuario.
-function showUserById(uid){
-	u = getUserById(uid);
-	address = u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment;
-	addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-	urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-	s = "<table>";
-	s+= "<tr><td> Id</td><td>"+u.user_id+"</td></tr>";
-	s+= "<tr><td> Nombre de Usuario</td><td>"+encodeHTML(u.user_name)+"</td></tr>";
-	s+= "<tr><td> Nombre</td><td>"+encodeHTML(u.name)+"</td></tr>";
-	s+= "<tr><td> Apellido</td><td>"+encodeHTML(u.last_name)+"</td></tr>";
-	s+= "<tr><td> Celular</td><td>"+encodeHTML(u.cellphone)+"</td></tr>";
-	s+= "<tr><td> Email</td><td>"+encodeHTML(u.email)+"</td></tr>";
-	s+="<tr><td> Dirección</td><td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
-	s+= "<tr><td> Barrio</td><td>"+encodeHTML(u.address.neighborhood)+"</td></tr>";
-	s+= "<tr><td> Localidad</td><td>"+encodeHTML(u.address.city)+"</td></tr>";
-	s+= "<tr><td> Departamento</td><td>"+encodeHTML(u.address.commune)+"</td></tr>";
-	s+= "<tr><td> Provincia</td><td>"+encodeHTML(u.address.province)+"</td></tr>";
-	s+="<tr><td> Código postal</td><td>"+encodeHTML(u.address.zip_code)+"</td>";
-	s+="<tr><td> Info. adicional</td><td>"+encodeHTML(u.address.extra_info)+"</td>";
-
-	s+= "<tr><td> Roles asumibles</td><td>"+u.roles.map(roleInSpanish).join( ", " )+"</td></tr>";
-	s+= "<tr><td> Cantidad de roles asumidos</td><td>"+u.roles_in_groups_count+"</td></tr>";
-	s+="</table>";
-	s+="<br/>";
-	s+="<h3>El usuario "+encodeHTML(u.user_name) + " está en los siguientes grupos</h3><br/>";
-	s+= tableWithGroupsOfUser(u);
-	s+="<br/>";
-
-	s+=selectRoleAndGroupForUser(u);
-
-	s+="<h3>Agregar roles asumibles:</h3>";
-	if(u.roles.indexOf("cook")<0){
-		s+="<button id=\"addCookRole\" value=\"cook\" style=\"background-color:Salmon;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar chef como rol asumible</button><br/><br/>";
-	}
-	if(u.roles.indexOf("driver")<0){
-		s+="<button id=\"addDriverRole\" value=\"driver\" style=\"background-color:SpringGreen;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar distribuidor como rol asumible</button><br/><br/>";
-	}
-	if(u.roles.indexOf("delegate")<0){
-		s+="<button id=\"addDelegateRole\" value=\"delegate\" style=\"background-color:MediumPurple;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar delegado como rol asumible</button><br/><br/>";
-	}
-	s+="<h3>Inactivar:</h3>";
-	s+="<button id=\"inactivateUser\" value=\""+ u.user_id +" "+ u.roles[0] +"\" onclick=\"inactivateUserRoleOnClick()\"> Inactivar usuario</button> Atención: inactivar un usuario no lo elimina de los grupos, solamente lo agrega al grupo de inactivos!<br/>";
-
-	document.getElementById("profile").innerHTML = s;
-}
-
-function showModalProfile(uid){
-	u = getUserById(uid);
-	address = (u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment).trim();
-
-	if(u.address.province=="CABA"){
-		neighborhoodCityProvince = u.address.neighborhood+", "+"CABA";
-	}else{
-		neighborhoodCityProvince = u.address.city + ", " + u.address.province;
-	}
-
-	addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-	urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-
-	$("#modalProfileUserId").html( "#" + u.user_id );
-	$("#modalProfileAlias").html( "@" + encodeHTML(u.user_name) );
-	$("#modalProfileRoles").html( u.roles.map(roleInSpanish).join( ", " ) );
-	$("#modalProfileFullName").html( encodeHTML(u.name) +" "+ encodeHTML(u.last_name) );
-	$("#modalProfileCellphone").html( encodeHTML(u.cellphone) );
-	$("#modalProfileEmail").html( encodeHTML(u.email) );
-	$("#modalProfileFullAdress").html( encodeHTML(address+", "+neighborhoodCityProvince) );
-	$("#modalProfileUrlGoogleMaps").attr("href", urlMaps);
-	$("#modalProfileUsersGroups").html( tableWithGroupsOfUser(u) );
-	$("#modalProfileInactivateUser").attr("data-userid-inactivate", u.user_id);
-	$("#modalProfileInactivateUser").attr("role-inactivate", u.roles[0]);
-	$("#modalProfile").modal();
-}
 
 
-function selectRoleAndGroupForUser(u){
-	s="<br/><h3>Agregar a un grupo:</h3><br/>";
-	s+="Agregar a <strong>"+ encodeHTML(u.user_name) + "</strong> al grupo ";
-	s+=getGroupSelectHTML("newGroupId");
-	s+= " en el rol ";
-	s+=getRoleSelectHTML("newRole", u.roles );
-	s+= " ";
-	s+="<button id=\"newUserRoleInGroup\" onclick=\"addUserRoleInGroupProfileOnClick()\">Agregar</button>";
-	s+="<br/>";
-	return s;
-}
+
+
+
 
 
 function tableWithGroupsOfUser(u){
@@ -520,79 +440,6 @@ function getGroupCSV(g){
 	document.getElementById("downloadCSVLinkDiv").appendChild(link);
 }
 
-
-/*
-//=====================================================================================
-// las siguientes funciones escriben la lista de grupos, con mas o menos detalle dependiendo del Tab que queramos ver.
-// esta se usa en map
-function refreshGroupListMap(){
-	groups = getGroups();
-	groupsElement = document.getElementById('grupos');
-	s = "<table>";
-	s+="<thead><tr><td>Id</td><td>Nombre</td><td>#</td><td>Chefs</td><td>Distr.(s)</td><td>Deleg.</td></tr></thead>";
-	s+="<tbody>";
-	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
-		s += "<tr>"
-		s+="<td>"+g.group_id.toString() +"</td>";
-		s+="<td style=\"max-width:160px; word-wrap: break-word;overflow-y:auto; \" >" + encodeHTML(g.name) +"</td>";
-		s+="<td>"+ (g.member_count) + "</td>";
-		s+="<td>"+g.role_count.cook+"</td>";
-		s+="<td>"+g.role_count.driver+"</td>";
-		s+="<td>"+g.role_count.delegate+"</td>";
-		s+="</tr>\n";
-	}
-	s+="</tbody>";
-	s+="</table>";
-	groupsElement.innerHTML = s;
-}
-// esta se usa en groups
-function refreshGroupList(){
-	groups = getGroups();
-	groupsElement = document.getElementById('grupos');
-	s = "<table id=\"groupsTable\">\n";
-	s+= "<tr><th>Id</th> <th>Nombre</th> <th></th> <th>#</th> <th>Chefs</th> <th>Distr.</th> <th>Deleg.</th><th></th></tr>"; 
-	for (var i = 0; i < groups.length; i++) {
-		g= groups[i];
-		details = "<button id=\"viewDetailGroup"+g.group_id.toString() +"\" type=\"button\" onclick=\"showGroup();\" value=\""+g.group_id.toString() + "\">Detalle</button>";
-		deleteGroup = "<button id=\"DeleteGroup"+g.group_id.toString() +"\" type=\"button\" onclick=\"deleteGroupOnClick();\" value=\""+g.group_id.toString() + "\">Borrar grupo</button>";
-		s+="<tr>\n";
-		s+="<td>"+g.group_id.toString()+"</td>";
-		s += "<td style=\"max-width:160px; word-wrap: break-word;overflow-y:auto; \">"+ encodeHTML(g.name)+"</td>";
-		s+= "<td>"+ details + "</td>";
-		s+= "<td>"+ g.member_count.toString()+ "</td>";
-		s+= "<td>"+ g.role_count.cook+ "</td>";
-		s+= "<td>"+ g.role_count.driver+ "</td>";
-		s+= "<td>"+ g.role_count.delegate+ "</td>";
-		s+= "<td>"+ deleteGroup + "</td>";
-		s+= "</tr>";
-	}
-	s+="</table>";
-	groupsElement.innerHTML = s;
-}
-// esta se usa en users
-function refreshGroupListNoDetails(){
-	groups = getGroups();
-	groupsElement = document.getElementById('grupos');
-	s = "<table id=\"groupsTable\">\n";
-	s+= "<tr><th>Id</th> <th>Nombre</th> <th>#</th> <th>Chefs</th> <th>Distr.</th> <th>Deleg.</th></tr>"; 
-	for (var i = 0; i < groups.length; i++) {
-		g= groups[i];
-		s+="<tr>\n";
-		s+="<td>"+g.group_id.toString()+"</td>";
-		s += "<td style=\"max-width:160px; word-wrap: break-word;overflow-y:auto; \">"+ encodeHTML(g.name)+"</td>";
-		//s+= "<td>"+ details + "</td>";
-		s+= "<td>"+ g.member_count.toString()+ "</td>";
-		s+= "<td>"+ g.role_count.cook+ "</td>";
-		s+= "<td>"+ g.role_count.driver+ "</td>";
-		s+= "<td>"+ g.role_count.delegate+ "</td>";
-		//s+= "<td>"+ deleteGroup + "</td>";
-		s+= "</tr>";
-	}
-	s+="</table>";
-	groupsElement.innerHTML = s;
-}
-*/
 
 // esta se usa para el sistema de delegados
 function refreshGroupListDelegate(){
