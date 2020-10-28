@@ -45,6 +45,9 @@ function showModalProfile(uid){
 function tableWithGroupsOfUser(u){
 	uid = u.user_id;
 	userGroups = getUserGroups(uid);
+	if (userGroups.length==0){
+		return "<p>El usuario " + u["user_name"] + " no pertenece a ningún grupo.</p>";
+	}
 	t = "<table><thead><tr><th>Id grupo</th><th>Nombre grupo</th><th>Roles</th><th></th></tr>   </thead><tbody>";
 	for ( var i=0; i<userGroups.length; i++){
 		g = userGroups[i];
@@ -102,19 +105,21 @@ function addUserRoleInGroupProfileOnClick(){
 
 
 function showGiveNewRoleModal(uid){
-	alert("Pendiente de implementar");
-/*
-	s+="<h3>Agregar roles asumibles:</h3>";
+	var u = getUserWithRolesById(uid);
+	var s = "";
 	if(u.roles.indexOf("cook")<0){
-		s+="<button id=\"addCookRole\" value=\"cook\" style=\"background-color:Salmon;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar chef como rol asumible</button><br/><br/>";
+		s+="<button id=\"addCookRole\" data-uid=\""+ uid.toString()+"\" data-role=\"cook\" style=\"background-color:Salmon;\" onclick=\"addUserRoleOnClick()\"> Agregar chef como rol asumible</button><br/><br/>";
 	}
 	if(u.roles.indexOf("driver")<0){
-		s+="<button id=\"addDriverRole\" value=\"driver\" style=\"background-color:SpringGreen;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar distribuidor como rol asumible</button><br/><br/>";
+		s+="<button id=\"addDriverRole\"  data-uid=\""+ uid.toString()+"\" data-role=\"driver\" style=\"background-color:SpringGreen;\" onclick=\"addUserRoleOnClick()\"> Agregar distribuidor como rol asumible</button><br/><br/>";
 	}
 	if(u.roles.indexOf("delegate")<0){
-		s+="<button id=\"addDelegateRole\" value=\"delegate\" style=\"background-color:MediumPurple;\" onclick=\"addRoleToCurrentUserOnClick()\"> Agregar delegado como rol asumible</button><br/><br/>";
+		s+="<button id=\"addDelegateRole\"  data-uid=\""+ uid.toString()+"\" data-role=\"delegate\" style=\"background-color:MediumPurple;\" onclick=\"addUserRoleOnClick()\"> Agregar delegado como rol asumible</button><br/><br/>";
 	}
-*/
+	$("#modalAddRoleAvailableRoles").html(s);
+	$("#modalAddRole").attr("data-uid",uid);
+	$("#modalAddRole").modal();
+
 }
 
 function shareUserProfile(){

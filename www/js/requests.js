@@ -512,7 +512,7 @@ function addRole(uid,role){
 				refreshEverything();
 			},
 			error: function() {
-				alert('Error no se pudo agregar el rol delegado al usuario.');
+				alert("Error no se pudo agregar el rol "+ roleInSpanish(role) +" al usuario.");
 			}
 		});
 	}

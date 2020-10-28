@@ -197,10 +197,11 @@ function assignGroup(){
 }
 
 
-function addRoleToCurrentUserOnClick(){
-	boton = event.target;
-	role = boton.value;
-	addRole(currentUserId,role);
+function addUserRoleOnClick(){
+	var boton = event.target;
+	var uid = parseInt(boton.getAttribute("data-uid"),10);
+	var role = boton.getAttribute("data-role");
+	addRole(uid,role);
 	refreshEverything();
 }
 
