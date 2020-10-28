@@ -86,6 +86,12 @@ function ackDelegateOnClick(){
 	refreshEverything();
 }
 
+function showModalProfileTooltip(){
+	event.preventDefault();
+	uid = event.target.getAttribute("data-uid");
+	showModalProfile(uid);
+	return false;
+}
 
 
 
@@ -197,24 +203,4 @@ function addRoleToCurrentUserOnClick(){
 	addRole(currentUserId,role);
 	refreshEverything();
 }
-
-window.addEventListener("focus", function(event){ 
-	if(token != ""){
-		refreshEverything();
-	}
-}, false);
-
-window.addEventListener('load', function () {
-	tokenCookie = getCookie("token-convidarte");
-	usernameCookie = getCookie("username-convidarte");
-	adminUserIdCookie = getCookie("userid-convidarte");
-	if( tokenCookie != ""){
-		token = tokenCookie;
-		usernameAdmin = usernameCookie;
-		adminUserId = adminUserIdCookie;
-		onLoginOk();
-	}
-})
-
-
 

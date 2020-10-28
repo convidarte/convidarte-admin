@@ -188,6 +188,10 @@ function refreshPagination(){
 	}
 }
 
+function resetURL(){
+	history.back()
+}
+
 //==============================================================
 // Group division:
 function startDividingGroupOnClick(){

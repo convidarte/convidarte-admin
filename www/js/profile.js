@@ -29,7 +29,58 @@ function showModalProfile(uid){
 	$("#modalProfileAddRoleButton").attr("data-uid",uid);
 
 	$("#modalProfile").modal();
+
+	window.history.pushState('perfil', '', '/perfil/'+uid.toString());
+	var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
+	if(userMarkerMapProfile==null){
+		userMarkerMapProfile = new google.maps.Marker({});
+	}
+	userMarkerMapProfile.setPosition(coords);
+	userMarkerMapProfile.setLabel({text:u["user_name"],fontWeight:"bold",fontSize: "18px"});
+	
+	userMarkerMapProfile.setMap(mapProfile)
+	centerMapOn(mapProfile,coords.lat,coords.lng);
 }
+
+function tableWithGroupsOfUser(u){
+	uid = u.user_id;
+	userGroups = getUserGroups(uid);
+	t = "<table><thead><tr><th>Id grupo</th><th>Nombre grupo</th><th>Roles</th><th></th></tr>   </thead><tbody>";
+	for ( var i=0; i<userGroups.length; i++){
+		g = userGroups[i];
+		gid = g.group_id;
+		for (var j = 0; j < g.roles.length; j++){
+			role = g.roles[j];
+			t+= "<tr><td>" +gid.toString() +"</td><td>"+encodeHTML(g.name)+"</td><td>"+roleInSpanish(role)+"</td><td>"+deleteRoleButton(gid,uid,role)+"</td></tr>";
+		}
+	}
+	t+="</tbody></table>";
+	return t;
+}
+
+// Obtiene los grupos del usuario para mostrar en la tabla general
+function groupsOfUser(u){
+	uid = u.user_id;
+	userGroups = getUserGroups(uid);
+	g = userGroups[0];
+	t = "<td>";
+	if (typeof g === "undefined") {
+		t+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button>";
+	} else {
+		for ( var i=0; i<userGroups.length; i++){
+			g = userGroups[i];
+			gid = g.group_id;
+			for (var j = 0; j < g.roles.length; j++){
+				role = g.roles[j];
+				t+= encodeHTML(g.name);
+			}
+		}
+	}
+	t+="</td>";
+	return t;
+}
+
+
 
 function showAddToGroupModal(uid){
 	u = getUserById(uid);
