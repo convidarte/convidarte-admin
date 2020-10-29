@@ -18,6 +18,8 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script><!--autocomplete -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
 
 
 
@@ -282,13 +284,70 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 </div>
 </div>
 
-
-
-
 <script src="js/vendor/bootstrap.bundle.min.js"></script>
 <script async defer src="apikey.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 <script>currentSystem = "admin";</script>
 <script src="mainCompiled.js"></script>
+
+
+
+
+<!-- probando -->
+<div id="example">
+	<p>Computed number of groups "{{ numberGroups }}"</p>
+</div>
+<script>
+	var vm = new Vue({
+		el: '#example',
+		data:  {
+			state: store.state,
+		},
+		computed: {
+			numberGroups: function () {
+				return this.state.groups.length;
+			}
+		}
+	})
+</script>
+
+<div id="select-city-container">
+	<label>Localidad:</label>
+	<select id="select-city" onchange="selectCityChanged()">
+		{{ cityOptions }}
+		<option value="" selected>Todas las localidades</option>
+	    <option v-for="city in cityOptions">{{ city }}</option>
+
+	</select>
+</div>
+
+<script>
+	var selectCityInstance = new Vue({
+		el: '#select-city-container',
+		data:  {
+			state: store.state,
+		},
+		computed: {
+			cityOptions: function () {
+				var availableUsers = store.state.availableUsers;
+				cities = new Set([]);
+				for (var i =0; i< availableUsers.length; i++){
+					u = availableUsers[i];
+					if(u.address.city.toString() !="" && u.address.city.toString() !="nan" ){
+						if (currentTab=="users" || !checkHasNoCoordinates(u)){
+							cities.add(u.address.city.toString().trim());
+						}
+					}	
+				}
+				cityList = new Array();
+				for (let entry of cities.entries()) {
+					cityList.push(entry[1]);
+				}
+				cityList.sort();
+				return cityList;
+			}
+		}
+	})
+</script>
 </body>
 </html>
