@@ -42,11 +42,8 @@ function refreshEverythingUsers(){
 	refreshPagination();
 	deleteMarkers();
 	refreshGroupMarkers();
-	/*
+	refreshAvailableUsersMarkers();
 
-	refreshUserMarkers(); // pendiente
-
-	*/
 	//centerMapOn(-34.62, -58.46);
 }
 

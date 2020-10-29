@@ -7,7 +7,9 @@ function changeUsersTab(){
 	document.getElementById("groupsLeftPanel").style="display:none";
 	document.getElementById("nav-link-users").parentElement.className="nav-item active";
 	document.getElementById("nav-link-groups").parentElement.className="nav-item";
-	onTabChange();
+	window.history.pushState('users', '', '/users');
+	map.setZoom(12);
+	refreshEverything();
 }
 
 
@@ -20,6 +22,8 @@ function changeGroupsTab(){
 	document.getElementById("filterLocation").style="display: none;";
 	document.getElementById("nav-link-groups").parentElement.className="nav-item active";
 	document.getElementById("nav-link-users").parentElement.className="nav-item";
-	onTabChange();
+	window.history.pushState('groups', '', '/groups');
+	map.setZoom(15);
+	refreshEverything();
 }
 

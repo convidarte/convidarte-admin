@@ -25,7 +25,7 @@ function initMap() {
 
 
 // Adds a marker to the collection and push to the array.
-function addMarker(markerCollection, location,label,color,infoWindowContent) {
+function addMarker(markerCollection, location,label,color) {
 	var marker = new google.maps.Marker({
 		position: location,
 		label: {text:label,fontWeight:"bold",fontSize: "18px"},
@@ -43,57 +43,54 @@ function addMarker(markerCollection, location,label,color,infoWindowContent) {
 	}else if(color=="red"){
 		marker.setIcon('https://maps.google.com/mapfiles/ms/icons/red-dot.png')
 	}
-	if (infoWindowContent!=""){
-		var infowindow = new google.maps.InfoWindow({
-			content: infoWindowContent
-		});
-		marker.addListener('click', function() {
-			if (currentInfoWindow!= null){
-				currentInfoWindow.close();
-			}
-			currentInfoWindow=infowindow;
-			infowindow.open(map, marker);
-
-		});
-	}
 	markerCollection.push(marker);
 	return marker;
 }
 
-function refreshUserMarkers(){
-	for (var i = 0; i < users.length; i++) {
-		createMarker(i);
+function showInfoWindow( marker, infoWindowContent){
+	if (currentInfoWindow== null){
+		currentInfoWindow =  new google.maps.InfoWindow({});
 	}
-}
-
-function createMarker(i){
-	u = users[i];
-	createMarkerByUser(u);
-}
-
-function createMarkerByUser(u){
-	coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
-	label = u.user_id.toString()+": "+encodeHTML(u.user_name);
-	var color;
-	if (u.role=="cook"){
-		color = "red";
-	}
-	if (u.role=="driver"){
-		color = "green";
-	}
-	if (u.role=="delegate"){
-		color = "purple";
-	}
-	infoUser = userMarkerContent( u.user_id.toString(), u.role );
-	marker = addMarker(markers,coords,label,color,infoUser);
-
-	if (u.role=="admin"){ // ocultamos los markers para los roles de admin
-		marker.setMap(null);
-	}
+	currentInfoWindow.close();
+	currentInfoWindow.setContent(infoWindowContent);
+	currentInfoWindow.open(marker.map, marker);
 }
 
 
 
+
+
+function createUserMarker(u, setClickListener){
+	if(parseFloat(u.address.latitude)){
+		coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
+		label = u.user_id.toString()+": "+encodeHTML(u.user_name);
+		var color;
+		if (u.role=="cook"){
+			color = "red";
+		}
+		if (u.role=="driver"){
+			color = "green";
+		}
+		if (u.role=="delegate"){
+			color = "purple";
+		}
+		var marker = addMarker(markers,coords,label,color);
+		if (setClickListener){
+			marker.addListener('click', () =>	showInfoWindow(marker, userMarkerContent( u.user_id.toString(), u.role) ) );
+		}
+		if (u.role=="admin"){ // ocultamos los markers para los roles de admin
+			marker.setMap(null);
+		}
+		return marker;
+	}
+}
+
+function refreshAvailableUsersMarkers(){
+	for (var i = 0; i < availableUsers.length; i++) {
+		u = availableUsers[i];	
+		createUserMarker(u,true);
+	}
+}
 
 function refreshGroupMarkers(){
 	groups = getGroups();
@@ -103,16 +100,24 @@ function refreshGroupMarkers(){
 	}
 }
 
-function createGroupMarker(g){
-	coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
-	label = g.group_id.toString() + ": "+ encodeHTML(g.name);
-	infoWindowText = "Grupo " + g.group_id.toString() + " - "+ encodeHTML(g.name)+"<br/>";
+function infoWindowTextForGroupMarker(gid){
+	var g = getGroup(gid);
+	var infoWindowText = "Grupo " + g.group_id.toString() + " - "+ encodeHTML(g.name)+"<br/>";
 	infoWindowText += g.role_count.cook + " cocinero(s) <br/>" ;
 	infoWindowText += g.role_count.driver+ " distribuidor(es)<br/>";
 	infoWindowText += g.role_count.delegate + " delegado(s)<br/>";
 	infoWindowText += "El punto en el mapa es la ubicación promedio de los miembros del grupo.<br/>";
+	return infoWindowText;
+}
+
+function createGroupMarker(g){
+	coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
+	label = g.group_id.toString() + ": "+ encodeHTML(g.name);
 	var color = "yellow";
-	marker = addMarker(groupMarkers, coords,label,color,infoWindowText);
+	var marker = addMarker(groupMarkers, coords,label,color);
+	//marker.group_id = parseInt(g.group_id,10);
+	var gid = g.group_id;
+	marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(gid) ) );
 }
 
 // Sets the map on all markers in the array.
@@ -151,7 +156,7 @@ function displayGroupOnMap(g){
 			r = u.roles_in_group[j].role;
 			ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
-			createMarkerByUser(ur);
+			createUserMarker(ur,false);
 		}
 	}
 }
