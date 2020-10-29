@@ -28,25 +28,3 @@ function getRoleSelectHTML(selectId,roles){
 }
 
 
-function updateSelectGroups(){
-	groups = getGroups();
-	options= groups.map( g => g["group_id"]+": " + g["name"] );
-	$("#groupList").autocomplete({
-		source: options,
-		select: function(event,ui){
-					selectedOption = ui.item.label
-					document.getElementById("groupList").value = selectedOption;
-					num = parseFloat(selectedOption.split(":")[0]);
-					if (num.toString()!="NaN"){
-						currentGroupId = num;
-						showGroupById(currentGroupId);
-					}
-				}
-	});
-	$("#groupList").click(
-		function(){
-			document.getElementById("groupList").value="";
-		}
-	)
-}
-

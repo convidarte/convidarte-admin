@@ -5,10 +5,29 @@ var store = {
 		availableUserRoles: [],
 		users: [],
 	},
+
+	// Groups
 	setGroups(groups){
 		if (this.debug) console.log('setGroups triggered');
 		this.state.groups = groups;
 	},
+	setGroupsBackend(){
+		var url = "/admin/groups";
+		do_request(url, null, true, "GET").then(
+			function(data) {
+				localStorage.setItem("storedGroups",JSON.stringify(data.groups));
+				store.setGroups(data.groups);
+			}).catch( function(err) { console.log('Request falló: '+ url); })
+	},
+	setGroupsLocalStorage(){
+		var r = JSON.parse(localStorage.getItem("storedGroups"));
+		if ( r == null ){
+			this.setGroupsBackend();
+		}else{
+			this.setGroups( r );
+		}
+	},
+
 
 	// Available user roles
 	setAvailableUserRoles(value){
@@ -57,6 +76,7 @@ var store = {
 
 	// function to recover everything from the local storage
 	recoverStateFromLocalStorage(){
+		this.setGroupsLocalStorage();
 		this.setAvailableUserRolesLocalStorage();
 		this.setUsersLocalStorage();
 	}

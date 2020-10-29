@@ -27,8 +27,9 @@ function refreshEverythingGroups(){
 	if(token==""){
 		return;
 	}
-	refreshGroupList();
-	if( currentGroupId==0 ){
+	if(currentGroupId!=0 ){
+		showGroupById(currentGroupId);
+	}else{
 		deleteMarkers();
 	}
 	showGroupById(currentGroupId);

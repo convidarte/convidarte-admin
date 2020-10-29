@@ -42,7 +42,6 @@ function logout(){
 function onLoginOk(adminUserId) {
 	localStorage.setItem("token",token);
 	p = getUserProfile(adminUserId);
-	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
 	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
 	document.getElementById("adminUserName").style="";

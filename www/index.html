@@ -29,11 +29,6 @@
 
   <div id="loadingLogin" style="display:none"><img src="./img/loading.gif"> </div>
 
-<!--  <div id="protectedDiv" class="h-100"></div>
-    <div id="groupsRightMenu" style="display: none"></div>
--->
-
-
     <!-- NAV -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
      <a class="navbar-brand" href="#">
@@ -76,41 +71,7 @@
 </nav>
 <!-- end NAV -->
 
-<!-- FILTER BAR -->
-<div class="container-fluid">
-  <div class="row">
-    <div id="filter-bar">
-      <div id="filterLocation" style = "display: none;" >
-        <div class="filter-group">
-          <label>Rol:</label>
-          <select id="selectRole" onchange="refreshEverything();">
-            <option value="cooks" selected>Cocineros</option>
-            <option value="drivers">Distribuidores</option>
-            <option value="delegates">Delegados</option>
-          </select>
-        </div>
-        <div class="filter-group">
-	      <select-city-component id="selectCityComponent"></select-city-component>
-        </div>
-        <div class="filter-group">
-	      <select-neighborhood-component id="selectNeighborhoodComponent"></select-neighborhood-component>
-        </div>
-      </div>
-      <div id="selectGroupContainer" class="ui-widget"  style = "display: none;">
-		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-		<input id="groupList">
-	  </div>
-	  <select-user-component id="selectUserComponent"><select-user-component/>
-	<!--
-	  <div id="userSearchBoxContainer" class="ui-widget" style = "display: none;">
-		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
-		<input id="userList">
-	  </div>
-	-->
-	</div>
-  </div>
-</div>
-<!-- end FILTER BAR -->
+<filter-bar-component id="filterBarComponent"></filter-bar-component>
 
 <!-- MAIN -->
 <main role="main" class="container-list-map">
@@ -118,7 +79,8 @@
 <div class="list-container">
 <!--<div id="usersRightMenu" style="display: none;"></div>-->
 
-  <div id="usersLeftPanel" style="display: none;">  <!-- USUARIOS SIN GRUPO -->
+  <!-- USUARIOS SIN GRUPO -->
+  <div id="usersLeftPanel" style="display: none;">
     <h2 id="usersListTitle"></h2>
     <div id="usersList">
       <table id="usersListTable" class="table table-striped">
@@ -133,12 +95,15 @@
         </tr>
       </table>
     </div>
-  </div>  <!-- end USUARIOS SIN GRUPO -->
+  </div> 
+  <!-- end USUARIOS SIN GRUPO -->
 
-  <div id="groupsLeftPanel" style="display: none;">  <!-- GRUPOS -->
+  <!-- GRUPOS -->
+  <div id="groupsLeftPanel" style="display: none;">  
      <div id="grupos" style="display:none;"></div>
      <div id="groupMembers"></div>
-  </div><!-- end GRUPOS-->
+  </div>
+ <!-- end GRUPOS-->
   
 </div>
 
@@ -292,9 +257,7 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 
 
 <script>
-	new Vue({ el: '#selectCityComponent' });
-	new Vue({ el: '#selectNeighborhoodComponent' });
-	new Vue({ el: '#selectUserComponent' });
+	new Vue({ el:'#filterBarComponent'});
 </script>
 
 
