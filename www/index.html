@@ -1,119 +1,41 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<title>Convidarte - Panel de administración</title>
-	<meta name="description" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
-	<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
-	<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
+	<head>
+		<meta charset="utf-8">
+		<title>Convidarte - Panel de administración</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
+		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-192x192.png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-180x180.png" />
 
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"><!--autocomplete -->
+		<link rel="stylesheet" href="css/normalize.css">
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"><!--autocomplete -->
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script><!--autocomplete -->
-	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-
-
-
-
-<script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
-</head>
-<body>
-
-  <div id="loadingLogin" style="display:none"><img src="./img/loading.gif"> </div>
-
-    <!-- NAV -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-     <a class="navbar-brand" href="#">
-      <img src="img/convidarte-logo.svg" alt="Convidarte" height="40">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-       <li class="nav-item active">
-        <a id="nav-link-users"  class="nav-link" href="#" onclick="changeUsersTab()" >Usuarios sin grupo<span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a id="nav-link-groups" class="nav-link" href="#" onclick="changeGroupsTab()" >Grupos</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav">
-	<div id=loginDiv>
-		<form id="login">
-			<table>
-				<tbody>
-					<tr><td><span style="color:white"> Usuario:</span></td><td><input type="text" id="username" name="username" style="padding:3px"></td></tr>
-					<tr><td><span style="color:white"> Contraseña:</span></td><td> <input type="password" id="password" name="password" style="width:100%"></td></tr>
-				</tbody>
-			</table>
-		</form>
-		<input type="submit" value="Acceder" onclick="login()" >
-	</div>
-
-     <li class="nav-link" id="adminUserName" style="display:none"></li>
-     <li>
-      <a id="logout-link" class="nav-link" href="#" onclick="logout()" style="display:none">
-       <i class="fas fa-sign-out-alt"></i>
-     </a>
-   </li>
- </ul>
-</div>
-</nav>
-<!-- end NAV -->
-
-<filter-bar-component id="filterBarComponent"></filter-bar-component>
-
-<main-component id="main"></main-component>
-
-<modal-profile-component id="modalProfileComponent"></modal-profile-component>
-
-
-<script src="js/vendor/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-<script>currentSystem = "admin";</script>
-<script src="mainCompiled.js"></script>
-
-
-<script>
-	new Vue({ el:'#filterBarComponent'});
-	new Vue({ el:'#main'});
-	new Vue({ el:'#modalProfileComponent'});
-</script>
-<script async defer src="apikey.js"></script>
-
-<!-- probando -->
-<!--
-<div id="example">
-	<p>Computed number of groups "{{ numberGroups }}"</p>
-</div>
-<script>
-	var vm = new Vue({
-		el: '#example',
-		data:  {
-			state: store.state,
-		},
-		computed: {
-			numberGroups: function () {
-				return this.state.groups.length;
-			}
-		}
-	})
-</script>
--->
-
-
-<!-- end probando -->
-
-
-
-</body>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script><!--autocomplete -->
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+		<script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<div id="loadingLogin" style="display:none"><img src="./img/loading.gif"> </div>
+		<navbar-component id="navbar"></navbar-component>
+		<filter-bar-component id="filterBarComponent"></filter-bar-component>
+		<main-component id="main"></main-component>
+		<modal-profile-component id="modalProfileComponent"></modal-profile-component>
+		<script src="js/vendor/bootstrap.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+		<script>currentSystem = "admin";</script>
+		<script src="mainCompiled.js"></script>
+		<script>
+			new Vue({ el:'#navbar'});
+			new Vue({ el:'#filterBarComponent'});
+			new Vue({ el:'#main'});
+			new Vue({ el:'#modalProfileComponent'});
+		</script>
+		<script async defer src="apikey.js"></script>
+	</body>
 </html>
