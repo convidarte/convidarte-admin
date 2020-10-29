@@ -311,43 +311,13 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 	})
 </script>
 
-<div id="select-city-container">
-	<label>Localidad:</label>
-	<select id="select-city" onchange="selectCityChanged()">
-		{{ cityOptions }}
-		<option value="" selected>Todas las localidades</option>
-	    <option v-for="city in cityOptions">{{ city }}</option>
-
-	</select>
+<div id="probando">
+	<select-city-component></select-city-component>
 </div>
-
 <script>
-	var selectCityInstance = new Vue({
-		el: '#select-city-container',
-		data:  {
-			state: store.state,
-		},
-		computed: {
-			cityOptions: function () {
-				var availableUsers = store.state.availableUsers;
-				cities = new Set([]);
-				for (var i =0; i< availableUsers.length; i++){
-					u = availableUsers[i];
-					if(u.address.city.toString() !="" && u.address.city.toString() !="nan" ){
-						if (currentTab=="users" || !checkHasNoCoordinates(u)){
-							cities.add(u.address.city.toString().trim());
-						}
-					}	
-				}
-				cityList = new Array();
-				for (let entry of cities.entries()) {
-					cityList.push(entry[1]);
-				}
-				cityList.sort();
-				return cityList;
-			}
-		}
-	})
+	new Vue({ el: '#probando' })
 </script>
+
+
 </body>
 </html>
