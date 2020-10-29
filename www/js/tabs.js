@@ -7,7 +7,7 @@ function changeUsersTab(){
 	document.getElementById("groupsLeftPanel").style="display:none";
 	document.getElementById("nav-link-users").parentElement.className="nav-item active";
 	document.getElementById("nav-link-groups").parentElement.className="nav-item";
-	window.history.pushState('users', '', '/users');
+	window.history.pushState('usuarios', '', '/?usuarios');
 	map.setZoom(12);
 	refreshEverything();
 }
@@ -22,7 +22,7 @@ function changeGroupsTab(){
 	document.getElementById("filterLocation").style="display: none;";
 	document.getElementById("nav-link-groups").parentElement.className="nav-item active";
 	document.getElementById("nav-link-users").parentElement.className="nav-item";
-	window.history.pushState('groups', '', '/groups');
+	window.history.pushState('grupos', '', '/?grupos');
 	map.setZoom(15);
 	refreshEverything();
 }

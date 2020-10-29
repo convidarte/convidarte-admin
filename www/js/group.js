@@ -1,12 +1,13 @@
 // escribe el elemento "ppal" con la data detallada de un grupo
 function showGroupById(groupId){
+	console.log("showGroupById",groupId);
 	groupDetailElement = document.getElementById('groupMembers');
 	if (groupId==0){
 		groupDetailElement.innerHTML="";
 		return;
 	}
 	var g = getGroup(groupId);
-	var url = "/grupo/"+ g["group_id"]+"/"+g["name"];
+	var url = "/?grupo/"+ g["group_id"]+"/"+g["name"];
 	window.history.pushState('grupos', '', url);
 
 	var members = g.members;

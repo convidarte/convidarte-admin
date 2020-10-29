@@ -56,7 +56,7 @@ function onLoginOk(adminUserId) {
 		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getNeighborhoodList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
 		getCityList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-		changeUsersTab();
+		processQueryStringAdmin()		
 		refreshEverything();
 	}
 	if (currentSystem=="delegate"){
@@ -72,4 +72,33 @@ function onLoginOk(adminUserId) {
 		refreshEverything();
 	}
 	document.getElementById("loadingLogin").style="display: none";
+}
+
+
+function processQueryStringAdmin(){
+	const queryString = window.location.search;
+	console.log(queryString);
+	if(queryString.startsWith("?perfil/")){
+		var uid = parseInt(queryString.split("/")[1],10);
+		changeUsersTab();
+		showModalProfile(uid);
+		return;
+	}
+	if(queryString.startsWith("?grupos")){
+		changeGroupsTab();
+		return;	
+	}
+	if(queryString.startsWith("?usuarios")){
+		changeUsersTab();
+		return;	
+	}
+	if(queryString.startsWith("?grupo")){
+		var gid = parseInt(queryString.split("/")[1],10);
+		currentGroupId = gid;
+		changeGroupsTab();
+		//showGroupById(gid);
+		return;
+	}
+	// default
+	changeUsersTab();
 }

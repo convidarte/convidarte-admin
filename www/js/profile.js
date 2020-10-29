@@ -30,7 +30,7 @@ function showModalProfile(uid){
 
 	$("#modalProfile").modal();
 
-	window.history.pushState('perfil', '', '/perfil/'+uid.toString());
+	window.history.pushState('perfil', '', '/?perfil/'+uid.toString());
 	var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
 	if(userMarkerMapProfile==null){
 		userMarkerMapProfile = new google.maps.Marker({});
@@ -123,7 +123,11 @@ function showGiveNewRoleModal(uid){
 }
 
 function shareUserProfile(){
-	alert("Pendiente de implementar");
+	var btn = event.target;
+	var uid = btn.getAttribute("data-uid")
+	var url = window.location.origin+"/?perfil/"+uid;
+	navigator.clipboard.writeText(url);
+	alert("El link para compartir fue copiado al portapapeles");
 }
 
 function launchAddToGroupModal(){
