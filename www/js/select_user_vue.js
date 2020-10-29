@@ -20,8 +20,8 @@ Vue.component('select-user-component', {
 					document.getElementById("userList").value = selectedOption;
 					num = parseFloat(selectedOption.split(":")[0]);
 					if (num.toString()!="NaN"){
-						currentUserId = num;
-						showModalProfile(currentUserId);
+						store.setCurrentUserId(num);
+						showModalProfile(num);
 					}
 				},
 			});

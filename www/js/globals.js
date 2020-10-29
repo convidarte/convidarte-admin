@@ -16,7 +16,6 @@ var groupMarkers = [];
 var currentInfoWindow = null;
 
 var currentGroupId=0;
-var currentUserId=0;
 
 var onlyUsersWithoutAddress = false;
 

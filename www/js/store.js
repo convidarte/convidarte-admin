@@ -4,6 +4,12 @@ var store = {
 		groups: [],
 		availableUserRoles: [],
 		users: [],
+		currentUserId: 0,
+	},
+	// CurrentUserId
+	setCurrentUserId(uid){
+		if (this.debug) console.log('setCurrentUserId triggered');
+		this.state.currentUserId  = uid;
 	},
 
 	// Groups
