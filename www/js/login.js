@@ -40,6 +40,7 @@ function logout(){
 }
 
 function onLoginOk(adminUserId) {
+	localStorage.setItem("token",token);
 	p = getUserProfile(adminUserId);
 	document.getElementById("protectedDiv").style="";
 	document.getElementById("loginDiv").style="display: none;";
@@ -53,9 +54,8 @@ function onLoginOk(adminUserId) {
 			logout();
 			return;
 		}
-		updateSelectUsers(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-		getNeighborhoodList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
-		getCityList(); // esto lo hacemos al loguear y despues no se actualiza mas porque es costoso
+
+		store.recoverStateFromLocalStorage();
 		processQueryStringAdmin()		
 		refreshEverything();
 	}

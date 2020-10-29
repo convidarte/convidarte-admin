@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+function onLoadAdmin () {
 	tokenCookie = getCookie("token-convidarte");
 	usernameCookie = getCookie("username-convidarte");
 	adminUserIdCookie = getCookie("userid-convidarte");
@@ -8,5 +8,5 @@ window.addEventListener('load', function () {
 		adminUserId = adminUserIdCookie;
 		onLoginOk(adminUserId);
 	}
-})
-
+}
+window.addEventListener('load', onLoadAdmin);

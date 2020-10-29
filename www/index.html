@@ -93,20 +93,23 @@
           </select>
         </div>
         <div class="filter-group">
-          <label>Localidad:</label><select id="selectCity" onchange="selectCityChanged()"></select>
+	      <select-city-component id="selectCityComponent"></select-city-component>
         </div>
         <div class="filter-group">
-          <label>Barrio:</label><select id="selectNeighborhood" onchange="selectNeighborhoodChanged()"></select>
+	      <select-neighborhood-component id="selectNeighborhoodComponent"></select-neighborhood-component>
         </div>
       </div>
       <div id="selectGroupContainer" class="ui-widget"  style = "display: none;">
 		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
 		<input id="groupList">
 	  </div>
+	  <select-user-component id="selectUserComponent"><select-user-component/>
+	<!--
 	  <div id="userSearchBoxContainer" class="ui-widget" style = "display: none;">
 		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
 		<input id="userList">
 	  </div>
+	-->
 	</div>
   </div>
 </div>
@@ -291,9 +294,15 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 <script src="mainCompiled.js"></script>
 
 
+<script>
+	new Vue({ el: '#selectCityComponent' });
+	new Vue({ el: '#selectNeighborhoodComponent' });
+	new Vue({ el: '#selectUserComponent' });
+</script>
 
 
 <!-- probando -->
+<!--
 <div id="example">
 	<p>Computed number of groups "{{ numberGroups }}"</p>
 </div>
@@ -310,13 +319,11 @@ var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 		}
 	})
 </script>
+-->
 
-<div id="probando">
-	<select-city-component></select-city-component>
-</div>
-<script>
-	new Vue({ el: '#probando' })
-</script>
+
+<!-- end probando -->
+
 
 
 </body>

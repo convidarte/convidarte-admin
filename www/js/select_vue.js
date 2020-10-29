@@ -14,7 +14,7 @@ Vue.component('select-city-component', {
 					cities.add(u.address.city.toString().trim());
 				}	
 			}
-			var cityList = new Array();
+			cityList = new Array();
 			for (let entry of cities.entries()) {
 				cityList.push(entry[1]);
 			}
@@ -26,6 +26,7 @@ Vue.component('select-city-component', {
 		<div id="select-city-container">
 			<label>Localidad:</label>
 			<select id="selectCity" onchange="selectCityChanged()">
+				{{ cityOptions }}
 				<option value="" selected>Todas las localidades</option>
 				<option v-for="city in cityOptions">{{ city }}</option>
 			</select>
