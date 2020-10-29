@@ -27,33 +27,6 @@ function getRoleSelectHTML(selectId,roles){
 	return s;
 }
 
-// escribe el elemento usersListContainer con la lista de usuarios para seleccionar
-function updateSelectUsers(){
-	allUsers = userList();
-	optionList = new Array();
-	for ( var i=0; i<allUsers.length; i++){
-		u = allUsers[i];
-		optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+" " +encodeHTML(u.cellphone) +")"));
-	}
-	//document.getElementById("numberUsers").innerHTML = "<h3>Hay "+ allUsers.length.toString() + " usuarios registrados en Convidarte.</h3>";
-    $( "#userList" ).autocomplete({
-		source: optionList,
-		select: function(event,ui){
-					selectedOption = ui.item.label
-					document.getElementById("userList").value = selectedOption;
-					num = parseFloat(selectedOption.split(":")[0]);
-					if (num.toString()!="NaN"){
-						currentUserId = num;
-						showModalProfile(currentUserId);
-					}
-				},
-	});
-	$("#userList").click(
-		function(){
-			document.getElementById("userList").value="";
-		}
-	)
-}
 
 function updateSelectGroups(){
 	groups = getGroups();
