@@ -1,3 +1,7 @@
+function urlUserProfile(u){
+	return '/?perfil/'+u["user_id"].toString()+"/"+u["name"].trim()+"-"+u["last_name"].trim();
+}
+
 function showModalProfile(uid){
 	u = getUserById(uid);
 	$("#modalProfile").attr("data-uid",uid);
@@ -30,7 +34,7 @@ function showModalProfile(uid){
 
 	$("#modalProfile").modal();
 
-	window.history.pushState('perfil', '', '/?perfil/'+uid.toString());
+	window.history.pushState('perfil', '', urlUserProfile(u));
 	var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
 	if(userMarkerMapProfile==null){
 		userMarkerMapProfile = new google.maps.Marker({});
@@ -125,7 +129,8 @@ function showGiveNewRoleModal(uid){
 function shareUserProfile(){
 	var btn = event.target;
 	var uid = btn.getAttribute("data-uid")
-	var url = window.location.origin+"/?perfil/"+uid;
+	var u = getUserById(uid);
+	var url = window.location.origin+urlUserProfile(u);
 	navigator.clipboard.writeText(url);
 	alert("El link para compartir fue copiado al portapapeles");
 }

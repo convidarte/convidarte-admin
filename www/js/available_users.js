@@ -59,7 +59,7 @@ function refreshUserListUsers(){
 		}
 
 		viewProfileLink = "viewProfileLink_"+uid.toString();
-		row+="<td><a id=\"" + viewProfileLink + "\" href=\"#\" class=\"viewProfileLink\" >" + nameToShow + "</a></td>";
+		row+="<td><a id=\"" + viewProfileLink + "\" href=\"\" class=\"viewProfileLink\" >" + nameToShow + "</a></td>";
 		row+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
 		if(showOnlyAvailable){
 			row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
