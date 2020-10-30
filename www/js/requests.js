@@ -1,31 +1,15 @@
-function getGroupsBackend(async=true){
-	var urlAdminGroups = apiBaseUrl+"/admin/groups";
-	$.ajax({
-		method: "GET",
-		url: urlAdminGroups,
-		contentType: "application/json",
-		async: async,
-		headers : { "authorization" : ("Bearer " + token) },
-		success: function(data) {
-			localStorage.setItem("groups",JSON.stringify(data.groups));
-		},
-		error: function() {
-			alert('Groups falló');
-		}
-	});
+function userList(refresh=false){
+	return store.state.users;
 }
-setInterval(getGroupsBackend, 90 * 1000);
-function getGroupsLocalStorage(){
-	return JSON.parse(localStorage.getItem("groups"));
+function getUserRoles(refresh=false){
+	return store.state.availableUserRoles;
 }
+function getUsersFiltered(){
+	return store.state.usersFiltered;
+}
+
 function getGroups(refresh=false){
-	var groups = store.state.groups;
-	if (groups.length!=0) return groups;
-	groups = getGroupsLocalStorage();
-	if(groups==null || refresh){
-		getGroupsBackend(false);
-	}
-	return getGroupsLocalStorage();
+	return  store.state.groups;
 }
 
 
@@ -361,80 +345,6 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 		});
 }
 
-//----------------------------------------------------------------------
-// userList 
-function getUserListBackend( async=true ){
-	var urlAdminUsers = apiBaseUrl+"/admin/users";
-	$.ajax({
-		method: "GET",
-		url: urlAdminUsers,
-		contentType: "application/json",
-		async: async,
-		headers : { "authorization" : ("Bearer " + token) },
-		success: function(data) {
-			localStorage.setItem("userList",JSON.stringify(data.users));
-		},
-		error: function() {
-			alert('Users falló');
-		}
-	});
-}
-setInterval(getUserListBackend, 90 * 1000);
-function getUserListLocalStorage(){
-	return JSON.parse(localStorage.getItem("userList"));
-}
-function userList(refresh=false){
-	var users = store.state.users;
-	if (users.length!=0) return users;
-	users = getUserListLocalStorage();
-	if(users==null || refresh){
-		getUserListBackend(false);
-	}
-	return getUserListLocalStorage();
-}
-//----------------------------------------------------------------------
-
-// userRoles
-/*
-function getUserRolesBackend( async=true ){
-	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
-	$.ajax({
-		method: "GET",
-		url: urlAdminUsers,
-		contentType: "application/json",
-		async: async,
-		headers : { "authorization" : ("Bearer " + token) },
-		success: function(data) {
-			localStorage.setItem("userRoles",JSON.stringify(data.user_roles));
-		},
-		error: function() {
-			alert('Users falló');
-		}
-	});
-}
-setInterval(getUserRolesBackend, 90 * 1000);
-function getUserRolesLocalStorage(){
-	return JSON.parse(localStorage.getItem("userRoles"));
-}
-*/
-function getUserRoles(refresh=false){
-	return store.state.availableUserRoles;
-	/*
-		var userRoles = store.state.availableUserRoles;
-		if (userRoles.length!=0) return userRoles;
-		userRoles = getUserRolesLocalStorage();
-		if(userRoles==null || refresh){
-			getUserRolesBackend(false);
-		}
-		return getUserRolesLocalStorage();
-	*/
-}
-
-//----------------------------------------------------------------------
-
-function getUsersFiltered(){
-	return store.state.usersFiltered;
-}
 
 
 function addRole(uid,role){
