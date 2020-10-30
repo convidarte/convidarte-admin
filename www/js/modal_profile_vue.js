@@ -6,7 +6,7 @@ Vue.component('modal-profile-component', {
 	},
 	computed:{
 		refresh : function(){
-			console.log("refrescando perfil usuario desde vue");
+			console.log("refrescando perfil usuario desde vue",this.state.refreshTime);
 			var uid= store.state.currentUserId;
 			if( uid!=0 ){
 				refreshModalProfile(uid);

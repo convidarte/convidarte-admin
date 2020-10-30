@@ -6,7 +6,7 @@ Vue.component('groups-component', {
 	},
 	computed:{
 		refresh : function(){
-			console.log("refrescando grupo desde vue");
+			console.log("refrescando grupo desde vue ", this.state.refreshTime);
 			var gid= store.state.currentGroupId;
 			if( gid!=0 ){
 				refreshGroupById(gid);
