@@ -12,6 +12,7 @@ function showGroupById(groupId){
 
 function refreshGroupById(groupId){
 	groupDetailElement = document.getElementById('groupMembers');
+	if(groupDetailElement==null){ return; }
 	if (groupId==0){
 		groupDetailElement.innerHTML="";
 		return;
@@ -28,7 +29,7 @@ function refreshGroupById(groupId){
 		s+="<div style=\"margin-left:15px;\">";
 		s+="<h3> Cambiar el nombre del grupo</h3>\n";
 		s+="Nuevo nombre: <input id=\"newName\"></input>\n";
-		s+="<button id=\"changeName\" onclick=\"changeGroupName()\">Cambiar nombre</button>";
+		s+="<button id=\"changeName\" onclick=\"changeGroupNameOnClick()\">Cambiar nombre</button>";
 		s+="</div>";
 		//borrar:
 		s+="<div style=\"margin-left:15px;\">";

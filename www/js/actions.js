@@ -9,24 +9,33 @@ function showGroup(){
 	showGroupById(gid);
 }
 
+function newGroupOnClick(){
+	var groupName = document.getElementById("newGroupName").value;
+	newGroup(groupName);
+}
+
 // se llama al cambiar el filtrar por barrio
 function selectNeighborhoodChanged(){
 	currentPage=0;
+	var neighborhood = document.getElementById("selectNeighborhood").value;
+	store.setNeighborhoodFilterValue(neighborhood)	
 	refreshEverything();
 }
 // se llama al cambiar el filtrar por localidad
 function selectCityChanged(){
 	currentPage=0;
+	var city = document.getElementById("selectCity").value;
+	store.setCityFilterValue(city)	
 	refreshEverything();
 }
 
 // borra un user-role de un grupo
 function deleteMemberOnClick(){
-	boton = event.target;
-	s = boton.value;
-	gid = s.split(" ")[0];
-	uid = s.split(" ")[1];
-	role = s.split(" ")[2];
+	var boton = event.target;
+	var s = boton.value;
+	var gid = s.split(" ")[0];
+	var uid = s.split(" ")[1];
+	var role = s.split(" ")[2];
 	if ( confirm("Seguro que quiere quitar del grupo al usuario "+ uid.toString() +"?") ){
 		if(currentSystem=="admin"){
 			deleteMember(gid,uid,role);
@@ -34,18 +43,17 @@ function deleteMemberOnClick(){
 		if (currentSystem=="delegate"){
 			deleteMemberDelegate(gid,uid,role);
 		}
-		refreshEverything();
 	}
 }
 
 
 // borra un user-role de un grupo, agreega el usuario a inactivos
 function deleteMemberAndInactivateOnClick(){
-	boton = event.target;
-	s = boton.value;
-	gid = s.split(" ")[0];
-	uid = s.split(" ")[1];
-	role = s.split(" ")[2];
+	var boton = event.target;
+	var s = boton.value;
+	var gid = s.split(" ")[0];
+	var uid = s.split(" ")[1];
+	var role = s.split(" ")[2];
 	if ( confirm("Seguro que quiere quitar e inactivar al usuario "+ uid.toString() +"?") ){
 		if (currentSystem=="admin"){
 			deleteMemberAndDeactivateAdmin(gid,uid,role);
@@ -54,6 +62,14 @@ function deleteMemberAndInactivateOnClick(){
 			deleteMemberAndDeactivateDelegate(gid,uid,role);
 		}
 		refreshEverything();
+	}
+}
+
+function deleteGroupOnClick() {
+	var boton = event.target;
+	var gid = boton.value;
+	if ( confirm("Seguro que quiere eliminar el grupo "+ gid.toString() +"?") ){
+		deleteGroup(gid);
 	}
 }
 
@@ -198,6 +214,12 @@ function addUserRoleOnClick(){
 	var uid = parseInt(boton.getAttribute("data-uid"),10);
 	var role = boton.getAttribute("data-role");
 	addRole(uid,role);
-	refreshEverything();
+	$("#modalAddRole").modal('hide');
 }
 
+
+function changeGroupNameOnClick(){
+	var groupName = document.getElementById("newName").value;
+	var gid = store.state.currentGroupId;
+	changeGroupName(gid,groupName);
+}

@@ -10,8 +10,10 @@ Vue.component('available-users-component', {
 			if(token==""){
 				return;
 			}
-			refreshUserListUsers();
-			refreshPagination();
+			if(this.state.currentTab=="users"){
+				refreshUserListUsers();
+				refreshPagination();
+			}
 			return "";
 		},
 	},

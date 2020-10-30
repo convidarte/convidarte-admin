@@ -34,7 +34,7 @@ function refreshUserListUsers(){
 	usersListTableInnerHTML = genericHead+"<tbody>";
 	var userRows = new Array();
 	var nUsers = 0;
-	var numberUsers = users.length;
+	var numberUsers = availableUsers.length;
 	numberPages = Math.ceil(numberUsers/rowsPerPage);
 	for (var i = currentPage*rowsPerPage; i < Math.min(numberUsers,(currentPage+1)*rowsPerPage) ; i++) {
 		u = availableUsers[i];

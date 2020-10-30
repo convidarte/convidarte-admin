@@ -12,6 +12,7 @@ Vue.component('map-component', {
 			}
 			var tab = this.state.currentTab;
 			if(tab=="users"){
+				console.log("mostrando ",store.state.usersFiltered.length, " usuarios en el mapa.");
 				deleteMarkers();
 				refreshGroupMarkers();
 				refreshAvailableUsersMarkers();

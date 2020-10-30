@@ -8,9 +8,7 @@ Vue.component('groups-component', {
 		refresh : function(){
 			console.log("refrescando grupo desde vue ", this.state.refreshTime);
 			var gid= store.state.currentGroupId;
-			if( gid!=0 ){
-				refreshGroupById(gid);
-			}
+			refreshGroupById(gid);
 			return "";
 		},
 	},

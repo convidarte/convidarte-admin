@@ -53,10 +53,8 @@ function onLoginOk(adminUserId) {
 			logout();
 			return;
 		}
-
 		store.recoverStateFromLocalStorage();
 		processQueryStringAdmin()		
-		refreshEverything();
 	}
 	if (currentSystem=="delegate"){
 		if (p.roles.indexOf("delegate")<0){
@@ -67,9 +65,9 @@ function onLoginOk(adminUserId) {
 		document.getElementById("map").style="";
 		document.getElementById("ppal").style="";
 		document.getElementById("estilos").href="groups.css";
-		refreshEverything();
 	}
 	document.getElementById("loadingLogin").style="display: none";
+	refreshEverything();
 }
 
 

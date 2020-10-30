@@ -1,12 +1,22 @@
 var store = {
 	debug: true,
 	state: {
-		groups: [],
-		availableUserRoles: [],
-		users: [],
+		currentTab :"",
+
 		currentUserId: 0,
 		currentGroupId: 0,
-		currentTab :"",
+		
+		cityFilterValue: "",
+		neighborhoodFilterValue: "",
+		roleFilterValue: "cook",
+		onlyAvailableFilterValue: true,
+		usersFiltered: [], // filtered user roles
+
+		groups: [], // all groups
+		availableUserRoles: [], // all available user roles
+		users: [], // all users
+
+
 		refreshTime:0,
 	},
 
@@ -28,10 +38,50 @@ var store = {
 	},
 	// RefreshTime
 	setRefreshTime(){
-		if (this.debug) console.log('setRefreshTime ');
-		this.state.refreshTime  = new Date().getTime();
+		var t = new Date().getTime();
+		if (this.debug) console.log('setRefreshTime ', t);
+		this.state.refreshTime  = t;
 	},
-	
+
+	setCityFilterValue(city){
+		if (this.debug) console.log('setCityFilterValue ',city);
+		this.state.cityFilterValue=city;
+		this.setUsersFiltered();
+	},
+	setNeighborhoodFilterValue(neighborhood){
+		if (this.debug) console.log('setNeighborhoodFilterValue ',neighborhood);
+		this.state.neighborhoodFilterValue=neighborhood;
+		this.setUsersFiltered();
+	},
+	setRoleFilterValue(role){
+		if (this.debug) console.log('setRoleFilterValue ',role);
+		this.state.roleFilterValue=neighborhood;
+		this.setUsersFiltered();
+	},
+	setUsersFiltered(){
+		if (this.debug) console.log('setUsersFiltered');
+		var url = "/admin/users/roles?only_available=" + this.state.onlyAvailableFilterValue.toString();
+		var currentNeighborhood = this.state.neighborhoodFilterValue;
+		var currentCity = this.state.cityFilterValue;
+		if(currentNeighborhood!=""){
+			url+="&neighborhood="+currentNeighborhood;
+		}
+		if(currentCity!=""){
+			url+="&city="+currentCity;
+		}
+
+		do_request(url,null,true,"GET").then(
+			function(data){
+				currentRole = store.state.roleFilterValue;
+				function filterRoles(u){
+					return currentRole == u.role;
+				};
+				store.state.usersFiltered = data.user_roles.filter(filterRoles);
+			}
+		).catch(
+			()=>console.log("error in setUsersFiltered")
+		)
+	},
 
 	// Groups
 	setGroups(groups){
@@ -112,6 +162,7 @@ var store = {
 		this.setAvailableUserRolesBackend();
 		this.setUsersBackend();
 		this.setRefreshTime();
+		this.setUsersFiltered();
 	}
 }
 
