@@ -4,16 +4,10 @@ function login(){
 	var user = document.getElementById("username").value;
 	var pass = document.getElementById("password").value;
 	var loginData = { user_name: user, password : pass };
-	var urlLogin = apiBaseUrl+"/auth/login";
-	var data = JSON.stringify(loginData);
+	var url ="/auth/login";
 	document.getElementById("loadingLogin").style="";
-	$.ajax({
-		method: "POST",
-		url: urlLogin,
-		contentType: "application/json",
-		data : data,
-		async: true,
-		success: function(data){
+	do_request(url, loginData, false,"POST").then(
+		function(data){
 			adminUserId = data.user.user_id;
 			token = data.token;
 			usernameAdmin = data.user.user_name;
@@ -22,13 +16,14 @@ function login(){
 			setCookie("username-convidarte",usernameAdmin,59*60*1000);
 			setCookie("userid-convidarte",adminUserId,59*60*1000);
 			onLoginOk(adminUserId);
-		},
-		error: function() {
+		}
+	).catch(
+		function() {
 			document.getElementById("loadingLogin").style="display: none;";
 			alert('Datos de login incorrectos');			
 		}
 
-	});
+	)
 }
 
 function logout(){
@@ -54,7 +49,7 @@ function onLoginOk(adminUserId) {
 			return;
 		}
 		store.recoverStateFromLocalStorage();
-		processQueryStringAdmin()		
+		processQueryStringAdmin();
 	}
 	if (currentSystem=="delegate"){
 		if (p.roles.indexOf("delegate")<0){
@@ -62,9 +57,7 @@ function onLoginOk(adminUserId) {
 			logout();
 			return;
 		}
-		document.getElementById("map").style="";
-		document.getElementById("ppal").style="";
-		document.getElementById("estilos").href="groups.css";
+		// TODO DELEGATE
 	}
 	document.getElementById("loadingLogin").style="display: none";
 	refreshEverything();

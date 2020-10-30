@@ -6,10 +6,10 @@ Vue.component('filter-bar-component', {
 			  <div id="filterLocation" style = "display: none;" >
 				<div class="filter-group">
 				  <label>Rol:</label>
-				  <select id="selectRole" onchange="refreshEverything();">
-				    <option value="cooks" selected>Cocineros</option>
-				    <option value="drivers">Distribuidores</option>
-				    <option value="delegates">Delegados</option>
+				  <select id="selectRole" onchange="selectRoleChanged();">
+				    <option value="cook" selected>Cocineros</option>
+				    <option value="driver">Distribuidores</option>
+				    <option value="delegate">Delegados</option>
 				  </select>
 				</div>
 				<div class="filter-group">

@@ -55,7 +55,7 @@ var store = {
 	},
 	setRoleFilterValue(role){
 		if (this.debug) console.log('setRoleFilterValue ',role);
-		this.state.roleFilterValue=neighborhood;
+		this.state.roleFilterValue=role;
 		this.setUsersFiltered();
 	},
 	setUsersFiltered(){

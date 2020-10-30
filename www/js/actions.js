@@ -29,6 +29,13 @@ function selectCityChanged(){
 	refreshEverything();
 }
 
+function selectRoleChanged(){
+	currentPage=0;
+	var role = document.getElementById("selectRole").value;
+	store.setRoleFilterValue(role)	
+	refreshEverything();
+}
+
 // borra un user-role de un grupo
 function deleteMemberOnClick(){
 	var boton = event.target;
@@ -165,21 +172,6 @@ function checkboxDivideGroupChange(){
 }
 // END DIVIDING GROUP
 
-// paginacion +1
-function nextPage(){
-	if(currentPage+1 < numberPages){
-		currentPage++;
-	}
-	refreshEverything();
-}
-
-// paginacion -1
-function previousPage(){
-	if(currentPage-1 >= 0){
-		currentPage--;
-	}
-	refreshEverything();
-}
 
 function downloadGroupDetailTable(){
 	var gid = store.state.currentGroupId;

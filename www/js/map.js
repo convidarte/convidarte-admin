@@ -86,6 +86,7 @@ function createUserMarker(u, setClickListener){
 }
 
 function refreshAvailableUsersMarkers(){
+	var availableUsers = store.state.usersFiltered;
 	for (var i = 0; i < availableUsers.length; i++) {
 		u = availableUsers[i];	
 		createUserMarker(u,true);

@@ -395,6 +395,7 @@ function userList(refresh=false){
 //----------------------------------------------------------------------
 
 // userRoles
+/*
 function getUserRolesBackend( async=true ){
 	var urlAdminUsers = apiBaseUrl+"/admin/users/roles?only_available=true";
 	$.ajax({
@@ -415,14 +416,18 @@ setInterval(getUserRolesBackend, 90 * 1000);
 function getUserRolesLocalStorage(){
 	return JSON.parse(localStorage.getItem("userRoles"));
 }
+*/
 function getUserRoles(refresh=false){
-	var userRoles = store.state.availableUserRoles;
-	if (userRoles.length!=0) return userRoles;
-	userRoles = getUserRolesLocalStorage();
-	if(userRoles==null || refresh){
-		getUserRolesBackend(false);
-	}
-	return getUserRolesLocalStorage();
+	return store.state.availableUserRoles;
+	/*
+		var userRoles = store.state.availableUserRoles;
+		if (userRoles.length!=0) return userRoles;
+		userRoles = getUserRolesLocalStorage();
+		if(userRoles==null || refresh){
+			getUserRolesBackend(false);
+		}
+		return getUserRolesLocalStorage();
+	*/
 }
 
 //----------------------------------------------------------------------
