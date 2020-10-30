@@ -5,16 +5,37 @@ var store = {
 		availableUserRoles: [],
 		users: [],
 		currentUserId: 0,
+		currentGroupId: 0,
+		currentTab :"",
+		refreshTime:0,
 	},
+
+
 	// CurrentUserId
 	setCurrentUserId(uid){
-		if (this.debug) console.log('setCurrentUserId triggered');
+		if (this.debug) console.log('setCurrentUserId ',uid);
 		this.state.currentUserId  = uid;
 	},
+	// CurrentGroupId
+	setCurrentGroupId(gid){
+		if (this.debug) console.log('setCurrentGroupId ',gid);
+		this.state.currentGroupId  = gid;
+	},
+	// CurrentTab
+	setCurrentTab(tab){
+		if (this.debug) console.log('setCurrenTab ',tab);
+		this.state.currentTab  = tab;
+	},
+	// RefreshTime
+	setRefreshTime(){
+		if (this.debug) console.log('setRefreshTime ');
+		this.state.refreshTime  = new Date().getTime();
+	},
+	
 
 	// Groups
 	setGroups(groups){
-		if (this.debug) console.log('setGroups triggered');
+		if (this.debug) console.log('setGroups ');
 		this.state.groups = groups;
 	},
 	setGroupsBackend(){
@@ -37,7 +58,7 @@ var store = {
 
 	// Available user roles
 	setAvailableUserRoles(value){
-		if (this.debug) console.log('setAvailableUserRoles triggered');
+		if (this.debug) console.log('setAvailableUserRoles ');
 		this.state.availableUserRoles = value;
 	},
 	setAvailableUserRolesBackend(){
@@ -59,7 +80,7 @@ var store = {
 
 	// Users
 	setUsers(value){
-		if (this.debug) console.log('setUsers triggered');
+		if (this.debug) console.log('setUsers ');
 		this.state.users = value;
 	},
 	setUsersBackend(){
@@ -85,10 +106,20 @@ var store = {
 		this.setGroupsLocalStorage();
 		this.setAvailableUserRolesLocalStorage();
 		this.setUsersLocalStorage();
+	},
+	refreshEverythingBackend(){
+		this.setGroupsBackend();
+		this.setAvailableUserRolesBackend();
+		this.setUsersBackend();
+		this.setRefreshTime();
 	}
 }
 
-setInterval( () => store.setGroups(getGroups()), 15 * 1000);
-setInterval( store.setAvailableUserRolesBackend, 90 * 1000);
-setInterval( store.setUsersBackend, 90 * 1000);
 
+function refreshEverything() {
+	if (currentSystem=="admin"){
+		store.refreshEverythingBackend();
+	}
+
+}
+setInterval( refreshEverything, 90 * 1000);

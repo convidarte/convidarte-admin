@@ -6,7 +6,7 @@ Vue.component('main-component', {
 		<groups-component> </groups-component>
 	</div>
 	<div class="map-container">
-		<div id="map"></div>
+	<map-component id="map"></map-component>
 	</div>
 </main>`
 })

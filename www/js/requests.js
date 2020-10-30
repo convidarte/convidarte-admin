@@ -70,10 +70,10 @@ function getUserGroups(uid){
 
 function deleteGroupOnClick() {
 	// TODO separar en request y parte de leer html
-	boton = event.target;
-	gid = boton.value;
-	if (currentGroupId.toString()==gid.toString()){
-		currentGroupId=0;
+	var boton = event.target;
+	var gid = boton.value;
+	if (store.state.currentGroupId.toString()==gid.toString()){
+		store.setCurrentGroupId(0);
 		if (currentTab=="groups"){
 			document.getElementById("ppal").innerHTML="<h2>Clickear en \"Detalle\" para ver el detalle de los usuarios de un grupo</h2>";
 		}
@@ -89,6 +89,7 @@ function deleteGroupOnClick() {
 			headers : { "authorization" : ("Bearer " + token) },
 			success: function(data) {
 				alert('El grupo fue eliminado.');
+				deleteMarkers();
 				refreshEverything();
 			},
 			error: function() {
@@ -101,9 +102,10 @@ function deleteGroupOnClick() {
 function changeGroupName(){
 	// TODO separar en request y parte de leer html
 	var groupName = document.getElementById("newName").value;
-	if (currentGroupId !=0 && groupName!=""){
+	var gid = store.state.currentGroupId;
+	if (gid !=0 && groupName!=""){
 		var updateGroup = { name : groupName, users_to_add : [], users_to_remove : [] };
-		var url = apiBaseUrl+"/admin/groups/" + currentGroupId.toString(); 
+		var url = apiBaseUrl+"/admin/groups/" + gid.toString(); 
 		$.ajax({
 			method: "PUT",
 			url: url,

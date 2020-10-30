@@ -64,7 +64,6 @@ function onLoginOk(adminUserId) {
 			logout();
 			return;
 		}
-		currentGroupId=0;
 		document.getElementById("map").style="";
 		document.getElementById("ppal").style="";
 		document.getElementById("estilos").href="groups.css";
@@ -93,9 +92,8 @@ function processQueryStringAdmin(){
 	}
 	if(queryString.startsWith("?grupo")){
 		var gid = parseInt(queryString.split("/")[1],10);
-		currentGroupId = gid;
+		store.setCurrentGroupId(gid);
 		changeGroupsTab();
-		//showGroupById(gid);
 		return;
 	}
 	// default

@@ -2,10 +2,11 @@
 
 //  se llama al clickear "ver detalle de grupo"
 function showGroup(){
-	currentGroupId = event.target.value;
+	var gid = event.target.value;
+	store.setCurrentGroupId(gid);
 	currentlyDividingGroup = false;
 	userRolesNewGroup = {};
-	showGroupById(currentGroupId);
+	showGroupById(gid);
 }
 
 // se llama al cambiar el filtrar por barrio
@@ -110,18 +111,19 @@ function toggleWithoutAddress(){
 
 // BEGIN DIVIDING GROUP
 function divideGroupOnClick(){
-	newName = document.getElementById("dividedGroupNewName").value;
+	var newName = document.getElementById("dividedGroupNewName").value;
+	var gid = store.state.currentGroupId;
 	if(newName!=""){
-		userRoles = []
+		var userRoles = []
 		for(x in userRolesNewGroup){
-			uid = parseInt(x.split(",")[0],10);
-			role = x.split(",")[1];
+			var uid = parseInt(x.split(",")[0],10);
+			var role = x.split(",")[1];
 			userRoles.push({user_id: uid ,role: role});
 		}
-		res = postGroup(newName,userRoles);
+		var res = postGroup(newName,userRoles);
 		if(res==201){
-			currentGroupName  = getGroupNameById(currentGroupId);
-			res = removeUserRolesFromGroup(currentGroupId,currentGroupName,userRoles);
+			var currentGroupName  = getGroupNameById(gid);
+			res = removeUserRolesFromGroup(gid,currentGroupName,userRoles);
 			if (res== 200){
 				alert("El grupo fue dividido correctamente.");
 			}else{
@@ -164,19 +166,13 @@ function previousPage(){
 }
 
 function downloadGroupDetailTable(){
-	if(currentGroupId!=0){
-		name = encodeHTML(getGroupNameById(currentGroupId));
-		downloadElementAsPDF("groupDetailTablePrintable", "grupo "+currentGroupId.toString()+" - "+ name + " - " + getDateString() +".pdf", "avoid");
+	var gid = store.state.currentGroupId;
+	if(gid!=0){
+		name = encodeHTML(getGroupNameById(gid));
+		downloadElementAsPDF("groupDetailTablePrintable", "grupo "+gid.toString()+" - "+ name + " - " + getDateString() +".pdf", "avoid");
 	}
 }
 
-function getDateString() {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day =`${date.getDate()}`.padStart(2, '0');
-  return `${year}-${month}-${day}`
-}
 
 
 function assignGroup(){

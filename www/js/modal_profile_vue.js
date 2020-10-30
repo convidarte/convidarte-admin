@@ -5,15 +5,14 @@ Vue.component('modal-profile-component', {
 			}
 	},
 	computed:{
-		/*
-		user : function(){
-			return getUserById(store.state.currentUserId);
+		refresh : function(){
+			console.log("refrescando perfil usuario desde vue");
+			var uid= store.state.currentUserId;
+			if( uid!=0 ){
+				refreshModalProfile(uid);
+			}
+			return "";
 		},
-		address : function(){
-			var u = this.user;
-			return (u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment).trim()
-		},
-		*/
 	},
 	methods:{
 		open: function(){
@@ -24,6 +23,7 @@ Vue.component('modal-profile-component', {
 	template:
 `
 <div>
+{{ refresh }}
 <div class="modal fade" id="modalProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

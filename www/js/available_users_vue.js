@@ -1,6 +1,23 @@
 Vue.component('available-users-component', {
+	data: function(){
+			return {
+				state: store.state,
+			}
+	},
+	computed:{
+		refresh : function(){
+			console.log("refrescando usuarios disponibles desde vue", store.state.refreshTime);
+			if(token==""){
+				return;
+			}
+			refreshUserListUsers();
+			refreshPagination();
+			return "";
+		},
+	},
 	template:`
 <div id="usersLeftPanel" style="display: none;">
+	{{ refresh }}
     <h2 id="usersListTitle"></h2>
     <div id="usersList">
       <table id="usersListTable" class="table table-striped">
@@ -17,3 +34,4 @@ Vue.component('available-users-component', {
     </div>
   </div>`
 });
+

@@ -1,15 +1,22 @@
-// escribe el elemento "ppal" con la data detallada de un grupo
+
 function showGroupById(groupId){
 	console.log("showGroupById",groupId);
+	store.setCurrentGroupId(groupId);
+	if (groupId!=0){
+		var g = getGroup(groupId);
+		var url = "/?grupo/"+ g["group_id"]+"/"+g["name"];
+		window.history.pushState('grupos', '', url);
+	}
+}
+
+
+function refreshGroupById(groupId){
 	groupDetailElement = document.getElementById('groupMembers');
 	if (groupId==0){
 		groupDetailElement.innerHTML="";
 		return;
 	}
 	var g = getGroup(groupId);
-	var url = "/?grupo/"+ g["group_id"]+"/"+g["name"];
-	window.history.pushState('grupos', '', url);
-
 	var members = g.members;
 	s= "<div>";
 	s += "<h1>"+"&nbsp;&nbsp;"+encodeHTML(g.name)+"</h1>";
@@ -100,7 +107,6 @@ function showGroupById(groupId){
 		} 
 	); 
 	getGroupCSV(g);
-	displayGroupOnMap(g);
 }
 
 function divideGroupForm(){
@@ -187,3 +193,15 @@ function getGroupCSV(g){
 	document.getElementById("downloadCSVLinkDiv").appendChild(link);
 }
 
+//==============================================================
+// Group division:
+function startDividingGroupOnClick(){
+	currentlyDividingGroup = true;
+	userRolesNewGroup = {};
+	refreshEverything();
+}
+function stopDividingGroupOnClick(){
+	currentlyDividingGroup = false;
+	userRolesNewGroup = {};
+	refreshEverything();
+}

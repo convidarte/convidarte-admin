@@ -1,5 +1,5 @@
 function changeUsersTab(){
-	currentTab = "users";
+	store.setCurrentTab("users");
 	document.getElementById("usersLeftPanel").style="";
 	document.getElementById("filterLocation").style="";
 	document.getElementById("selectUserComponent").style="";
@@ -14,7 +14,7 @@ function changeUsersTab(){
 
 
 function changeGroupsTab(){
-	currentTab = "groups";
+	store.setCurrentTab("groups");
 	document.getElementById("groupsLeftPanel").style="";
 	document.getElementById("selectUserComponent").style="";
 	document.getElementById("selectGroupComponent").style="";

@@ -5,17 +5,12 @@ var tokenExpiration = "";
 var adminUserId = "";
 var usernameAdmin = "";
 
-var currentTab="";
-
-var users =[]; // se llama users pero es una lista de usuarios con sus roles (filtrada por barrio, etc)
-var neighborhoodList = [];
+var availableUsers =[]; // se llama users pero es una lista de usuarios con sus roles (filtrada por barrio, etc)
 
 var map;
 var markers = [];
 var groupMarkers = [];
 var currentInfoWindow = null;
-
-var currentGroupId=0;
 
 var onlyUsersWithoutAddress = false;
 

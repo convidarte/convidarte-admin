@@ -75,10 +75,18 @@ function refreshUserListUsers(){
 	$("."+"viewProfileLink").click(
 		function(e){
 			e.preventDefault(); 
-			uid = e.target.id.split("_")[1];
+			var uid = e.target.id.split("_")[1];
 			showModalProfile(uid);
 			return false;
 		} 
 	); 
 }
 
+
+function refreshPagination(){
+	if(numberPages != 0){
+		document.getElementById("currentPageDiv").innerHTML = "Página "+(currentPage+1).toString() + " de " + numberPages.toString();
+	}else{
+		document.getElementById("currentPageDiv").innerHTML = "Página "+(currentPage+1).toString() +" de 1";
+	}
+}

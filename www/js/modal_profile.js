@@ -3,6 +3,13 @@ function urlUserProfile(u){
 }
 
 function showModalProfile(uid){
+	store.setCurrentUserId(uid);	
+	$("#modalProfile").modal();
+	var u = getUserById(uid);
+	window.history.pushState('perfil', '', urlUserProfile(u));
+}
+
+function refreshModalProfile(uid){
 	u = getUserById(uid);
 	$("#modalProfile").attr("data-uid",uid);
 	address = (u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment).trim();
@@ -32,9 +39,7 @@ function showModalProfile(uid){
 	$("#modalProfileAddToGroupButton").attr("data-uid",uid);
 	$("#modalProfileAddRoleButton").attr("data-uid",uid);
 
-	$("#modalProfile").modal();
 
-	window.history.pushState('perfil', '', urlUserProfile(u));
 	var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
 	if(userMarkerMapProfile==null){
 		userMarkerMapProfile = new google.maps.Marker({});

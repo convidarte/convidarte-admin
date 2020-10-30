@@ -15,8 +15,8 @@ Vue.component('select-group-component', {
 							document.getElementById("groupList").value = selectedOption;
 							num = parseFloat(selectedOption.split(":")[0]);
 							if (num.toString()!="NaN"){
-								currentGroupId = num;
-								showGroupById(currentGroupId);
+								store.setCurrentGroupId(num);
+								showGroupById(num);
 							}
 						}
 			});

@@ -7,7 +7,7 @@
 
 function initMap() {
 	var centroMapa = {lat: -34.62, lng: -58.46};
-	map = new google.maps.Map(document.getElementById('map'), {
+	map = new google.maps.Map(document.getElementById('mapDiv'), {
 		zoom: 12,
 		center: centroMapa,
 		mapTypeId: 'terrain'
@@ -148,23 +148,19 @@ function displayGroupOnMap(g){
 	gadmin = getGroupAdminEndpointById(g.group_id);
 	deleteMarkers();
 	createGroupMarker(gadmin);
-	centerMapOn(gadmin.average_latitude, gadmin.average_longitude);
-
-	for (var i=0; i< g.members.length; i++){
-		u = g.members[i];
-		for (var j=0; j<u.roles_in_group.length;j++){
-			r = u.roles_in_group[j].role;
-			ur = JSON.parse(JSON.stringify(u));
+	//centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
+	for (var i=0; i < g.members.length; i++){
+		var u = g.members[i];
+		for (var j=0; j<u["roles_in_group"].length;j++){
+			var r = u["roles_in_group"][j].role;
+			var ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
 			createUserMarker(ur,false);
 		}
 	}
 }
-// Mapa que se muestra en el prifle modal
-function profileMap() {
-var mapProp= {
-  center:new google.maps.LatLng(51.508742,-0.120850),
-  zoom:5,
-};
-var map = new google.maps.Map(document.getElementById("profileMap"),mapProp);
+
+function centerMapOnGroup(gid){
+	var gadmin = getGroupAdminEndpointById(gid);
+	centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
 }
