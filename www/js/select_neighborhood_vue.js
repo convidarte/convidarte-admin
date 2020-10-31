@@ -1,8 +1,8 @@
 Vue.component('select-neighborhood-component', {
 	data: function(){
 			return {
-				state: store.state,
-			}
+			state: store.state,
+		}
 	},
 	computed: {
 		neighborhoodOptions: function () {
@@ -22,13 +22,20 @@ Vue.component('select-neighborhood-component', {
 			return neighborhoodList;
 		}
 	},
-  template: `
-		<div id="select-neighborhood-component">
-			<label>Barrio:</label>
-			<select id="selectNeighborhood" onchange="selectNeighborhoodChanged()">
-				<option value="" selected>Todos los barrios</option>
-				<option v-for="neighborhood in neighborhoodOptions">{{ neighborhood }}</option>
-			</select>
-		</div>
+	methods: {
+		selectNeighborhoodChanged: function (){
+			var neighborhood = document.getElementById("selectNeighborhood").value;
+			store.setNeighborhoodFilterValue(neighborhood)	
+			refreshEverything();
+		},
+	},
+	template: `
+<div id="select-neighborhood-component">
+	<label>Barrio:</label>
+	<select id="selectNeighborhood" v-on:change="selectNeighborhoodChanged">
+		<option value="" selected>Todos los barrios</option>
+		<option v-for="neighborhood in neighborhoodOptions">{{ neighborhood }}</option>
+	</select>
+</div>
 `
 })

@@ -22,10 +22,17 @@ Vue.component('select-city-component', {
 			return cityList;
 		}
 	},
-  template: `
+	methods:{
+		selectCityChanged: function (){
+			var city = document.getElementById("selectCity").value;
+			store.setCityFilterValue(city)	
+			refreshEverything();
+		},
+	},
+	template: `
 		<div id="select-city-container">
 			<label>Localidad:</label>
-			<select id="selectCity" onchange="selectCityChanged()">
+			<select id="selectCity" v-on:change="selectCityChanged">
 				<option value="" selected>Todas las localidades</option>
 				<option v-for="city in cityOptions">{{ city }}</option>
 			</select>

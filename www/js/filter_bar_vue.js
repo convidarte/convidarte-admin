@@ -21,12 +21,7 @@ Vue.component('filter-bar-component', {
 		<div id="filter-bar">
 			<div id="filterLocation" :style="styleFilterLocation" class="filter-group">
 				<div class="filter-group">
-					<label>Rol:</label>
-					<select id="selectRole" onchange="selectRoleChanged();">
-						<option value="cook" selected>Cocineros</option>
-						<option value="driver">Distribuidores</option>
-						<option value="delegate">Delegados</option>
-					</select>
+					<select-role-component></select-role-component>
 				</div>
 				<div class="filter-group">
 					<select-city-component id="selectCityComponent"></select-city-component>

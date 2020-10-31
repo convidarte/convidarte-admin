@@ -18,11 +18,11 @@ Vue.component('available-users-component', {
 			}
 			return "";
 		},
-		paginationText : function(){
-			if(this.numberPages == 0){
-				return "Página " + (this.currentPage+1).toString() + " de 1";
-			}
-			return "Página " + (this.currentPage+1).toString() + " de " + (this.numberPages).toString();
+		numberPagesToShow: function(){
+			return (this.numberPages==0) ? 1 : this.numberPages;
+		},
+		currentPageToShow: function(){
+			return this.currentPage+1;
 		},
 		title: function(){
 			var currentNeighborhood = document.getElementById("selectNeighborhood").value;
@@ -133,7 +133,7 @@ Vue.component('available-users-component', {
       <table style="border: none; margin: 0 auto; ">
         <tr>
           <td style="border: none;"><button id="buttonPreviousPage" v-on:click="previousPage">Página anterior</button></td>
-          <td style="border: none;"><div id="currentPageDiv"> {{ paginationText }} </div></td>
+          <td style="border: none;"><div id="currentPageDiv">Página {{currentPageToShow}} de {{numberPagesToShow}}</div></td>
           <td style="border: none;"> <button id="buttonNextPage" v-on:click="nextPage">Página siguiente</button></td>
         </tr>
       </table>

@@ -10,28 +10,6 @@ function showGroup(){
 }
 
 
-// se llama al cambiar el filtrar por barrio
-function selectNeighborhoodChanged(){
-	currentPage=0;
-	var neighborhood = document.getElementById("selectNeighborhood").value;
-	store.setNeighborhoodFilterValue(neighborhood)	
-	refreshEverything();
-}
-// se llama al cambiar el filtrar por localidad
-function selectCityChanged(){
-	currentPage=0;
-	var city = document.getElementById("selectCity").value;
-	store.setCityFilterValue(city)	
-	refreshEverything();
-}
-
-function selectRoleChanged(){
-	currentPage=0;
-	var role = document.getElementById("selectRole").value;
-	store.setRoleFilterValue(role)	
-	refreshEverything();
-}
-
 // borra un user-role de un grupo
 function deleteMemberOnClick(){
 	var boton = event.target;
