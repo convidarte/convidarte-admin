@@ -15,6 +15,21 @@ function roleInSpanish(role){
 	return "";
 }
 
+function roleInSpanishPlural(role){
+	if (role=="cook"){
+		return "Chefs";
+	}else if (role=="driver"){
+		return "Distribuidores";
+	}else if (role=="delegate"){
+		return "Delegados";
+	}else if (role=="admin"){
+		return "Coordinadores";
+	}
+	return "";
+}
+
+
+
 // devuelve el html de un boton para sacar un user-role de un grupo.
 function deleteRoleButton(gid,uid,role){
 	var s = "<button id=\"delete_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"deleteMemberOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Quitar del grupo</button>";

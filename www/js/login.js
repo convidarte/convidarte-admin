@@ -5,24 +5,23 @@ function login(){
 	var pass = document.getElementById("password").value;
 	var loginData = { user_name: user, password : pass };
 	var url ="/auth/login";
-	document.getElementById("loadingLogin").style="";
 	do_request(url, loginData, false,"POST").then(
 		function(data){
-			adminUserId = data.user.user_id;
-			token = data.token;
-			usernameAdmin = data.user.user_name;
-			//tokenExpiration = data.expiration;
-			setCookie("token-convidarte",token,59*60*1000);
-			setCookie("username-convidarte",usernameAdmin,59*60*1000);
-			setCookie("userid-convidarte",adminUserId,59*60*1000);
-			onLoginOk(adminUserId);
+			store.setKey("adminUserId",data.user.user_id);
+			store.setKey("token", data.token);
+			store.setKey("usernameAdmin", data.user.user_name);
+			store.setKey("tokenExpiration", data.expiration);
+
+			setCookie("token-convidarte", store.state.token, 59*60*1000);
+			setCookie("username-convidarte", store.state.usernameAdmin, 59*60*1000);
+			setCookie("userid-convidarte", store.state.adminUserId, 59*60*1000);
+			onLoginOk();
 		}
 	).catch(
 		function() {
-			document.getElementById("loadingLogin").style="display: none;";
-			alert('Datos de login incorrectos');			
+			alert('Datos de login incorrectos');
+			logout();
 		}
-
 	)
 }
 
@@ -34,14 +33,8 @@ function logout(){
 	location.reload();
 }
 
-function onLoginOk(adminUserId) {
-	localStorage.setItem("token",token);
-	p = getUserProfile(adminUserId);
-	document.getElementById("loginDiv").style="display: none;";
-	document.getElementById("adminUserName").innerHTML="Bienvenido "+encodeHTML(usernameAdmin);
-	document.getElementById("adminUserName").style="";
-	document.getElementById("logout-link").style="";
-
+function onLoginOk() {
+	p = getUserProfile(store.state.adminUserId);
 	if (currentSystem=="admin"){
 		if (p.roles.indexOf("admin")<0){
 			alert("Error: debe ser administrador para usar este sistema!")
@@ -59,7 +52,6 @@ function onLoginOk(adminUserId) {
 		}
 		// TODO DELEGATE
 	}
-	document.getElementById("loadingLogin").style="display: none";
 	refreshEverything();
 }
 

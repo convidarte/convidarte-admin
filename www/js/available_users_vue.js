@@ -9,15 +9,12 @@ Vue.component('available-users-component', {
 	},
 	computed:{
 		refresh : function(){
-			console.log("refrescando usuarios disponibles desde vue", store.state.refreshTime);
-			if(token==""){
-				return;
-			}
+			console.log("refrescando usuarios disponibles desde vue",store.state.refreshTime);
+			if(this.state.token=="") return "";
 			if(this.state.currentTab=="users"){
-				var numberUsers = store.state.usersFiltered.length;
+				var numberUsers = this.state.usersFiltered.length;
 				this.numberPages = Math.ceil(numberUsers/this.rowsPerPage);
 				if ( this.currentPage >= this.numberPages ) this.currentPage = 0;
-				//refreshUserListUsers(this.currentPage, this.rowsPerPage, this.numberPages);
 			}
 			return "";
 		},
@@ -30,8 +27,8 @@ Vue.component('available-users-component', {
 		title: function(){
 			var currentNeighborhood = document.getElementById("selectNeighborhood").value;
 			var currentCity = document.getElementById("selectCity").value;
-			var title = roleInSpanish(this.state.roleFilterValue) + " sin grupo ";
-			filters = [this.state.cityFilterValue, this.state.neighborhoodFilterValue].filter(x=> x!="");
+			var title = roleInSpanishPlural(this.state.roleFilterValue) + " sin grupo ";
+			var filters = [this.state.cityFilterValue, this.state.neighborhoodFilterValue].filter(x=> x!="");
 			title +=  (filters.length > 0) ? " en "+ filters.join(", ") :  " en todas las localidades";
 			title += " ("+ this.state.usersFiltered.length +")";
 			return title;
@@ -46,11 +43,7 @@ Vue.component('available-users-component', {
 			return "display:none;";
 		},
 		rows : function (){
-			var availableUsers = getUsersFiltered();
-			if (onlyUsersWithoutAddress){
-				availableUsers = availableUsers.filter(checkHasNoCoordinates);
-			}
-			usersListTable = document.getElementById("usersListTable");
+			var availableUsers = this.state.usersFiltered;
 			var userRows = new Array();
 			var nUsers = 0;
 			var numberUsers = availableUsers.length;
@@ -64,9 +57,9 @@ Vue.component('available-users-component', {
 				row.urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
 				row.role = u.role;
 				row.roleSpanish = roleInSpanish(u.role);
-				row.nameToShow = encodeHTML(u.user_name);
+				row.nameToShow = u.user_name;
 				if (u.name!="" || u.last_name!="" ){
-					row.nameToShow =encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")"; 
+					row.nameToShow = u.user_name + " ("+ u.name +" " + u.last_name + ")"; 
 				}
 				row.linkProfileId = "viewProfileLink_"+uid.toString();
 				row.id_select = "selectGroup"+uid.toString();

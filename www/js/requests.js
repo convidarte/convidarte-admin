@@ -21,7 +21,7 @@ function getUserProfile(uid){
 		url: urlAdminGroups,
 		contentType: "application/json",
 		async: false,
-		headers : { "authorization" : ("Bearer " + token) },
+		headers : { "authorization" : ("Bearer " + store.state.token) },
 		success: function(data) {
 			response = data;
 		},
@@ -41,7 +41,7 @@ function getUserGroups(uid){
 		url: urlAdminUsersGroups,
 		contentType: "application/json",
 		async: false,
-		headers : { "authorization" : ("Bearer " + token) },
+		headers : { "authorization" : ("Bearer " + store.state.token) },
 		success: function(data) {
 			userGroups = data.groups;
 		},
@@ -123,7 +123,7 @@ function deleteMemberDelegate(gid,uid,role){
 			data : JSON.stringify(payload),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				alert( "El usuario " + uid + " en su rol de "+ roleInSpanish(role) + " fue removido del grupo " + gid.toString()+": "+encodeHTML(groupName) ); 
 			},
@@ -149,7 +149,7 @@ function deleteMemberAndDeactivateAdmin(gid,uid,role){
 			data : JSON.stringify(updateGroup),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				return 0;
 			},
@@ -169,7 +169,7 @@ function deleteMemberAndDeactivateAdmin(gid,uid,role){
 		data : JSON.stringify(updateGroup),
 		contentType: "application/json",
 		async: false,
-		headers : { "authorization" : ("Bearer " + token) },
+		headers : { "authorization" : ("Bearer " + store.state.token) },
 		success: function(data) {
 
 		},
@@ -199,7 +199,7 @@ function deleteMemberAndDeactivateDelegate(gid,uid,role){
 			data : JSON.stringify(payload),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
 			},
@@ -224,7 +224,7 @@ function ackDelegate(gid,uid,role){
 			data : JSON.stringify(payload),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				alert( "El usuario " + uid + " fue marcado como contactado."); 
 			},
@@ -270,7 +270,7 @@ function postGroup(name, userRoles ){
 			data : JSON.stringify(newGroupData),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data,statusText,xhr) {
 				response = xhr.status;
 			},
@@ -293,7 +293,7 @@ function removeUserRolesFromGroup(group_id, groupName, userRoles){
 		data : JSON.stringify(updateGroup),
 		contentType: "application/json",
 		async: false,
-		headers : { "authorization" : ("Bearer " + token) },
+		headers : { "authorization" : ("Bearer " + store.state.token) },
 		success: function(data,statusText,xhr) {
 			response = xhr.status;
 		},
@@ -313,7 +313,7 @@ function getGroup(groupId){
 		url: urlAdminGroup,
 		contentType: "application/json",
 		async: false,
-		headers : { "authorization" : ("Bearer " + token) },
+		headers : { "authorization" : ("Bearer " + store.state.token) },
 		success: function(data) {
 			group = data;
 		},
@@ -334,7 +334,7 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 			data : JSON.stringify(updateGroup),
 			contentType: "application/json",
 			async: false,
-			headers : { "authorization" : ("Bearer " + token) },
+			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				alert( "El usuario " + user_id + " fue agregado al grupo " + group_id.toString()+": "+encodeHTML(groupName) ); 
 				refreshEverything();

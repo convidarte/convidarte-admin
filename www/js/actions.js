@@ -9,10 +9,6 @@ function showGroup(){
 	showGroupById(gid);
 }
 
-function newGroupOnClick(){
-	var groupName = document.getElementById("newGroupName").value;
-	newGroup(groupName);
-}
 
 // se llama al cambiar el filtrar por barrio
 function selectNeighborhoodChanged(){

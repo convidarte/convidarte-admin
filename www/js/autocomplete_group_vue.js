@@ -38,11 +38,11 @@ Vue.component('autocomplete-group-component', {
 		},
 	},
 	template: `
-	  <div id="autocompleteGroupContainer" class="ui-widget" :style="style">
-		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-		<input id="groupList" v-on:click="clearText">
-		{{ refreshOptions }}
-	  </div>
+<div id="autocompleteGroupContainer" class="ui-widget" :style="style">
+	<label for="groupList"><span style="color:black">Ver grupo:</span></label>
+	<input id="groupList" v-on:click="clearText">
+	{{ refreshOptions }}
+</div>
 `
 })
 

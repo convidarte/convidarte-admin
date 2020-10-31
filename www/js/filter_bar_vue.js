@@ -36,6 +36,10 @@ Vue.component('filter-bar-component', {
 				</div>
 			</div>
 			<div class="filter-group">
+				<new-group-component></new-group-component>
+			</div>
+
+			<div class="filter-group">
 				<autocomplete-group-component id="autocompleteGroupComponent"></autocomplete-group-component>
 			</div>
 			<div class="filter-group">

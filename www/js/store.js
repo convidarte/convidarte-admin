@@ -16,8 +16,12 @@ var store = {
 		availableUserRoles: [], // all available user roles
 		users: [], // all users
 
-
+		token:"",
 		refreshTime:0,
+	},
+	setKey(key,value){
+		if (this.debug) console.log('storing ', key);
+		this.state[key]=value;
 	},
 
 

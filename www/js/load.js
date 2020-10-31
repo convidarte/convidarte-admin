@@ -1,12 +1,13 @@
 function onLoadAdmin () {
+	if (store.state.token!="") return;
 	tokenCookie = getCookie("token-convidarte");
 	usernameCookie = getCookie("username-convidarte");
 	adminUserIdCookie = getCookie("userid-convidarte");
 	if( tokenCookie != ""){
-		token = tokenCookie;
-		usernameAdmin = usernameCookie;
-		adminUserId = adminUserIdCookie;
-		onLoginOk(adminUserId);
+		store.setKey("token", tokenCookie);
+		store.setKey("usernameAdmin", usernameCookie);
+		store.setKey("adminUserId", adminUserIdCookie);
+		onLoginOk(store.state.adminUserId);
 	}
 }
 window.addEventListener('load', onLoadAdmin);

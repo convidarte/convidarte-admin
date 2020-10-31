@@ -7,9 +7,7 @@ Vue.component('map-component', {
 	computed:{
 		refresher(){
 			console.log("refresh map vue ",store.state.refreshTime);
-			if(token==""){
-				return "";
-			}
+			if(this.state.token=="") return "";
 			var tab = this.state.currentTab;
 			if(tab=="users"){
 				console.log("mostrando ",store.state.usersFiltered.length, " usuarios en el mapa.");

@@ -27,6 +27,10 @@ Vue.component('autocomplete-user-component', {
 			});
 			return "";
 		},
+		style: function(){
+			if(this.state.token=="") return "display:none;"
+			return "";
+		}
 	},
 	methods: {
 		clearText: function(event){
@@ -34,7 +38,7 @@ Vue.component('autocomplete-user-component', {
 		},
 	},
 	template: `
-	  <div id="userSearchBoxContainer" class="ui-widget" >
+	  <div id="userSearchBoxContainer" class="ui-widget" :style="style">
 		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
 		<input id="userList" v-on:click="clearText">
 		{{ refreshOptions }}
