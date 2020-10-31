@@ -1,9 +1,25 @@
 Vue.component('filter-bar-component', {
+	data: function(){
+		return {
+			state: store.state,
+		}
+	},
+	computed: {
+		styleFilterLocation : function(){
+			if(this.state.currentTab=="groups"){
+				return "display: none;";
+			}
+			if(this.state.currentTab=="users"){
+				return "";
+			}
+			return "display:none;";
+		},
+	},
 	template:
 `<div class="container-fluid">
 	<div class="row">
 		<div id="filter-bar">
-			<div id="filterLocation" style = "display: none;" class="filter-group">
+			<div id="filterLocation" :style="styleFilterLocation" class="filter-group">
 				<div class="filter-group">
 					<label>Rol:</label>
 					<select id="selectRole" onchange="selectRoleChanged();">

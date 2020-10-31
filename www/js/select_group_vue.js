@@ -22,6 +22,15 @@ Vue.component('select-group-component', {
 			});
 			return "";
 		},
+		style : function(){
+			if(this.state.currentTab=="users"){
+				return "display: none;";
+			}
+			if(this.state.currentTab=="groups"){
+				return "";
+			}
+			return "display:none;";
+		},
 	},
 	methods: {
 		clearText: function(event){
@@ -29,7 +38,7 @@ Vue.component('select-group-component', {
 		},
 	},
 	template: `
-	  <div id="selectGroupContainer" class="ui-widget" style = "display: none;">
+	  <div id="selectGroupContainer" class="ui-widget" :style="style">
 		<label for="groupList"><span style="color:black">Ver grupo:</span></label>
 		<input id="groupList" v-on:click="clearText">
 		{{ refreshOptions }}

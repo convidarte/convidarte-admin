@@ -34,7 +34,7 @@ Vue.component('select-user-component', {
 		},
 	},
 	template: `
-	  <div id="userSearchBoxContainer" class="ui-widget" style = "display: none;">
+	  <div id="userSearchBoxContainer" class="ui-widget" >
 		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
 		<input id="userList" v-on:click="clearText">
 		{{ refreshOptions }}

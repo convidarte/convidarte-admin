@@ -11,9 +11,18 @@ Vue.component('groups-component', {
 			refreshGroupById(gid);
 			return "";
 		},
+		style : function(){
+			if(this.state.currentTab=="users"){
+				return "display: none;";
+			}
+			if(this.state.currentTab=="groups"){
+				return "";
+			}
+			return "display:none;";
+		}
 	},
 	template:`
-<div id="groupsLeftPanel" style="display: none;">  
+<div id="groupsLeftPanel" :style="style">  
 	<div id="grupos" style="display:none;"></div>
 	<div id="groupMembers"></div>
 	{{ refresh }}

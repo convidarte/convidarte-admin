@@ -2,6 +2,11 @@ function resetURL(){
 	history.back()
 }
 
+function encodeHTML(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+
 function getDateString() {
   const date = new Date();
   const year = date.getFullYear();

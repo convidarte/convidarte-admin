@@ -1,5 +1,40 @@
 Vue.component('navbar-component', {
-template:`
+	data: function(){
+			return {
+				state: store.state,
+			}
+	},
+	methods: {
+		changeUsersTab: function(){
+			store.setCurrentTab("users");
+			//document.getElementById("nav-link-users").parentElement.className="nav-item active";
+			//document.getElementById("nav-link-groups").parentElement.className="nav-item";
+			window.history.pushState('usuarios', '', '/?usuarios');
+			refreshEverything();
+		},
+		changeGroupsTab: function(){
+			store.setCurrentTab("groups");
+			//document.getElementById("nav-link-groups").parentElement.className="nav-item active";
+			//document.getElementById("nav-link-users").parentElement.className="nav-item";
+			window.history.pushState('grupos', '', '/?grupos');
+			refreshEverything();
+		},
+	},
+	computed:{
+		classLinkUsers: function(){
+			if( this.state.currentTab=="users"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
+		classLinkGroups: function(){
+			if( this.state.currentTab=="groups"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
+	},
+	template:`
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
      <a class="navbar-brand" href=".">
       <img src="img/convidarte-logo.svg" alt="Convidarte" height="40">
@@ -9,11 +44,11 @@ template:`
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
-       <li class="nav-item active">
-        <a id="nav-link-users"  class="nav-link" href="#" onclick="changeUsersTab()" >Usuarios sin grupo<span class="sr-only">(current)</span></a>
+       <li :class="classLinkUsers">
+        <a id="nav-link-users"  class="nav-link" href="#" v-on:click="changeUsersTab" >Usuarios sin grupo<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a id="nav-link-groups" class="nav-link" href="#" onclick="changeGroupsTab()" >Grupos</a>
+      <li :class="classLinkGroups">
+        <a id="nav-link-groups" class="nav-link" href="#" v-on:click="changeGroupsTab" >Grupos</a>
       </li>
     </ul>
 

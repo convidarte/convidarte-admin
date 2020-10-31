@@ -69,24 +69,24 @@ function processQueryStringAdmin(){
 	console.log(queryString);
 	if(queryString.startsWith("?perfil/")){
 		var uid = parseInt(queryString.split("/")[1],10);
-		changeUsersTab();
+		store.setCurrentTab("users");
 		showModalProfile(uid);
 		return;
 	}
 	if(queryString.startsWith("?grupos")){
-		changeGroupsTab();
+		store.setCurrentTab("groups");
 		return;	
 	}
 	if(queryString.startsWith("?usuarios")){
-		changeUsersTab();
+		store.setCurrentTab("users");
 		return;	
 	}
 	if(queryString.startsWith("?grupo")){
 		var gid = parseInt(queryString.split("/")[1],10);
 		store.setCurrentGroupId(gid);
-		changeGroupsTab();
+		store.setCurrentTab("groups");
 		return;
 	}
 	// default
-	changeUsersTab();
+	store.setCurrentTab("users");
 }

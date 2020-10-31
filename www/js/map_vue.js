@@ -38,13 +38,23 @@ Vue.component('map-component', {
 				centerMapOnGroup(gid);
 			}
 			return "";
-		}
+		},
+		setZoom(){
+			if(this.state.currentTab=="users"){
+				map.setZoom(12);
+			}
+			if(this.state.currentTab=="groups"){
+				map.setZoom(15);
+			}
+			return "";
+		},
 	},
 	template:`
 <div id="map">
 	<div id="mapDiv"></div>
 	{{ refresher }}
 	{{ centerOnGroup }}
+	{{ setZoom }}
 </div>`
 })
 
