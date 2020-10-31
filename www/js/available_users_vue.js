@@ -17,7 +17,7 @@ Vue.component('available-users-component', {
 				var numberUsers = store.state.usersFiltered.length;
 				this.numberPages = Math.ceil(numberUsers/this.rowsPerPage);
 				if ( this.currentPage >= this.numberPages ) this.currentPage = 0;
-				refreshUserListUsers(this.currentPage, this.rowsPerPage, this.numberPages);
+				//refreshUserListUsers(this.currentPage, this.rowsPerPage, this.numberPages);
 			}
 			return "";
 		},
@@ -36,6 +36,44 @@ Vue.component('available-users-component', {
 			title += " ("+ this.state.usersFiltered.length +")";
 			return title;
 		},
+		style: function(){
+			if(this.state.currentTab=="groups"){
+				return "display: none;";
+			}
+			if(this.state.currentTab=="users"){
+				return "";
+			}
+			return "display:none;";
+		},
+		rows : function (){
+			var availableUsers = getUsersFiltered();
+			if (onlyUsersWithoutAddress){
+				availableUsers = availableUsers.filter(checkHasNoCoordinates);
+			}
+			usersListTable = document.getElementById("usersListTable");
+			var userRows = new Array();
+			var nUsers = 0;
+			var numberUsers = availableUsers.length;
+			for (var i = this.currentPage*this.rowsPerPage; i < Math.min(numberUsers,(this.currentPage+1)*this.rowsPerPage) ; i++) {
+				var row = {}
+				u = availableUsers[i];
+				uid = u.user_id;
+				row.uid = uid;
+				row.address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
+				addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
+				row.urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
+				row.role = u.role;
+				row.roleSpanish = roleInSpanish(u.role);
+				row.nameToShow = encodeHTML(u.user_name);
+				if (u.name!="" || u.last_name!="" ){
+					row.nameToShow =encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")"; 
+				}
+				row.linkProfileId = "viewProfileLink_"+uid.toString();
+				row.id_select = "selectGroup"+uid.toString();
+				userRows.push(row);
+			}
+			return userRows;
+		}
 	},
 	methods:{
 		nextPage: function(){
@@ -47,15 +85,55 @@ Vue.component('available-users-component', {
 			if(this.currentPage-1 >= 0){
 				this.currentPage--;
 			}
-		}
-
+		},
+		openModalProfileOnClick: function(e){
+			e.preventDefault(); 
+			var uid = e.target.id.split("_")[1];
+			showModalProfile(uid);
+			return false;
+		},
+		assignGroup: function (){
+			var boton = event.target;
+			var uid = parseInt(boton.getAttribute("data-uid"),10);
+			var role = boton.getAttribute("data-role");
+			var gid = parseInt(document.getElementById("selectGroup"+uid.toString()).value,10);
+			var groupName = getGroupNameById(gid);
+			console.log(uid,role,gid,groupName);
+			if (gid!=""){
+				addUserRoleToGroup(uid,role,gid, groupName);
+				refreshEverything();
+			}else{
+				alert("Debe seleccionar un grupo.");
+			}
+		},
 	},
 	template:`
-<div id="usersLeftPanel" style="display: none;">
+<div id="usersLeftPanel" :style="style">
 	{{ refresh }}
     <h2 id="usersListTitle">{{title}}</h2>
     <div id="usersList">
       <table id="usersListTable" class="table table-striped">
+	  <thead>
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Rol</th>
+				<th scope="col">Nombre y apellido</th>
+				<th scope="col">Dirección</th>
+				<th scope="col">Asignar grupo</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr v-for="row in rows">
+				<th>{{ row.uid }}</th>
+				<td>{{ row.roleSpanish }}</td>
+				<td><a :id="row.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >{{ row.nameToShow }}</a></td>
+				<td><a :href="row.urlMaps" target="_blank"> {{ row.address }} </a></td>
+				<td>
+					<select-group-component :id="row.id_select"></select-group-component>
+					<button v-on:click="assignGroup" :data-uid="row.uid" :data-role="row.role" >Agregar</button>
+				</td>
+			</tr>
+		</tbody>
       </table>
     </div>
     <div id="pagination">
@@ -69,64 +147,4 @@ Vue.component('available-users-component', {
     </div>
   </div>`
 });
-
-function refreshUserListUsers(currentPage, rowsPerPage,numberPages){
-	var availableUsers = getUsersFiltered();
-	var showOnlyAvailable = true;
-	if (onlyUsersWithoutAddress){
-		availableUsers = availableUsers.filter(checkHasNoCoordinates);
-	}
-	usersListTable = document.getElementById("usersListTable");
-	genericHead = "<thead><tr><th scope=\"col\">ID</th><th scope=\"col\">Rol</th><th scope=\"col\">Nombre y apellido</th><th scope=\"col\">Dirección</th><th scope=\"col\">Asignar grupo</th><th scope=\"col\"></th></tr></thead>";
-	usersListTableInnerHTML = genericHead+"<tbody>";
-	var userRows = new Array();
-	var nUsers = 0;
-	var numberUsers = availableUsers.length;
-	for (var i = currentPage*rowsPerPage; i < Math.min(numberUsers,(currentPage+1)*rowsPerPage) ; i++) {
-		u = availableUsers[i];
-		uid = u.user_id;
-		address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
-		addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-		urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-		row="<tr>";
-		row+="<th scope=\"row\">"+uid+"</th>";
-		if (u.role == "cook") {
-			row+="<td>Cocinero</td>";
-		}
-		if (u.role == "driver") {
-			row+="<td>Distribuidor</td>";
-		}
-		if (u.role == "delegate") {
-			row+="<td>Delegado</td>";
-		}
-		nameToShow = encodeHTML(u.user_name);
-		if (u.name!="" || u.last_name!="" ){
-			nameToShow =encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")"; 
-		}
-
-		viewProfileLink = "viewProfileLink_"+uid.toString();
-		row+="<td><a id=\"" + viewProfileLink + "\" href=\"\" class=\"viewProfileLink\" >" + nameToShow + "</a></td>";
-		row+="<td><a href=\""+urlMaps+"\" target=\"_blank\">"+ encodeHTML(address)+"</a></td>";
-		if(showOnlyAvailable){
-			row += "<td>" + getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
-		}else{
-			//row+= groupsOfUser(u);
-		}
-		row += "</tr>\n";
-		userRows[nUsers++]=row;
-	}
-	usersListTableInnerHTML += userRows.join('\n') + "</tbody>";
-	usersListTable.innerHTML =usersListTableInnerHTML;
-	$("."+"viewProfileLink").click(
-		function(e){
-			e.preventDefault(); 
-			var uid = e.target.id.split("_")[1];
-			showModalProfile(uid);
-			return false;
-		} 
-	);
-}
-
-
-
 

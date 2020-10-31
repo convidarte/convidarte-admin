@@ -1,4 +1,4 @@
-Vue.component('select-user-component', {
+Vue.component('autocomplete-user-component', {
 	data: function(){
 			return {
 				state: store.state,
