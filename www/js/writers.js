@@ -29,22 +29,10 @@ function roleInSpanishPlural(role){
 }
 
 
-
-// devuelve el html de un boton para sacar un user-role de un grupo.
-function deleteRoleButton(gid,uid,role){
-	var s = "<button id=\"delete_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"deleteMemberOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Quitar del grupo</button>";
-	return s;
+function prepareAddressGoogleMaps(street,number,city,province){
+	return street +" "+number.toString()+", " +city+", "+province;
 }
 
-function deleteAndInactivateRoleButton(gid,uid,role){
-	var s = "<button id=\"delete_inactivate_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"deleteMemberAndInactivateOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Quitar e inactivar usuario</button>";
-	return s;
-}
-
-function buttonAckDelegate(gid,uid,role){
-	var s = "<button id=\"button_ack_delegate_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"ackDelegateOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Ya me contacté!</button>";
-	return s;
-}
 
 function userMarkerContent(uid,role){
 	u = getUserById(uid);
@@ -57,10 +45,6 @@ function userMarkerContent(uid,role){
 		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 	}
 	return s;
-}
-
-function prepareAddressGoogleMaps(street,number,city,province){
-	return street +" "+number.toString()+", " +city+", "+province;
 }
 
 // devuelve el HTML de un select con los grupos existentes y el id especificado.
@@ -77,7 +61,6 @@ function getGroupSelectHTML(selectId){
 	s+="</select>";
 	return s;
 }
-
 
 function getRoleSelectHTML(selectId,roles){
 	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n";

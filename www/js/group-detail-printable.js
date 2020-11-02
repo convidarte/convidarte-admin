@@ -4,14 +4,13 @@ Vue.component('group-detail-printable', {
 				state: store.state,
 			}
 	},
+	props: ["group"],
 	computed:{
 		groupName: function(){
-			var g = getGroup(store.state.currentGroupId);
-			if (g==null) return "";
-			return g.name;
+			return (this.group==null) ? "" : this.group.name;
 		},
 		groupMembers: function(){
-			var g = getGroup(store.state.currentGroupId);
+			var g = this.group;
 			if (g==null) return [];
 			var members = g.members;
 			var membersToShow = [];
@@ -35,8 +34,23 @@ Vue.component('group-detail-printable', {
 			return membersToShow;
 		},
 	},
+	methods: {
+		downloadGroupDetailTable: function(){
+			var gid = this.group.group_id;
+			var name = this.group.name;
+			var filename = "grupo "+gid.toString()+" - "+ name + " - " + getDateString() +".pdf";
+			if(gid!=0){
+				name = encodeHTML(getGroupNameById(gid));
+				downloadElementAsPDF("groupDetailTablePrintable", filename, "avoid");
+			}
+			return false;
+		},
+	},
 	template:`
 <div id="groupDetailPrintableContainer">
+	<div style="margin-left:15px;">
+		<a id="bajarPDF" href="#" @click="downloadGroupDetailTable">Bajar en formato PDF</a>
+	</div>
 	<div style="display:none;">  
 		<div id="groupDetailTablePrintable">
 			<br><br><br><br><br><br>

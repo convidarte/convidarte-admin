@@ -152,3 +152,48 @@ function launchGiveNewRoleModal(){
 	showGiveNewRoleModal(uid);
 }
 
+
+
+function inactivateUserRoleOnClickModal(){
+	boton = event.target;
+	uid = boton.getAttribute("data-uid-inactivate");
+	role = boton.getAttribute("data-role-inactivate");
+	inactivateUserRole(uid, role);
+	refreshEverything();
+}
+
+function showModalProfileTooltip(){
+	event.preventDefault();
+	uid = event.target.getAttribute("data-uid");
+	showModalProfile(uid);
+	return false;
+}
+
+
+function addUserRoleOnClick(){
+	var boton = event.target;
+	var uid = parseInt(boton.getAttribute("data-uid"),10);
+	var role = boton.getAttribute("data-role");
+	addRole(uid,role);
+	$("#modalAddRole").modal('hide');
+}
+
+
+function assignGroup(){
+	boton = event.target;
+	uid = boton.value;
+	u = getUserWithRolesById(uid);
+	role = u.role; // cook
+	user_role_id = u.role_id; // uint
+	user_id = u.user_id; // uint
+	group_id = document.getElementById("selectGroup"+uid.toString()).value;
+	groupName = getGroupNameById(group_id);
+	if (group_id!=""){
+		addUserRoleToGroup(u.user_id, u.role, group_id, groupName);
+		refreshEverything();
+	}else{
+		alert("Debe seleccionar un grupo.");
+	}
+}
+
+
