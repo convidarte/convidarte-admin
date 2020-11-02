@@ -34,6 +34,7 @@ function getUserProfile(uid){
 
 
 function getUserGroups(uid){
+	if (! uid) {return [];}
 	var urlAdminUsersGroups = apiBaseUrl+"/users/"+uid.toString()+"/groups";
 	var userGroups;
 	$.ajax({
@@ -407,6 +408,7 @@ function getElementInOrderedListById(xs,idElement, keyName){
 	// busqueda binaria
 	a = 0;
 	b = xs.length;
+	if (b==0) return null;
 	while( b-a > 1){
 		c = Math.round( (a+b)/2 );
 		if ( xs[c][keyName] > idElement ){

@@ -14,12 +14,21 @@ Vue.component('filter-bar-component', {
 			}
 			return "display:none;";
 		},
+		delegateSystem: function(){
+			return store.state.currentSystem=="delegate";
+		},
+		adminSystem: function(){
+			return store.state.currentSystem=="admin";
+		},
+		isLoggedIn: function(){
+			return store.state.token!="";
+		},
 	},
 	template:
-`<div class="container-fluid">
+`<div class="container-fluid" v-if="isLoggedIn">
 	<div class="row">
 		<div id="filter-bar">
-			<div id="filterLocation" :style="styleFilterLocation" class="filter-group">
+			<div id="filterLocation" :style="styleFilterLocation" class="filter-group" v-if="adminSystem">
 				<div class="filter-group">
 					<select-role-component></select-role-component>
 				</div>
@@ -30,15 +39,18 @@ Vue.component('filter-bar-component', {
 					<select-neighborhood-component id="selectNeighborhoodComponent"></select-neighborhood-component>
 				</div>
 			</div>
-			<div class="filter-group">
+			<div class="filter-group" v-if="adminSystem">
 				<new-group-component></new-group-component>
 			</div>
 
-			<div class="filter-group">
+			<div class="filter-group" v-if="adminSystem">
 				<autocomplete-group-component id="autocompleteGroupComponent"></autocomplete-group-component>
 			</div>
-			<div class="filter-group">
+			<div class="filter-group"  v-if="adminSystem">
 				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
+			</div>
+			<div class="filter-group" v-if="delegateSystem">
+				<group-list-delegate></group-list-delegate>
 			</div>
 		</div>
 	</div>

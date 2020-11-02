@@ -35,23 +35,23 @@ function logout(){
 
 function onLoginOk() {
 	p = getUserProfile(store.state.adminUserId);
-	if (currentSystem=="admin"){
+	if (store.state.currentSystem=="admin"){
 		if (p.roles.indexOf("admin")<0){
 			alert("Error: debe ser administrador para usar este sistema!")
 			logout();
 			return;
 		}
 		store.recoverStateFromLocalStorage();
-		processQueryStringAdmin();
 	}
-	if (currentSystem=="delegate"){
+	if (store.state.currentSystem=="delegate"){
 		if (p.roles.indexOf("delegate")<0){
 			alert("Error: debe ser delegado para usar este sistema!")
 			logout();
 			return;
 		}
-		// TODO DELEGATE
+		//  TODO DELEGATE
 	}
+	processQueryStringAdmin();
 	refreshEverything();
 }
 
@@ -79,6 +79,11 @@ function processQueryStringAdmin(){
 		store.setCurrentTab("groups");
 		return;
 	}
-	// default
-	store.setCurrentTab("users");
+	if( store.state.currentSystem=="admin"){
+		store.setCurrentTab("users");
+	}
+	if( store.state.currentSystem=="delegate"){
+		store.setCurrentTab("groups");
+	}
+
 }

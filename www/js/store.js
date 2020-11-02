@@ -165,16 +165,15 @@ var store = {
 		this.setGroupsBackend();
 		this.setAvailableUserRolesBackend();
 		this.setUsersBackend();
-		this.setRefreshTime();
 		this.setUsersFiltered();
 	}
 }
 
 
 function refreshEverything() {
-	if (currentSystem=="admin"){
+	if (store.state.currentSystem=="admin"){
 		store.refreshEverythingBackend();
 	}
-
+	store.setRefreshTime();
 }
 setInterval( refreshEverything, 90 * 1000);

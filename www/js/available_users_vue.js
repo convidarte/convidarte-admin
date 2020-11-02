@@ -25,8 +25,8 @@ Vue.component('available-users-component', {
 			return this.currentPage+1;
 		},
 		title: function(){
-			var currentNeighborhood = document.getElementById("selectNeighborhood").value;
-			var currentCity = document.getElementById("selectCity").value;
+			var currentNeighborhood = this.state.neighborhoodFilterValue;
+			var currentCity = this.state.cityFilterValue;
 			var title = roleInSpanishPlural(this.state.roleFilterValue) + " sin grupo ";
 			var filters = [this.state.cityFilterValue, this.state.neighborhoodFilterValue].filter(x=> x!="");
 			title +=  (filters.length > 0) ? " en "+ filters.join(", ") :  " en todas las localidades";

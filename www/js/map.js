@@ -62,8 +62,8 @@ function showInfoWindow( marker, infoWindowContent){
 
 function createUserMarker(u, setClickListener){
 	if(parseFloat(u.address.latitude)){
-		coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
-		label = u.user_id.toString()+": "+encodeHTML(u.user_name);
+		var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
+		var label = null; //u.user_id.toString()+": "+encodeHTML(u.user_name);
 		var color;
 		if (u.role=="cook"){
 			color = "red";
@@ -112,8 +112,8 @@ function infoWindowTextForGroupMarker(gid){
 }
 
 function createGroupMarker(g){
-	coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
-	label = g.group_id.toString() + ": "+ encodeHTML(g.name);
+	var coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
+	var label = null;// g.group_id.toString() + ": "+ encodeHTML(g.name);
 	var color = "yellow";
 	var marker = addMarker(groupMarkers, coords,label,color);
 	//marker.group_id = parseInt(g.group_id,10);
@@ -148,7 +148,10 @@ function centerMapOn(lat,long){
 function displayGroupOnMap(g){
 	gadmin = getGroupAdminEndpointById(g.group_id);
 	deleteMarkers();
-	createGroupMarker(gadmin);
+	var gadmin = getGroupAdminEndpointById(g.group_id);
+	if (gadmin!= null){
+		createGroupMarker(gadmin);
+	}
 	//centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
@@ -156,12 +159,14 @@ function displayGroupOnMap(g){
 			var r = u["roles_in_group"][j].role;
 			var ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
-			createUserMarker(ur,false);
+			createUserMarker(ur,true);
 		}
 	}
 }
 
 function centerMapOnGroup(gid){
 	var gadmin = getGroupAdminEndpointById(gid);
-	centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
+	if (gadmin != null){
+		centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
+	}
 }

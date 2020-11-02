@@ -24,7 +24,7 @@ function refreshGroupById(groupId){
 	s+= "<div style=\"margin-left:15px;\"><a id=\"bajarPDF\" href=\"#\" onclick=\"downloadGroupDetailTable();return false;\">Bajar en formato PDF</a></div>";
 	s+="<div id=\"downloadCSVLinkDiv\" style=\"margin-left:15px;\"></div>";
 	s+="</div>";
-	if (currentSystem == "admin"){
+	if (store.state.currentSystem == "admin"){
 		// renombrar:
 		s+="<div style=\"margin-left:15px;\">";
 		s+="<h3> Cambiar el nombre del grupo</h3>\n";
@@ -61,7 +61,7 @@ function refreshGroupById(groupId){
 		}
 		viewProfileLink = "viewProfileLink_"+uid.toString();
 		s+= "<a id=\"" + viewProfileLink + "\" href=\"#\" class=\"viewProfileLink\" >" + nameToShow + "</a>";
-		if ( currentSystem=="delegate" && (!ack)   ){
+		if ( store.state.currentSystem=="delegate" && (!ack)   ){
 			s+=buttonAckDelegate(g.group_id,uid,u.roles_in_group[0].role);
 		}
 		s+="</td>";

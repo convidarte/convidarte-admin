@@ -18,10 +18,10 @@ function deleteMemberOnClick(){
 	var uid = s.split(" ")[1];
 	var role = s.split(" ")[2];
 	if ( confirm("Seguro que quiere quitar del grupo al usuario "+ uid.toString() +"?") ){
-		if(currentSystem=="admin"){
+		if(store.state.currentSystem=="admin"){
 			deleteMember(gid,uid,role);
 		}
-		if (currentSystem=="delegate"){
+		if (store.state.currentSystem=="delegate"){
 			deleteMemberDelegate(gid,uid,role);
 		}
 	}
@@ -36,10 +36,10 @@ function deleteMemberAndInactivateOnClick(){
 	var uid = s.split(" ")[1];
 	var role = s.split(" ")[2];
 	if ( confirm("Seguro que quiere quitar e inactivar al usuario "+ uid.toString() +"?") ){
-		if (currentSystem=="admin"){
+		if (store.state.currentSystem=="admin"){
 			deleteMemberAndDeactivateAdmin(gid,uid,role);
 		}
-		if (currentSystem=="delegate"){
+		if (store.state.currentSystem=="delegate"){
 			deleteMemberAndDeactivateDelegate(gid,uid,role);
 		}
 		refreshEverything();
@@ -78,7 +78,7 @@ function ackDelegateOnClick(){
 	gid = s.split(" ")[0];
 	uid = s.split(" ")[1];
 	role = s.split(" ")[2];
-	if (currentSystem=="delegate"){
+	if (store.state.currentSystem=="delegate"){
 		ackDelegate(gid,uid,role);
 	}
 	refreshEverything();

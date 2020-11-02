@@ -38,6 +38,12 @@ Vue.component('navbar-component', {
 			if( this.state.token!="") return store.state.usernameAdmin;
 			return "";
 		},
+		delegateSystem: function(){
+			return store.state.currentSystem=="delegate";
+		},
+		adminSystem: function(){
+			return store.state.currentSystem=="admin";
+		},
 	},
 	template:`
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
@@ -48,14 +54,17 @@ Vue.component('navbar-component', {
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
-		<ul class="navbar-nav mr-auto">
-			<li :class="classLinkUsers">
+		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
+			<li :class="classLinkUsers"  v-if="adminSystem" >
 				<a id="nav-link-users"  class="nav-link" href="#" v-on:click="changeUsersTab" >
 					Usuarios sin grupo<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li :class="classLinkGroups">
+			<li :class="classLinkGroups" v-if="adminSystem" >
 				<a id="nav-link-groups" class="nav-link" href="#" v-on:click="changeGroupsTab" >Grupos</a>
+			</li>
+			<li :class="classLinkGroups" v-if="delegateSystem">
+				<a id="nav-link-my-groups" class="nav-link" href="#" v-on:click="changeGroupsTab" >Mis grupos</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav">
