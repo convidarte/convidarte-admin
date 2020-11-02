@@ -308,7 +308,7 @@ function removeUserRolesFromGroup(group_id, groupName, userRoles){
 
 function getGroup(groupId){
 	var urlAdminGroup = apiBaseUrl+"/groups/"+groupId.toString() ;
-	var group;
+	var group=null;
 	$.ajax({
 		method: "GET",
 		url: urlAdminGroup,
@@ -319,7 +319,7 @@ function getGroup(groupId){
 			group = data;
 		},
 		error: function() {
-			alert('Get group falló');
+			console.log('Get group falló');
 		}
 	});
 	return group;

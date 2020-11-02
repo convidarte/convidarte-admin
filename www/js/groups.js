@@ -97,7 +97,7 @@ function refreshGroupById(groupId){
 	}
 	s+="</table>";
 	s+="<br/><br/>";
-	s+= groupDetailPrintable(g);
+	//s+= groupDetailPrintable(g);
 	groupDetailElement.innerHTML = s;
 	$("."+"viewProfileLink").click(
 		function(e){
@@ -127,7 +127,7 @@ function divideGroupForm(){
 	s+="<hr style=\"width:95%;\">";
 	return s;
 }
-
+/*
 function groupDetailPrintable(g){
 	//g = getGroup(groupId);
 	members = g.members;
@@ -160,7 +160,7 @@ function groupDetailPrintable(g){
 	}
 	s+="</tbody></table></div></div>";
 	return s;
-}
+}*/
 
 function getGroupCSV(g){
 	members = g.members;

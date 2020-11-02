@@ -25,6 +25,7 @@ Vue.component('groups-component', {
 <div id="groupsLeftPanel" :style="style">  
 	<div id="grupos" style="display:none;"></div>
 	<div id="groupMembers"></div>
+	<group-detail-printable></group-detail-printable>
 	{{ refresh }}
 </div>
 ` 
