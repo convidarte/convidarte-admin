@@ -5,7 +5,7 @@
 // para mostrar solo los markers que están en el frame
 // en el evento bounds_changed se triggerearia un for que recorre todos los marcadores y setea map solo en los que quedan visibles
 
-function initMap() {
+function initMaps() {
 	var centroMapa = {lat: -34.62, lng: -58.46};
 	map = new google.maps.Map(document.getElementById('mapDiv'), {
 		zoom: 12,
@@ -21,7 +21,17 @@ function initMap() {
 	  }
 	];
 	map.setOptions({styles: noPoi});
+
+
+	// mapa modal profile
+	var mapProp= {
+	  center:new google.maps.LatLng(-34.608558, -58.392617),
+	  zoom:14,
+	};
+	mapProfile = new google.maps.Map(document.getElementById("profileMap"),mapProp);
 }
+
+
 
 
 // Adds a marker to the collection and push to the array.
@@ -57,33 +67,6 @@ function showInfoWindow( marker, infoWindowContent){
 }
 
 
-function userMarkerContent(uid,role){
-	u = getUserById(uid);
-	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
-	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
-	s += "<div>" + roleInSpanish(role) + "</div>";
-	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
-	if(store.state.currentTab=="users"){
-		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
-		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
-	}
-	return s;
-}
-
-// devuelve el HTML de un select con los grupos existentes y el id especificado.
-function getGroupSelectHTML(selectId){
-	groups = getGroups();
-	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
-	s += "<option disabled selected value> elegir grupo </option>"
-	//groups = getGroups();
-	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
-		group_id = g.group_id.toString();
-		s+="<option value=\"" + group_id + "\" >"+ group_id + " - " + encodeHTML(g.name) +"</option>\n";
-	}
-	s+="</select>";
-	return s;
-}
 
 
 
@@ -168,12 +151,11 @@ function deleteMarkers() {
 	groupMarkers = [];
 }
 
-function centerMapOn(lat,long){
+function centerMapOn(map, lat,long){
 	map.setCenter(new google.maps.LatLng(lat, long));
 }
 
 function displayGroupOnMap(g){
-	gadmin = getGroupAdminEndpointById(g.group_id);
 	deleteMarkers();
 	var gadmin = getGroupAdminEndpointById(g.group_id);
 	if (gadmin!= null){

@@ -9,7 +9,7 @@ Vue.component('available-users-component', {
 	},
 	computed:{
 		refresh : function(){
-			console.log("refrescando usuarios disponibles desde vue",store.state.refreshTime);
+			console.log("refrescando usuarios disponibles ", store.state.refreshTime);
 			if(this.state.token=="") return "";
 			if(this.state.currentTab=="users"){
 				var numberUsers = this.state.usersFiltered.length;
@@ -47,22 +47,19 @@ Vue.component('available-users-component', {
 			var userRows = new Array();
 			var nUsers = 0;
 			var numberUsers = availableUsers.length;
-			for (var i = this.currentPage*this.rowsPerPage; i < Math.min(numberUsers,(this.currentPage+1)*this.rowsPerPage) ; i++) {
+			var pageStart = this.currentPage * this.rowsPerPage;
+			var pageEnd = Math.min( numberUsers, (this.currentPage+1) * this.rowsPerPage );
+			for (var i = pageStart;  i < pageEnd; i++) {
 				var row = {}
 				u = availableUsers[i];
 				uid = u.user_id;
 				row.uid = uid;
-				row.address = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
-				addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-				row.urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
+				row.address = addressToShow(u);
+				row.urlMaps = urlGoogleMaps(u);
 				row.role = u.role;
 				row.roleSpanish = roleInSpanish(u.role);
-				row.nameToShow = u.user_name;
-				if (u.name!="" || u.last_name!="" ){
-					row.nameToShow = u.user_name + " ("+ u.name +" " + u.last_name + ")"; 
-				}
+				row.nameToShow = nameToShow(u);
 				row.linkProfileId = "viewProfileLink_"+uid.toString();
-				row.id_select = "selectGroup"+uid.toString();
 				userRows.push(row);
 			}
 			return userRows;
@@ -85,20 +82,6 @@ Vue.component('available-users-component', {
 			showModalProfile(uid);
 			return false;
 		},
-		assignGroup: function (){
-			var boton = event.target;
-			var uid = parseInt(boton.getAttribute("data-uid"),10);
-			var role = boton.getAttribute("data-role");
-			var gid = parseInt(document.getElementById("selectGroup"+uid.toString()).value,10);
-			var groupName = getGroupNameById(gid);
-			console.log(uid,role,gid,groupName);
-			if (gid!=""){
-				addUserRoleToGroup(uid,role,gid, groupName);
-				refreshEverything();
-			}else{
-				alert("Debe seleccionar un grupo.");
-			}
-		},
 	},
 	template:`
 <div id="usersLeftPanel" :style="style">
@@ -119,11 +102,14 @@ Vue.component('available-users-component', {
 			<tr v-for="row in rows">
 				<th>{{ row.uid }}</th>
 				<td>{{ row.roleSpanish }}</td>
-				<td><a :id="row.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >{{ row.nameToShow }}</a></td>
+				<td>
+					<a :id="row.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
+						{{ row.nameToShow }}
+					</a>
+				</td>
 				<td><a :href="row.urlMaps" target="_blank"> {{ row.address }} </a></td>
 				<td>
-					<select-group-component :id="row.id_select"></select-group-component>
-					<button v-on:click="assignGroup" :data-uid="row.uid" :data-role="row.role" >Agregar</button>
+					<form-assign-group :userId="row.uid" :role="row.role" ></form-assign-group>
 				</td>
 			</tr>
 		</tbody>

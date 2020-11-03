@@ -9,7 +9,7 @@ Vue.component('groups-component', {
 	},
 	computed:{
 		refresh: function(){
-			console.log("Cambio el grupo actual a ", this.state.currentGroupId);
+			console.log("(",this.state.refreshTime,")Cambio el grupo actual a ", this.state.currentGroupId);
 			var gid= store.state.currentGroupId;
 			this.currentlySplittingGroup=false;
 			this.userRolesNewGroup = {};
@@ -35,15 +35,12 @@ Vue.component('groups-component', {
 				var member = {};
 				var u = this.group.members[i];
 				member.userId = u.user_id;
-				member.addressToShow = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
-				var addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-				member.urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
+				member.addressToShow = addressToShow(u);
+				var addressGoogle = addressGoogleMaps(u);
+				member.urlMaps = urlGoogleMaps(u);
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
-				member.nameToShow = encodeHTML(u.user_name);
-				if (u.name!="" || u.last_name!="" ){
-					member.nameToShow = encodeHTML(u.user_name)+" ("+encodeHTML(u.name) +" " + encodeHTML(u.last_name) + ")";
-				}
+				member.nameToShow = nameToShow(u); 
 				member.linkProfileId = "viewProfileLink_"+member.userId.toString();
 				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
 				member.rolesInGroup = [];

@@ -64,3 +64,34 @@ Vue.component('button-ack-delegate',{
 <button type="button" @click="sendAck">Ya me contacté!</button>
 `
 });
+
+Vue.component('form-assign-group',{
+	props: ['userId','role'],
+	methods:{
+		assignGroup: function (){
+			var gid = parseInt( document.getElementById(this.getIdSelect()).value, 10);
+			var groupName = getGroupNameById(gid);
+			console.log("Agregando ",this.userId, this.role, gid, groupName);
+			if ( gid!="" ){
+				addUserRoleToGroup(this.userId,this.role,gid, groupName);
+				refreshEverything();
+			}else{
+				alert("Debe seleccionar un grupo.");
+			}
+		},
+		getIdSelect: function(){
+			return "selectGroupFor"+this.userId.toString()+this.role;
+		}
+	},
+	computed:{
+		idSelect: function(){
+			return this.getIdSelect();
+		},
+	},
+	template: `
+	<div>
+		<select-group-component :id="idSelect"></select-group-component>
+		<button @click="assignGroup">Agregar</button>
+	</div>
+`
+});

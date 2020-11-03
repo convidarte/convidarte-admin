@@ -1,3 +1,7 @@
+function tidySpaces(s){
+	return s.replace(/\s+/g, ' ').trim();
+}
+
 function resetURL(){
 	history.back()
 }

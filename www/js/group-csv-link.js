@@ -19,11 +19,7 @@ Vue.component('group-csv-link', {
 				var neighborhood = u.address.neighborhood;
 				var city = u.address.city;
 				var province = u.address.province;
-				if (u.name!="" ){
-					fullname=u.user_name+" ("+u.name+" "+u.last_name+")";
-				}else{
-					fullname=u.user_name;
-				}
+				fullname = nameToShow(u);
 				var cellphone= u.cellphone;
 				var email = u.email;
 				var roles = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");

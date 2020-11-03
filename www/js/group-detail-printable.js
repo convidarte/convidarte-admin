@@ -18,14 +18,9 @@ Vue.component('group-detail-printable', {
 				var u = members[i];
 				var user = {};
 				user.userId = u.user_id;
-				user.addressToShow = u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
-				addressGoogle = prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province);
-				user.urlMaps = "https://www.google.com/maps/search/"+encodeURI(addressGoogle);
-				if (u.name!="" ){
-					user.nameToShow = u.user_name +" ("+u.name + " " + u.last_name + ")";
-				}else{
-					user.nameToShow = u.user_name;
-				}
+				user.addressToShow =addressToShow(u);
+				user.urlMaps = urlGoogleMaps(u);
+				user.nameToShow = nameToShow(u);
 				user.cellphone = u.cellphone;
 				user.email = u.email;
 				user.rolesInGroup = u.roles_in_group.map( x=> x["role"] ).map(roleInSpanish).join( " ");
@@ -40,7 +35,6 @@ Vue.component('group-detail-printable', {
 			var name = this.group.name;
 			var filename = "grupo "+gid.toString()+" - "+ name + " - " + getDateString() +".pdf";
 			if(gid!=0){
-				name = encodeHTML(getGroupNameById(gid));
 				downloadElementAsPDF("groupDetailTablePrintable", filename, "avoid");
 			}
 			return false;

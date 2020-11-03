@@ -25,6 +25,21 @@ function login(){
 	)
 }
 
+function onLoadAdmin () {
+	if (store.state.token!="") return;
+	tokenCookie = getCookie("token-convidarte");
+	usernameCookie = getCookie("username-convidarte");
+	adminUserIdCookie = getCookie("userid-convidarte");
+	if( tokenCookie != ""){
+		store.setKey("token", tokenCookie);
+		store.setKey("usernameAdmin", usernameCookie);
+		store.setKey("adminUserId", adminUserIdCookie);
+		onLoginOk(store.state.adminUserId);
+	}
+}
+
+window.addEventListener('load', onLoadAdmin);
+
 function logout(){
 	setCookie("token-convidarte","",59*60*1000);
 	setCookie("username-convidarte","",59*60*1000);

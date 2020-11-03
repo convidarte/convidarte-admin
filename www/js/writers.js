@@ -1,7 +1,3 @@
-function tidySpaces(s){
-	return s.replace(/\s+/g, ' ').trim();
-}
-
 function roleInSpanish(role){
 	if (role=="cook"){
 		return "Chef";
@@ -28,51 +24,27 @@ function roleInSpanishPlural(role){
 	return "";
 }
 
+function nameToShow(u){
+	var name = u.user_name;
+	if (u.name!="" || u.last_name!="" ){
+		name = u.user_name+" ("+ u.name +" " + u.last_name + ")";
+	}
+	return name;
+}
+
+function addressToShow(u){
+	return u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
+}
+
+function urlGoogleMaps(u){
+	return "https://www.google.com/maps/search/"+encodeURI(addressGoogleMaps(u));
+}
+
+function addressGoogleMaps(u){
+	return prepareAddressGoogleMaps(u.address.street, u.address.number, u.address.city, u.address.province)
+}
 
 function prepareAddressGoogleMaps(street,number,city,province){
 	return street +" "+number.toString()+", " +city+", "+province;
 }
-
-
-function userMarkerContent(uid,role){
-	u = getUserById(uid);
-	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
-	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
-	s += "<div>" + roleInSpanish(role) + "</div>";
-	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
-	if(store.state.currentTab=="users"){
-		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
-		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
-	}
-	return s;
-}
-
-// devuelve el HTML de un select con los grupos existentes y el id especificado.
-function getGroupSelectHTML(selectId){
-	groups = getGroups();
-	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
-	s += "<option disabled selected value> elegir grupo </option>"
-	//groups = getGroups();
-	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
-		group_id = g.group_id.toString();
-		s+="<option value=\"" + group_id + "\" >"+ group_id + " - " + encodeHTML(g.name) +"</option>\n";
-	}
-	s+="</select>";
-	return s;
-}
-
-function getRoleSelectHTML(selectId,roles){
-	s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n";
-	s += "<option disabled selected value> elegir rol </option>";
-	for (var i = 0; i < roles.length; i++) {
-		r = roles[i];
-		if (r!="admin"){
-			s+="<option value=\"" + r + "\" >"+ roleInSpanish(r) +"</option>\n";
-		}
-	}
-	s+="</select>";
-	return s;
-}
-
 

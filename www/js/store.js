@@ -169,11 +169,13 @@ var store = {
 	}
 }
 
+//var refreshGroupView = new Event('refreshGroupView');
 
 function refreshEverything() {
 	if (store.state.currentSystem=="admin"){
 		store.refreshEverythingBackend();
 	}
+	//this.dispatchEvent(refreshGroupView);
 	store.setRefreshTime();
 }
 setInterval( refreshEverything, 90 * 1000);
