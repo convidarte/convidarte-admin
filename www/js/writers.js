@@ -32,6 +32,10 @@ function nameToShow(u){
 	return name;
 }
 
+function checkHasNoCoordinates(user){
+	return user.address.latitude.toString()=="0";
+}
+
 function addressToShow(u){
 	return u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
 }

@@ -42,7 +42,7 @@ Vue.component('group-detail-printable', {
 	},
 	template:`
 <div id="groupDetailPrintableContainer">
-	<div style="margin-left:15px;">
+	<div>
 		<a id="bajarPDF" href="#" @click="downloadGroupDetailTable">Bajar en formato PDF</a>
 	</div>
 	<div style="display:none;">  

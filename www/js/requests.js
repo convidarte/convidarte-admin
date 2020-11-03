@@ -1,18 +1,3 @@
-function userList(refresh=false){
-	return store.state.users;
-}
-function getUserRoles(refresh=false){
-	return store.state.availableUserRoles;
-}
-function getUsersFiltered(){
-	return store.state.usersFiltered;
-}
-
-function getGroups(refresh=false){
-	return  store.state.groups;
-}
-
-
 function getUserProfile(uid){
 	var urlAdminGroups = apiBaseUrl+"/users/"+uid.toString();
 	var response;
@@ -224,10 +209,11 @@ function ackDelegate(gid,uid,role){
 			url: url,
 			data : JSON.stringify(payload),
 			contentType: "application/json",
-			async: false,
+			async: true,
 			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
-				alert( "El usuario " + uid + " fue marcado como contactado."); 
+				alert( "El usuario " + uid + " fue marcado como contactado.");
+				refreshEverything();
 			},
 			error: function() {
 				alert('Error, no se pudo marcar al usuario como contactado.');
@@ -261,48 +247,17 @@ function newGroup(groupName){
 
 
 function postGroup(name, userRoles ){
-	var url = apiBaseUrl+"/admin/groups";
-	var response;
 	if(name!=""){
-		var newGroupData = { name : name, users : userRoles };
-		$.ajax({
-			method: "POST",
-			url: url,
-			data : JSON.stringify(newGroupData),
-			contentType: "application/json",
-			async: false,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data,statusText,xhr) {
-				response = xhr.status;
-			},
-			error: function() {
-				response = xhr.status;
-			}
-		});
-		return response;
-	}else{
-		return 401;
+		return do_request("/admin/groups",{ name : name, users : userRoles }, true,"POST");
 	}
 }
+
 function removeUserRolesFromGroup(group_id, groupName, userRoles){
-	var updateGroup = { name : groupName, users_to_add : [ ], users_to_remove : userRoles };
-	var url = apiBaseUrl+"/admin/groups/" + group_id.toString(); 
-	var response;
-	$.ajax({
-		method: "PUT",
-		url: url,
-		data : JSON.stringify(updateGroup),
-		contentType: "application/json",
-		async: false,
-		headers : { "authorization" : ("Bearer " + store.state.token) },
-		success: function(data,statusText,xhr) {
-			response = xhr.status;
-		},
-		error: function() {
-			response = xhr.status;
-		}
-	});
-	return response;
+	if (groupName!=""){
+		var url = "/admin/groups/" + group_id.toString(); 
+		var updateGroup = { name : groupName, users_to_add : [ ], users_to_remove : userRoles };
+		return do_request(url,updateGroup, true,"PUT");
+	}
 }
 
 
@@ -334,7 +289,7 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 			url: url,
 			data : JSON.stringify(updateGroup),
 			contentType: "application/json",
-			async: false,
+			async: true,
 			headers : { "authorization" : ("Bearer " + store.state.token) },
 			success: function(data) {
 				alert( "El usuario " + user_id + " fue agregado al grupo " + group_id.toString()+": "+encodeHTML(groupName) ); 
@@ -355,7 +310,6 @@ function addRole(uid,role){
 	var url = "/admin/users/"+ uid.toString() +"/roles";
 	do_request(url, {role: role}, true,"POST").then(
 		function(data){
-			//userList(refresh=true);
 			refreshEverything();
 		}
 	).catch(function(err){
@@ -371,17 +325,8 @@ function inactivateUserRole(uid,role){
 	addUserRoleToGroup(parseInt(uid,10), role, 1, "Usuarios inactivos"); // esto tiene que coincidir con las constantes del back, mas adelante vamos a tener un endpoint para que el front no necesite saber constantes del back!
 }
 
-
-//------------------------------------------------------
-// TODO estas deberían ir en otro archivo, las pongo aca por el orden de carga
-
-
-function checkHasNoCoordinates(user){
-	return user.address.latitude.toString()=="0";
-}
-
 function getGroupNameById(groupId){
-	g = getElementInOrderedListById(getGroups(), parseInt(groupId,10), "group_id");
+	g = getElementInOrderedListById(store.state.groups, parseInt(groupId,10), "group_id");
 	if( g === null ){
 		return "";
 	}
@@ -389,16 +334,16 @@ function getGroupNameById(groupId){
 }
 
 function getGroupAdminEndpointById(groupId){
-	return getElementInOrderedListById(getGroups(), parseInt(groupId,10), "group_id");
+	return getElementInOrderedListById(store.state.groups, parseInt(groupId,10), "group_id");
 }
 
 
 function getUserWithRolesById(uid){
-	return getElementInOrderedListById(userList(),uid,"user_id");
+	return getElementInOrderedListById(store.state.users, uid, "user_id");
 }
 
 function getUserById(uid){
-	return getElementInOrderedListById(userList(),uid,"user_id");
+	return getElementInOrderedListById(store.state.users, uid, "user_id");
 }
 
 // xs an array of x such that its elements are strictly ordered by x[keyName]

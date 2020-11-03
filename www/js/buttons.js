@@ -57,7 +57,6 @@ Vue.component('button-ack-delegate',{
 			if (store.state.currentSystem=="delegate"){
 				ackDelegate(this.groupId,this.userId,this.role);
 			}
-			refreshEverything();
 		},
 	},
 	template: `

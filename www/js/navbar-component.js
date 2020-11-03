@@ -15,6 +15,9 @@ Vue.component('navbar-component', {
 			window.history.pushState('grupos', '', '/?grupos');
 			refreshEverything();
 		},
+		openAdminProfile: function(){
+			showModalProfile(store.state.adminUserId);
+		},
 	},
 	computed:{
 		classLinkUsers: function(){
@@ -31,6 +34,10 @@ Vue.component('navbar-component', {
 		},
 		displayIfLoggedIn: function(){
 			if( this.state.token=="") return "display:none;"
+			return "";
+		},
+		displayIfNotLoggedIn: function(){
+			if( this.state.token!="") return "display:none;"
 			return "";
 		},
 		adminDisplayName: function(){
@@ -56,21 +63,22 @@ Vue.component('navbar-component', {
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
 			<li :class="classLinkUsers"  v-if="adminSystem" >
-				<a id="nav-link-users"  class="nav-link" href="#" v-on:click="changeUsersTab" >
+				<a id="nav-link-users"  class="nav-link" href="#" @click="changeUsersTab" >
 					Usuarios sin grupo<span class="sr-only">(current)</span>
 				</a>
 			</li>
 			<li :class="classLinkGroups" v-if="adminSystem" >
-				<a id="nav-link-groups" class="nav-link" href="#" v-on:click="changeGroupsTab" >Grupos</a>
+				<a id="nav-link-groups" class="nav-link" href="#" @click="changeGroupsTab" >Grupos</a>
 			</li>
 			<li :class="classLinkGroups" v-if="delegateSystem">
-				<a id="nav-link-my-groups" class="nav-link" href="#" v-on:click="changeGroupsTab" >Mis grupos</a>
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeGroupsTab" >Mis grupos</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav">
-			<login-component id="loginDiv"></login-component>
-
-			<li class="nav-link" id="adminUserName" :style="displayIfLoggedIn">Bienvenido {{ adminDisplayName }}</li>
+			<login-component id="loginDiv" :style="displayIfNotLoggedIn"></login-component>
+			<li class="nav-link" id="adminUserName" :style="displayIfLoggedIn">
+				<a href="#"  class="nav-link"@click="openAdminProfile"> @{{ adminDisplayName }}</a>
+			</li>
 			<li>
 				<a id="logout-link" class="nav-link" href="" onclick="logout()" :style="displayIfLoggedIn">
 					<i class="fas fa-sign-out-alt"></i>

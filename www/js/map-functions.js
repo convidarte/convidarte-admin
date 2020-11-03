@@ -67,6 +67,32 @@ function showInfoWindow( marker, infoWindowContent){
 }
 
 
+function userMarkerContent(uid,role){
+	u = getUserById(uid);
+	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
+	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
+	s += "<div>" + roleInSpanish(role) + "</div>";
+	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
+	if(store.state.currentTab=="users"){
+		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
+		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
+	}
+	return s;
+}
+
+// devuelve el HTML de un select con los grupos existentes y el id especificado.
+function getGroupSelectHTML(selectId){
+	var groups = store.state.groups;
+	var s = "<select id=\""+ selectId + "\" style=\"max-width:120px;\">\n"
+	s += "<option disabled selected value> elegir grupo </option>"
+	for (var i = 0; i < groups.length; i++) {
+		var g = groups[i];
+		var group_id = g.group_id.toString();
+		s+="<option value=\"" + group_id + "\" >"+ group_id + " - " + encodeHTML(g.name) +"</option>\n";
+	}
+	s+="</select>";
+	return s;
+}
 
 
 
@@ -104,9 +130,9 @@ function refreshAvailableUsersMarkers(){
 }
 
 function refreshGroupMarkers(){
-	groups = getGroups();
+	var groups =store.state.groups;
 	for (var i = 0; i < groups.length; i++) {
-		g = groups[i];
+		var g = groups[i];
 		createGroupMarker(g);
 	}
 }

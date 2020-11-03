@@ -3,7 +3,7 @@ Vue.component('groups-component', {
 			return {
 				state: store.state,
 				currentlySplittingGroup: false,
-				userRolesNewGroup: {},
+				userRolesNewGroup: new Set(),
 				group: null,
 			}
 	},
@@ -12,7 +12,6 @@ Vue.component('groups-component', {
 			console.log("(",this.state.refreshTime,")Cambio el grupo actual a ", this.state.currentGroupId);
 			var gid= store.state.currentGroupId;
 			this.currentlySplittingGroup=false;
-			this.userRolesNewGroup = {};
 			this.group = getGroup(gid);
 			return "";
 		},
@@ -41,20 +40,36 @@ Vue.component('groups-component', {
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
 				member.nameToShow = nameToShow(u); 
-				member.linkProfileId = "viewProfileLink_"+member.userId.toString();
+				//member.linkProfileId = "viewProfileLink_"+member.userId.toString();
 				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
 					var role = u.roles_in_group[j].role;
+					roleInGroup.role = role;
 					roleInGroup.roleSpanish=roleInSpanish(role);
-					roleInGroup.checked = this.currentlySplittingGroup &&  ([uid,role] in this.userRolesNewGroup);
+					roleInGroup.checked = (this.currentlySplittingGroup) &&  (this.userRolesNewGroup.has( {user_id: uid ,role: role} ));
 					member.rolesInGroup.push(roleInGroup);
 				}
 				memberArray.push(member);
 			}
 			return memberArray;
 		},
+		delegates: function(){
+			var isDelegateInGroup = (u  => u["roles_in_group"].filter(r => r["role"]=="delegate").length>0);
+			var groupDelegates = this.group.members.filter(isDelegateInGroup);
+			return groupDelegates;	
+//			var s = groupDelegates.map( u => u["user_name"] ).join(" ");
+	//		if (s=="") return "el grupo no tiene delegado.";
+		//	return s;
+		},
+		numberCooks: function(){
+			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="cook").length>0 }).length;
+		},
+		numberDrivers: function(){
+			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="driver").length>0}).length;
+		},
+
 		style: function(){
 			if(this.state.currentTab=="users"){
 				return "display: none;";
@@ -85,55 +100,47 @@ Vue.component('groups-component', {
 		},
 		checkboxChange: function (){
 			var checkBox = event.target;
-			var uid = checkBox.userId;
-			var role = checkBox.role;
+			var uid = parseInt(checkBox.getAttribute("userId"),10);
+			var role = checkBox.getAttribute("role");
 			if (event.target.checked){
-				this.userRolesNewGroup[ [uid,role] ]=true;
+				this.userRolesNewGroup.add( {user_id: uid, role: role} );
 			}else{
-				delete this.userRolesNewGroup[ [uid,role] ];
+				this.userRolesNewGroup.delete( {user_id: uid ,role: role} );
 			}
 		},
 		splitGroup: function(name){
 			console.log("split group with new name: ", name );
 			var gid = store.state.currentGroupId;
-			if(name!=""){
-				var userRoles = []
-				for(x in this.userRolesNewGroup){
-					var uid = parseInt(x.split(",")[0],10);
-					var role = x.split(",")[1];
-					userRoles.push({user_id: uid ,role: role});
-				}
-				var res = postGroup(name,userRoles);
-				if(res==201){
-					var currentGroupName  = this.groupName;
-					res = removeUserRolesFromGroup(gid,currentGroupName,userRoles);
-					if (res== 200){
-						alert("El grupo fue dividido correctamente.");
-					}else{
-						alert("El grupo nuevo fue creado. Error al quitar a los usuarios del grupo actual. Removerlos a mano.");
-					}
-					this.splitGroupStop();
-				}else{
-					alert("Error: no se pudo dividir el grupo");
-				}
-			}else{
+			var currentGroupName = this.groupName;
+			if(name==""){
 				alert("Error: el nombre del nuevo grupo no puede quedar vacío");
+				return;
 			}
+			var userRoles = Array.from(this.userRolesNewGroup);
+			postGroup(name,userRoles).then(
+				function(){
+					removeUserRolesFromGroup(gid,currentGroupName,userRoles).then(
+						() => alert("El grupo fue dividido correctamente.")
+					).catch(
+						() => alert("El grupo nuevo fue creado. Error al quitar a los usuarios del grupo actual. Removerlos a mano.")
+					);
+				}
+			).catch(() => alert("Error: no se pudo dividir el grupo"));
 			refreshEverything();
 		},
 		splitGroupStart: function(){
 			console.log("split group start");
 			this.currentlySplittingGroup=true;
-			this.userRolesNewGroup = {};
+			this.userRolesNewGroup = new Set();
 		},
 		splitGroupStop: function(){
 			console.log("split group stop");
 			this.currentlySplittingGroup=false;
-			this.userRolesNewGroup = {};
+			this.userRolesNewGroup =  new Set();
 		},
 		openModalProfileOnClick: function(e){
 			e.preventDefault(); 
-			var uid = e.target.id.split("_")[1];
+			var uid = parseInt(e.target.getAttribute("value"),10);
 			showModalProfile(uid);
 			return false;
 		},
@@ -142,7 +149,21 @@ Vue.component('groups-component', {
 <div id="groupsLeftPanel" :style="style">  
 	<div id="groupMembers" v-if="this.group">
 		<div>
-			<h1>&nbsp;&nbsp; {{ groupName }} </h1>
+			<h2>{{ groupName }} </h2>
+			<div>
+				<ul>
+					<li>
+						<h4>Delegados:&nbsp; 
+							<a v-for="delegate in delegates"
+								 :value="delegate.user_id"
+								 href="" class="viewProfileLink" @click="openModalProfileOnClick">
+								@{{ delegate.user_name }}
+							</a>
+						</h4>
+					</li>
+					<li><h4>{{numberCooks}} chefs - {{numberDrivers}} distribuidores</h4></li>
+				</ul>
+			</div>
 			<group-detail-printable :group="this.group"></group-detail-printable>
 			<group-csv-link :group="this.group"></group-csv-link >
 		</div>
@@ -168,7 +189,7 @@ Vue.component('groups-component', {
 			<tr v-for="member in members" :style="member.style" >
 				<td>{{ member.userId }}</td>
 				<td>
-					<a :id="member.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
+					<a :value="member.userId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
 						{{ member.nameToShow }}
 					</a>
 					<button-ack-delegate

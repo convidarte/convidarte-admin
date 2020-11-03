@@ -37,7 +37,7 @@ Vue.component('group-csv-link', {
 		},
 	},
 	template:`
-<div id="downloadCSVLinkDiv" style="margin-left:15px;">
+<div id="downloadCSVLinkDiv">
 	<a id="csvLink" :href="csvUrl" :download="csvFilename">Bajar hoja de cálculo (en formato .csv)</a>
 </div>
 ` 
