@@ -23,43 +23,29 @@ var store = {
 		if (this.debug) console.log('storing ', key);
 		this.state[key]=value;
 	},
-
-
-	// CurrentUserId
 	setCurrentUserId(uid){
-		if (this.debug) console.log('setCurrentUserId ',uid);
-		this.state.currentUserId  = uid;
+		this.setKey("currentUserId",uid);
 	},
-	// CurrentGroupId
 	setCurrentGroupId(gid){
-		if (this.debug) console.log('setCurrentGroupId ',gid);
-		this.state.currentGroupId  = gid;
+		this.setKey("currentGroupId",gid);
 	},
-	// CurrentTab
 	setCurrentTab(tab){
-		if (this.debug) console.log('setCurrenTab ',tab);
-		this.state.currentTab  = tab;
+		this.setKey("currentTab",tab);		
 	},
-	// RefreshTime
 	setRefreshTime(){
 		var t = new Date().getTime();
-		if (this.debug) console.log('setRefreshTime ', t);
-		this.state.refreshTime  = t;
+		this.setKey("refreshTime",t);		
 	},
-
 	setCityFilterValue(city){
-		if (this.debug) console.log('setCityFilterValue ',city);
-		this.state.cityFilterValue=city;
+		this.setKey("cityFilterValue",city);
 		this.setUsersFiltered();
 	},
 	setNeighborhoodFilterValue(neighborhood){
-		if (this.debug) console.log('setNeighborhoodFilterValue ',neighborhood);
-		this.state.neighborhoodFilterValue=neighborhood;
+		this.setKey("neighborhoodFilterValue",neighborhood);
 		this.setUsersFiltered();
 	},
 	setRoleFilterValue(role){
-		if (this.debug) console.log('setRoleFilterValue ',role);
-		this.state.roleFilterValue=role;
+		this.setKey("roleFilterValue",role);
 		this.setUsersFiltered();
 	},
 	setUsersFiltered(){

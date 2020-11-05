@@ -197,3 +197,10 @@ function assignGroup(){
 }
 
 
+// devuelve el html de un boton para sacar un user-role de un grupo.
+function deleteRoleButton(gid,uid,role){
+	var s = "<button id=\"delete_" + gid.toString() + "_" + uid.toString() + "_" + role + "\" type=\"button\" onclick=\"deleteMemberOnClick();\" value=\"" + gid.toString() + " " + uid.toString() + " " + role + "\">Quitar del grupo</button>";
+	return s;
+}
+
+
