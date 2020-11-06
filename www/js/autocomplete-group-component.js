@@ -15,7 +15,7 @@ Vue.component('autocomplete-group-component', {
 							document.getElementById("groupList").value = selectedOption;
 							num = parseFloat(selectedOption.split(":")[0]);
 							if (num.toString()!="NaN"){
-								store.setCurrentGroupId(num);
+								store.setKey("currentGroupId",num);
 								showGroupById(num);
 							}
 						}

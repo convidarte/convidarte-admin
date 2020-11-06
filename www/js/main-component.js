@@ -18,6 +18,7 @@ Vue.component('main-component', {
 	<div class="map-container" v-show="isLoggedIn">
 		<map-component id="map"></map-component>
 	</div>
+	<by-convidartech></by-convidartech>
 </main>`
 })
 

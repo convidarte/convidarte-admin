@@ -1,5 +1,3 @@
-// LOGIN /  LOGOUT
-
 function login(){
 	var user = document.getElementById("username").value;
 	var pass = document.getElementById("password").value;
@@ -15,9 +13,12 @@ function login(){
 			setCookie("token-convidarte", store.state.token, 59*60*1000);
 			setCookie("username-convidarte", store.state.usernameAdmin, 59*60*1000);
 			setCookie("userid-convidarte", store.state.adminUserId, 59*60*1000);
-			onLoginOk();
-		}
-	).catch(
+			try {
+				onLoginOk();
+			} catch (error) {
+			  console.error(error);
+			}
+	}).catch(
 		function() {
 			alert('Datos de login incorrectos');
 			logout();
@@ -25,7 +26,7 @@ function login(){
 	)
 }
 
-function onLoadAdmin () {
+function onLoadConvidarte () {
 	if (store.state.token!="") return;
 	tokenCookie = getCookie("token-convidarte");
 	usernameCookie = getCookie("username-convidarte");
@@ -38,7 +39,14 @@ function onLoadAdmin () {
 	}
 }
 
-window.addEventListener('load', onLoadAdmin);
+window.addEventListener('load', onLoadConvidarte);
+
+$('.modal').on('hidden.bs.modal', function(e) {
+  if ($('.modal').hasClass('in')) {
+    $('body').addClass('modal-open');
+  }
+});
+
 
 function logout(){
 	setCookie("token-convidarte","",59*60*1000);
@@ -64,41 +72,7 @@ function onLoginOk() {
 			logout();
 			return;
 		}
-		//  TODO DELEGATE
 	}
-	processQueryStringAdmin();
+	processQueryString();
 	refreshEverything();
-}
-
-
-function processQueryStringAdmin(){
-	const queryString = window.location.search;
-	console.log(queryString);
-	if(queryString.startsWith("?perfil/")){
-		var uid = parseInt(queryString.split("/")[1],10);
-		store.setCurrentTab("users");
-		showModalProfile(uid);
-		return;
-	}
-	if(queryString.startsWith("?grupos")){
-		store.setCurrentTab("groups");
-		return;	
-	}
-	if(queryString.startsWith("?usuarios")){
-		store.setCurrentTab("users");
-		return;	
-	}
-	if(queryString.startsWith("?grupo")){
-		var gid = parseInt(queryString.split("/")[1],10);
-		store.setCurrentGroupId(gid);
-		store.setCurrentTab("groups");
-		return;
-	}
-	if( store.state.currentSystem=="admin"){
-		store.setCurrentTab("users");
-	}
-	if( store.state.currentSystem=="delegate"){
-		store.setCurrentTab("groups");
-	}
-
 }

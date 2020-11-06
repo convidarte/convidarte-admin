@@ -6,7 +6,7 @@ Vue.component('map-component', {
 	},
 	computed:{
 		refresher(){
-			console.log("refresh map vue ",store.state.refreshTime);
+			console.log("(",store.state.refreshTime ,") refreshing map ");
 			if(this.state.token=="") return "";
 			var tab = this.state.currentTab;
 			if(tab=="users"){
@@ -34,6 +34,9 @@ Vue.component('map-component', {
 			var tab = this.state.currentTab;
 			if(gid!=0 && tab=="groups"){
 				centerMapOnGroup(gid);
+			}
+			if(tab=="users"){
+				//centerMapOnAverageAvailableUsers();
 			}
 			return "";
 		},

@@ -4,7 +4,7 @@ Vue.component('button-delete-role', {
 		deleteUserRole:function(){
 			if ( confirm("Seguro que quiere quitar al usuario #"+ this.userId.toString() +"?") ){
 				if (store.state.currentSystem=="admin"){
-					deleteMemberAdmin(this.groupId, this.userId, this.role);
+					deleteMember(this.groupId, this.userId, this.role);
 				}
 				if (store.state.currentSystem=="delegate"){
 					deleteMemberDelegate(this.groupId, this.userId, this.role);

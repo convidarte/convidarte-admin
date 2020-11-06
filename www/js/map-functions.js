@@ -1,9 +1,4 @@
-//TODO mejorar el tema de las etiquetas de grupos (multiline)
 //TODO pintar los globos de usuarios que admiten varios roles de modo que esto sea claro.
-// todo podríamos usar
-//      map.getBounds().contains(marker.getPosition())
-// para mostrar solo los markers que están en el frame
-// en el evento bounds_changed se triggerearia un for que recorre todos los marcadores y setea map solo en los que quedan visibles
 
 function initMaps() {
 	var centroMapa = {lat: -34.62, lng: -58.46};
@@ -41,7 +36,6 @@ function addMarker(markerCollection, location,label,color) {
 		//label: {text:label,fontWeight:"bold",fontSize: "18px"},
 		map: map
 	});
-
 	if(color=="green"){
 		marker.setIcon('https://maps.google.com/mapfiles/ms/icons/green-dot.png')
 	}else if(color=="blue"){
@@ -70,7 +64,7 @@ function showInfoWindow( marker, infoWindowContent){
 function userMarkerContent(uid,role){
 	u = getUserById(uid);
 	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
-	s += "<div>@"+ encodeHTML(u.user_name)+ " - "+ u.user_id.toString()+ "</div>";
+	s += "<div>@"+ encodeHTML(u.user_name)+ " - #"+ u.user_id.toString()+ "</div>";
 	s += "<div>" + roleInSpanish(role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
 	if(store.state.currentTab=="users"){
@@ -95,6 +89,22 @@ function getGroupSelectHTML(selectId){
 }
 
 
+function assignGroup(){
+	boton = event.target;
+	uid = boton.value;
+	u = getUserWithRolesById(uid);
+	role = u.role; // cook
+	user_role_id = u.role_id; // uint
+	user_id = u.user_id; // uint
+	group_id = document.getElementById("selectGroup"+uid.toString()).value;
+	groupName = getGroupNameById(group_id);
+	if (group_id!=""){
+		addUserRoleToGroup(u.user_id, u.role, group_id, groupName);
+		refreshEverything();
+	}else{
+		alert("Debe seleccionar un grupo.");
+	}
+}
 
 function createUserMarker(u, setClickListener){
 	if(parseFloat(u.address.latitude)){
@@ -205,3 +215,25 @@ function centerMapOnGroup(gid){
 		centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
 	}
 }
+
+const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+
+
+function centerMapOnAverageAvailableUsers(){
+	var lats = store.state.usersFiltered.map( x=> x.address.latitude).filter(x=>x!=0);
+	var longs = store.state.usersFiltered.map( x=> x.address.longitude).filter(x=>x!=0);
+	if (lats.length>0 && longs.length>0){
+		var lat = average(lats);
+		var long = average(longs);
+		centerMapOn(map, lat, long);
+	}
+}
+
+
+function showModalProfileTooltip(){
+	event.preventDefault();
+	uid = event.target.getAttribute("data-uid");
+	showModalProfile(uid);
+	return false;
+}
+

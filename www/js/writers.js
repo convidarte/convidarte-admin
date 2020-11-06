@@ -32,12 +32,18 @@ function nameToShow(u){
 	return name;
 }
 
+function fullName(u){
+	return u.name+" "+u.last_name;
+}
+
 function checkHasNoCoordinates(user){
 	return user.address.latitude.toString()=="0";
 }
 
-function addressToShow(u){
-	return u.address.street +" "+u.address.number.toString()+ " "+ u.address.floor_and_apartment + " ("+ u.address.neighborhood+") " + u.address.city+", "+u.address.province;
+function fullAddressToShow(u){
+	var address = (u.address.street+" " + u.address.number +" "+ u.address.floor_and_apartment).trim();
+	var neighborhoodOrCity = (u.address.city=="CABA") ? u.address.neighborhood : u.address.city ;
+	return [address, neighborhoodOrCity, u.address.province].join(", ");
 }
 
 function urlGoogleMaps(u){

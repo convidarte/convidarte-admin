@@ -9,10 +9,12 @@ Vue.component('groups-component', {
 	},
 	computed:{
 		refresh: function(){
-			console.log("(",this.state.refreshTime,")Cambio el grupo actual a ", this.state.currentGroupId);
+			console.log("(",this.state.refreshTime,") showing group #", this.state.currentGroupId);
 			var gid= store.state.currentGroupId;
 			this.currentlySplittingGroup=false;
-			this.group = getGroup(gid);
+			if(gid!=0){
+				this.group = getGroup(gid);
+			}
 			return "";
 		},
 		groupName: function(){
@@ -34,20 +36,19 @@ Vue.component('groups-component', {
 				var member = {};
 				var u = this.group.members[i];
 				member.userId = u.user_id;
-				member.addressToShow = addressToShow(u);
+				member.addressToShow = fullAddressToShow(u);
 				var addressGoogle = addressGoogleMaps(u);
 				member.urlMaps = urlGoogleMaps(u);
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
 				member.nameToShow = nameToShow(u); 
-				//member.linkProfileId = "viewProfileLink_"+member.userId.toString();
 				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
 					var role = u.roles_in_group[j].role;
 					roleInGroup.role = role;
-					roleInGroup.roleSpanish=roleInSpanish(role);
+					roleInGroup.roleInSpanish=roleInSpanish(role);
 					roleInGroup.checked = (this.currentlySplittingGroup) &&  (this.userRolesNewGroup.has( {user_id: uid ,role: role} ));
 					member.rolesInGroup.push(roleInGroup);
 				}
@@ -59,9 +60,6 @@ Vue.component('groups-component', {
 			var isDelegateInGroup = (u  => u["roles_in_group"].filter(r => r["role"]=="delegate").length>0);
 			var groupDelegates = this.group.members.filter(isDelegateInGroup);
 			return groupDelegates;	
-//			var s = groupDelegates.map( u => u["user_name"] ).join(" ");
-	//		if (s=="") return "el grupo no tiene delegado.";
-		//	return s;
 		},
 		numberCooks: function(){
 			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="cook").length>0 }).length;
@@ -153,13 +151,14 @@ Vue.component('groups-component', {
 			<div>
 				<ul>
 					<li>
-						<h4>Delegados:&nbsp; 
+						<h4>Delegados: 
 							<a v-for="delegate in delegates"
 								 :value="delegate.user_id"
 								 href="" class="viewProfileLink" @click="openModalProfileOnClick">
 								@{{ delegate.user_name }}
 							</a>
 						</h4>
+						<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
 					</li>
 					<li><h4>{{numberCooks}} chefs - {{numberDrivers}} distribuidores</h4></li>
 				</ul>
@@ -237,14 +236,4 @@ Vue.component('groups-component', {
 </div>
 ` 
 });
-
-function showGroupById(groupId){
-	console.log("showGroupById",groupId);
-	store.setCurrentGroupId(groupId);
-	if (groupId!=0){
-		var g = getGroup(groupId);
-		var url = "/?grupo/"+ g["group_id"]+"/"+g["name"];
-		window.history.pushState('grupos', '', url);
-	}
-}
 

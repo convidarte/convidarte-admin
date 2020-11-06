@@ -54,7 +54,7 @@ Vue.component('available-users-component', {
 				u = availableUsers[i];
 				uid = u.user_id;
 				row.uid = uid;
-				row.address = addressToShow(u);
+				row.address = fullAddressToShow(u);
 				row.urlMaps = urlGoogleMaps(u);
 				row.role = u.role;
 				row.roleSpanish = roleInSpanish(u.role);

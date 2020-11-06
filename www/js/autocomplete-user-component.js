@@ -20,7 +20,7 @@ Vue.component('autocomplete-user-component', {
 					document.getElementById("userList").value = selectedOption;
 					num = parseFloat(selectedOption.split(":")[0]);
 					if (num.toString()!="NaN"){
-						store.setCurrentUserId(num);
+						store.setKey("currentUserId",num);
 						showModalProfile(num);
 					}
 				},

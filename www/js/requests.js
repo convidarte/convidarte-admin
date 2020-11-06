@@ -11,7 +11,7 @@ function getUserProfile(uid){
 			response = data;
 		},
 		error: function() {
-			alert('Groups falló');
+			console.log('Groups falló');
 		}
 	});
 	return response;
@@ -32,7 +32,7 @@ function getUserGroups(uid){
 			userGroups = data.groups;
 		},
 		error: function() {
-			alert('User\'s Groups falló');
+			console.log('User\'s Groups falló');
 		}
 	});
 	return userGroups;
@@ -49,7 +49,7 @@ function deleteGroup(gid){
 		function(data) {
 			alert('El grupo fue eliminado.');
 			if (store.state.currentGroupId.toString()==gid.toString()){
-				store.setCurrentGroupId(0);
+				store.setKey("currentGroupId", 0);
 			}
 			refreshEverything();
 		}).catch(

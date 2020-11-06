@@ -18,7 +18,7 @@ Vue.component('group-detail-printable', {
 				var u = members[i];
 				var user = {};
 				user.userId = u.user_id;
-				user.addressToShow =addressToShow(u);
+				user.addressToShow =fullAddressToShow(u);
 				user.urlMaps = urlGoogleMaps(u);
 				user.nameToShow = nameToShow(u);
 				user.cellphone = u.cellphone;
