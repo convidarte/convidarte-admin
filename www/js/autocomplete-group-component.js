@@ -40,7 +40,7 @@ Vue.component('autocomplete-group-component', {
 	template: `
 <div id="autocompleteGroupContainer" class="ui-widget" :style="style">
 	<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-	<input id="groupList" v-on:click="clearText">
+	<input id="groupList" v-on:click="clearText" style="height:25px;">
 	{{ refreshOptions }}
 </div>
 `

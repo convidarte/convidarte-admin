@@ -14,6 +14,8 @@ Vue.component('groups-component', {
 			this.currentlySplittingGroup=false;
 			if(gid!=0){
 				this.group = getGroup(gid);
+			}else{
+				this.group=null;
 			}
 			return "";
 		},

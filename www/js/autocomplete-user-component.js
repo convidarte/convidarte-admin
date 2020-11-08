@@ -40,7 +40,7 @@ Vue.component('autocomplete-user-component', {
 	template: `
 	  <div id="userSearchBoxContainer" class="ui-widget" :style="style">
 		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
-		<input id="userList" v-on:click="clearText">
+		<input id="userList" v-on:click="clearText" style="height:25px;">
 		{{ refreshOptions }}
 	  </div>
 `

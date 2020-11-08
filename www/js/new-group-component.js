@@ -25,8 +25,8 @@ Vue.component('new-group-component', {
 	template:`
 <div id="newGroupContainer" :style="style">
 	<label for="newGroupName"><span style="color:black">Nuevo grupo:</span></label>
-	<input id="newGroupName" placeholder="nombre del grupo"></input>
-	<button v-on:click="createGroup">Crear</button>
+	<input id="newGroupName" placeholder="nombre del grupo" style="height:25px;"></input>
+	<button v-on:click="createGroup" style="height:25px;" >Crear</button>
 </div>
 `
 });
