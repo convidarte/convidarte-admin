@@ -11,7 +11,7 @@ function getUserProfile(uid){
 			response = data;
 		},
 		error: function() {
-			console.log('Groups falló');
+			console.log('Get user profile falló');
 		}
 	});
 	return response;
@@ -85,8 +85,6 @@ function deleteMember(gid,uid,role){
 	var payload = { name : currentName, users_to_add : [  ], users_to_remove :[{user_id : uidnumber, role : role }] };
 	var url = "/admin/groups/" + gid.toString(); 
 	function onSuccess(data) {
-		//var u = getUserById(uidnumber);
-		//alert( "El usuario " + u.user_name + " en su rol de "+ roleInSpanish(role) + " fue removido del grupo " + gid.toString()+": "+encodeHTML(groupName) ); 
 		refreshEverything();
 		alert("El usuario fue removido del grupo");
 	}
@@ -98,25 +96,18 @@ function deleteMember(gid,uid,role){
 }
 
 function deleteMemberDelegate(gid,uid,role){
-	groupName = getGroupNameById(gid);
 	if (gid!=""){
 		var uidnumber = parseInt(uid,10);
 		var payload = { user_id : uidnumber, role : role };
-		var url = apiBaseUrl+"/delegate/remove/" + gid.toString(); 
-		$.ajax({
-			method: "DELETE",
-			url: url,
-			data : JSON.stringify(payload),
-			contentType: "application/json",
-			async: false,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data) {
-				alert( "El usuario " + uid + " en su rol de "+ roleInSpanish(role) + " fue removido del grupo " + gid.toString()+": "+encodeHTML(groupName) ); 
-			},
-			error: function() {
-				alert('Error, no se pudo quitar el rol del usuario en el grupo.');
-			}
-		});
+		var url = "/delegate/remove/" + gid.toString(); 
+		var onSuccess = function(data) {
+			refreshEverything();
+			alert("El usuario fue removido del grupo");
+		}
+		var onError = function(err) {
+			alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+		}
+		do_request(url,payload,true,"DELETE").then( onSuccess ).catch( onError );
 	}else{
 		alert("error");
 	}
@@ -175,53 +166,40 @@ function deleteMemberAndDeactivateAdmin(gid,uid,role){
 
 function deleteMemberAndDeactivateDelegate(gid,uid,role){
 	groupName = getGroupNameById(gid);
-	if (gid!=""){
-		var uidnumber = parseInt(uid,10);
-		var payload = { user_id : uidnumber, role : role };
-		var url = apiBaseUrl+"/delegate/deactivate/" + gid.toString(); 
-		$.ajax({
-			method: "DELETE",
-			url: url,
-			data : JSON.stringify(payload),
-			contentType: "application/json",
-			async: false,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data) {
-				alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role); 
-			},
-			error: function() {
-				alert('Error, no se pudo quitar e inactivar.');
-			}
-		});
-	}else{
+	if (gid==""){
 		alert("error");
+		return;
 	}
+	var uidnumber = parseInt(uid,10);
+	var payload = { user_id : uidnumber, role : role };
+	var url = "/delegate/deactivate/" + gid.toString();
+	var onSuccess = function(data) {
+		refreshEverything();
+		alert( "El usuario fue inactivado y removido del grupo."); 
+	}
+	var onError = function(err) {
+		alert('Error, no se pudo quitar e inactivar.');
+	}
+	do_request(url,payload,true,"DELETE").then( onSuccess ).catch( onError );
 }
 
 function ackDelegate(gid,uid,role){
 	groupName = getGroupNameById(gid);
-	if (gid!=""){
-		var uidnumber = parseInt(uid,10);
-		var payload = { user_id : uidnumber, role : role };
-		var url = apiBaseUrl+"/delegate/ack/" + gid.toString(); 
-		$.ajax({
-			method: "POST",
-			url: url,
-			data : JSON.stringify(payload),
-			contentType: "application/json",
-			async: true,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data) {
-				alert( "El usuario " + uid + " fue marcado como contactado.");
-				refreshEverything();
-			},
-			error: function() {
-				alert('Error, no se pudo marcar al usuario como contactado.');
-			}
-		});
-	}else{
+	if (gid==""){
 		alert("error");
+		return
 	}
+	var uidnumber = parseInt(uid,10);
+	var payload = { user_id : uidnumber, role : role };
+	var url = "/delegate/ack/" + gid.toString();
+	var onSuccess = function(data) {
+			alert( "El usuario " + uid + " fue marcado como contactado.");
+			refreshEverything();
+	}
+	var onError = function(err) {
+			alert('Error, no se pudo marcar al usuario como contactado.');
+	}
+	do_request(url,payload,true,"POST").then( onSuccess ).catch( onError );
 }
 
 

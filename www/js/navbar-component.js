@@ -15,9 +15,6 @@ Vue.component('navbar-component', {
 			window.history.pushState('grupos', '', '/?grupos');
 			refreshEverything();
 		},
-		openAdminProfile: function(){
-			showModalProfile(store.state.adminUserId);
-		},
 	},
 	computed:{
 		classLinkUsers: function(){
@@ -43,6 +40,10 @@ Vue.component('navbar-component', {
 		adminDisplayName: function(){
 			console.log("bienvenido ", store.state.refreshTime);
 			if( this.state.token!="") return store.state.usernameAdmin;
+			return "";
+		},
+		adminUserId: function(){
+			if( this.state.token!="") return store.state.adminUserId;;
 			return "";
 		},
 		delegateSystem: function(){
@@ -77,7 +78,7 @@ Vue.component('navbar-component', {
 		<ul class="navbar-nav">
 			<login-component id="loginDiv" :style="displayIfNotLoggedIn"></login-component>
 			<li class="nav-link" id="adminUserName" :style="displayIfLoggedIn">
-				<a href="#"  class="nav-link"@click="openAdminProfile"> @{{ adminDisplayName }}</a>
+				<link-user-profile :userName="adminDisplayName" :userId="adminUserId" ></link-user-profile>
 			</li>
 			<li>
 				<a id="logout-link" class="nav-link" href="" onclick="logout()" :style="displayIfLoggedIn">

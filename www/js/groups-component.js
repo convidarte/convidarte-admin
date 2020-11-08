@@ -136,12 +136,6 @@ Vue.component('groups-component', {
 			this.currentlySplittingGroup=false;
 			this.userRolesNewGroup =  new Set();
 		},
-		openModalProfileOnClick: function(e){
-			e.preventDefault(); 
-			var uid = parseInt(e.target.getAttribute("value"),10);
-			showModalProfile(uid);
-			return false;
-		},
 	},
 	template:`
 <div id="groupsLeftPanel" :style="style">  
@@ -152,11 +146,10 @@ Vue.component('groups-component', {
 				<ul>
 					<li>
 						<h4>Delegados: 
-							<a v-for="delegate in delegates"
-								 :value="delegate.user_id"
-								 href="" class="viewProfileLink" @click="openModalProfileOnClick">
-								@{{ delegate.user_name }}
-							</a>
+							<link-user-profile v-for="delegate in delegates"
+								:userId="delegate.user_id"
+								:userName="delegate.user_name"
+							></link-user-profile>
 						</h4>
 						<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
 					</li>
@@ -188,9 +181,10 @@ Vue.component('groups-component', {
 			<tr v-for="member in members" :style="member.style" >
 				<td>{{ member.userId }}</td>
 				<td>
-					<a :value="member.userId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
-						{{ member.nameToShow }}
-					</a>
+					<link-user-profile
+						:userId="member.userId"
+						:userName="member.nameToShow"
+					></link-user-profile>
 					<button-ack-delegate
 						v-if="member.showAckButton"
 						v-bind:groupId="groupId"
