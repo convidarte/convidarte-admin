@@ -99,7 +99,7 @@ Vue.component('available-users-component', {
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="row in rows">
+			<tr v-for="row in rows" :key="row.uid">
 				<th>{{ row.uid }}</th>
 				<td>{{ row.roleSpanish }}</td>
 				<td>
