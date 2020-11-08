@@ -61,9 +61,14 @@ function showInfoWindow( marker, infoWindowContent){
 }
 
 
-function userMarkerContent(uid,role){
-	u = getUserById(uid);
-	s = "<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name) + encodeHTML(u.last_name) + "</a>";
+function userMarkerContent(u,role){
+	var uid = u.user_id;
+	var s = "";
+	if (store.state.currentSystem=="admin"){
+		s+="<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name)+" " + encodeHTML(u.last_name) + "</a>";
+	}else{
+		s+=encodeHTML(u.name) + " " + encodeHTML(u.last_name);
+	}
 	s += "<div>@"+ encodeHTML(u.user_name)+ " - #"+ u.user_id.toString()+ "</div>";
 	s += "<div>" + roleInSpanish(role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
@@ -122,7 +127,7 @@ function createUserMarker(u, setClickListener){
 		}
 		var marker = addMarker(markers,coords,label,color);
 		if (setClickListener){
-			marker.addListener('click', () =>	showInfoWindow(marker, userMarkerContent( u.user_id.toString(), u.role) ) );
+			marker.addListener('click', () =>	showInfoWindow(marker, userMarkerContent( u, u.role) ) );
 		}
 		if (u.role=="admin"){ // ocultamos los markers para los roles de admin
 			marker.setMap(null);
@@ -164,7 +169,9 @@ function createGroupMarker(g){
 	var marker = addMarker(groupMarkers, coords,label,color);
 	//marker.group_id = parseInt(g.group_id,10);
 	var gid = g.group_id;
-	marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(gid) ) );
+	if (store.state.currentSystem=="admin"){
+		marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(gid) ) );
+	}
 }
 
 // Sets the map on all markers in the array.
@@ -194,13 +201,14 @@ function centerMapOn(map, lat,long){
 function displayGroupOnMap(g){
 	deleteMarkers();
 	createGroupMarker(groupWithCoordinates(g));
+	var setClickListener = true;//store.state.currentSystem=="admin";
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
 		for (var j=0; j<u["roles_in_group"].length;j++){
 			var r = u["roles_in_group"][j].role;
 			var ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
-			createUserMarker(ur,true);
+			createUserMarker(ur,setClickListener);
 		}
 	}
 }
