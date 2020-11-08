@@ -41,12 +41,6 @@ function onLoadConvidarte () {
 
 window.addEventListener('load', onLoadConvidarte);
 
-$('.modal').on('hidden.bs.modal', function(e) {
-  if ($('.modal').hasClass('in')) {
-    $('body').addClass('modal-open');
-  }
-});
-
 
 function logout(){
 	setCookie("token-convidarte","",59*60*1000);

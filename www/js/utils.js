@@ -10,6 +10,7 @@ function encodeHTML(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
 
+const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
 
 function getDateString() {
   const date = new Date();

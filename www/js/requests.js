@@ -337,11 +337,6 @@ function getGroupAdminEndpointById(groupId){
 	return getElementInOrderedListById(store.state.groups, parseInt(groupId,10), "group_id");
 }
 
-
-function getUserWithRolesById(uid){
-	return getElementInOrderedListById(store.state.users, uid, "user_id");
-}
-
 function getUserById(uid){
 	return getElementInOrderedListById(store.state.users, uid, "user_id");
 }

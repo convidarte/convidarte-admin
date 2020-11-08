@@ -92,7 +92,7 @@ function getGroupSelectHTML(selectId){
 function assignGroup(){
 	boton = event.target;
 	uid = boton.value;
-	u = getUserWithRolesById(uid);
+	u = getUserById(uid);
 	role = u.role; // cook
 	user_role_id = u.role_id; // uint
 	user_id = u.user_id; // uint
@@ -193,11 +193,7 @@ function centerMapOn(map, lat,long){
 
 function displayGroupOnMap(g){
 	deleteMarkers();
-	var gadmin = getGroupAdminEndpointById(g.group_id);
-	if (gadmin!= null){
-		createGroupMarker(gadmin);
-	}
-	//centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
+	createGroupMarker(groupWithCoordinates(g));
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
 		for (var j=0; j<u["roles_in_group"].length;j++){
@@ -209,24 +205,46 @@ function displayGroupOnMap(g){
 	}
 }
 
-function centerMapOnGroup(gid){
-	var gadmin = getGroupAdminEndpointById(gid);
-	if (gadmin != null){
-		centerMapOn(map, gadmin.average_latitude, gadmin.average_longitude);
-	}
+function centerMapOnGroup(g){
+	g = groupWithCoordinates(g);
+	centerMapOn(map, g.average_latitude, g.average_longitude);
 }
 
-const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+function groupWithCoordinates(g){
+	// anda para admin o delegate
+	/*
+	var gadmin = getGroupAdminEndpointById(gid);
+	if (gadmin !== null){
+		return gadmin;
+	}
+	*/
+	var coords = averageCoords(g.members);
+	g.average_latitude = coords["lat"];
+	g.average_longitude = coords["lng"];
+	return g;
+}
+
+
 
 
 function centerMapOnAverageAvailableUsers(){
-	var lats = store.state.usersFiltered.map( x=> x.address.latitude).filter(x=>x!=0);
-	var longs = store.state.usersFiltered.map( x=> x.address.longitude).filter(x=>x!=0);
+	centerMapOnAverageListOfUsers(store.state.usersFiltered);
+}
+
+function centerMapOnAverageListOfUsers(listUsers){
+	var coords = averageCoords(listUsers);
+	centerMapOn(map, coords["lat"], coords["lng"]);
+}
+
+function averageCoords(listUsers){
+	var lats = listUsers.map( x=> x.address.latitude).filter(x=>x!=0);
+	var longs = listUsers.map( x=> x.address.longitude).filter(x=>x!=0);
 	if (lats.length>0 && longs.length>0){
 		var lat = average(lats);
-		var long = average(longs);
-		centerMapOn(map, lat, long);
+		var lng = average(longs);
+		return {lat: lat, lng: lng};
 	}
+	return {lat: 0, lng:0};
 }
 
 

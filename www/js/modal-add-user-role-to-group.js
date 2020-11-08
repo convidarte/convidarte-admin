@@ -7,7 +7,7 @@ Vue.component('modal-add-user-role-to-group', {
 	computed:{
 		user: function(){
 			var uid = store.state.currentUserId;
-			var u = JSON.parse(JSON.stringify(getUserWithRolesById(uid)));
+			var u = JSON.parse(JSON.stringify(getUserById(uid)));
 			if (u==null) return null;
 			u.fullName = fullName(u);
 			roles = [];

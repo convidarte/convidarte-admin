@@ -20,9 +20,12 @@ Vue.component('modal-profile-component', {
 				userMarkerMapProfile = new google.maps.Marker({});
 			}
 			userMarkerMapProfile.setPosition(coords);
-			userMarkerMapProfile.setLabel({text:this.user["user_name"],fontWeight:"bold",fontSize: "18px"});
+			userMarkerMapProfile.setLabel({text: this.user["user_name"],fontWeight:"bold",fontSize: "18px"});
 			userMarkerMapProfile.setMap(mapProfile)
 			centerMapOn(mapProfile,coords.lat,coords.lng);
+			$('#modalProfile').on('shown.bs.modal', function (e) {
+				$('body').addClass('modal-open');
+			});
 			return "";
 		},
 		userId :function(){
@@ -52,7 +55,6 @@ Vue.component('modal-profile-component', {
 			$("#modalProfile").modal('hide');
 			$("#modalAddGroup").modal();
 		},
-
 	},
 	template:
 `

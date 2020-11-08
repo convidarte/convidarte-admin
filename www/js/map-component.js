@@ -2,6 +2,7 @@ Vue.component('map-component', {
 	data: function(){
 			return {
 				state: store.state,
+				group: null,
 			}
 	},
 	computed:{
@@ -14,14 +15,13 @@ Vue.component('map-component', {
 				deleteMarkers();
 				refreshGroupMarkers();
 				refreshAvailableUsersMarkers();
-				//centerMapOn(-34.62, -58.46);
 				return "";
 			}
 			if(tab=="groups"){
 				var gid = this.state.currentGroupId;
 				if( gid!=0 ){
-					var g = getGroup(gid);
-					displayGroupOnMap(g);
+					this.group = getGroup(gid);
+					displayGroupOnMap(this.group);
 				}else{
 					deleteMarkers();
 				}
@@ -32,11 +32,13 @@ Vue.component('map-component', {
 		centerOnGroup(){
 			var gid = this.state.currentGroupId;
 			var tab = this.state.currentTab;
-			if(gid!=0 && tab=="groups"){
-				centerMapOnGroup(gid);
+			var g = this.group;
+			if(tab=="groups" && gid!=0 && g!==null){
+				centerMapOnGroup(g);
 			}
 			if(tab=="users"){
 				//centerMapOnAverageAvailableUsers();
+				//centerMapOn(-34.62, -58.46);
 			}
 			return "";
 		},

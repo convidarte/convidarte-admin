@@ -10,7 +10,7 @@ Vue.component('modal-add-available-role', {
 			if (store.state.currentUserId==0){
 				return null
 			}
-			var u = JSON.parse(JSON.stringify(getUserWithRolesById(store.state.currentUserId)));
+			var u = JSON.parse(JSON.stringify(getUserById(store.state.currentUserId)));
 			if (u==null) return;
 			allRoles = ["cook","driver","delegate"];
 			styles = {

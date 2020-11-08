@@ -9,7 +9,7 @@ function showGroupById(groupId){
 		var g = getGroup(groupId);
 		var url = "/?grupo/"+ g["group_id"]+"/"+g["name"];
 		if( store.state.currentTab != "groups"){
-			store.setKey("currentGroupId", g["group_id"]);
+			store.setKey("currentTab","groups");
 		}
 		window.history.pushState('grupos', '', url);
 	}
@@ -17,7 +17,7 @@ function showGroupById(groupId){
 
 function showModalProfile(uid){
 	store.setKey("currentUserId",uid);
-	$("#modalProfile").modal();
+	$("#modalProfile").modal('show');
 	var u = getUserById(uid);
 	if (u!==null){
 		window.history.pushState('perfil', '', urlUserProfile(u));
