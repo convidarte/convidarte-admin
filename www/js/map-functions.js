@@ -152,12 +152,14 @@ function refreshGroupMarkers(){
 	}
 }
 
-function infoWindowTextForGroupMarker(gid){
-	var g = getGroupAdminEndpointById(gid);
+function infoWindowTextForGroupMarker(g){
 	var infoWindowText = "Grupo " + g.group_id.toString() + " - "+ encodeHTML(g.name)+"<br/>";
-	infoWindowText += g.role_count.cook + " cocinero(s) <br/>" ;
-	infoWindowText += g.role_count.driver+ " distribuidor(es)<br/>";
-	infoWindowText += g.role_count.delegate + " delegado(s)<br/>";
+	if (store.state.currentSystem=="admin"){
+		var gadmin = getGroupAdminEndpointById(g.group_id);
+		infoWindowText += gadmin.role_count.cook + " cocinero(s) <br/>" ;
+		infoWindowText += gadmin.role_count.driver+ " distribuidor(es)<br/>";
+		infoWindowText += gadmin.role_count.delegate + " delegado(s)<br/>";
+	}
 	infoWindowText += "El punto en el mapa es la ubicación promedio de los miembros del grupo.<br/>";
 	return infoWindowText;
 }
@@ -169,9 +171,7 @@ function createGroupMarker(g){
 	var marker = addMarker(groupMarkers, coords,label,color);
 	//marker.group_id = parseInt(g.group_id,10);
 	var gid = g.group_id;
-	if (store.state.currentSystem=="admin"){
-		marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(gid) ) );
-	}
+	marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(g) ) );
 }
 
 // Sets the map on all markers in the array.
