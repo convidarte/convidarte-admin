@@ -58,6 +58,18 @@ Vue.component('groups-component', {
 			}
 			return memberArray;
 		},
+		ackPendingStat: function(){
+			if(this.group==null) return 0;
+			var count=0;
+			for (var i = 0; i <  this.group.members.length; i++){
+				var u = this.group.members[i];
+				var ack = u.roles_in_group[0].ack_delegate;
+				if (!ack){
+					count++;
+				}
+			}
+			return count;
+		},
 		delegates: function(){
 			var isDelegateInGroup = (u  => u["roles_in_group"].filter(r => r["role"]=="delegate").length>0);
 			var groupDelegates = this.group.members.filter(isDelegateInGroup);
@@ -152,6 +164,8 @@ Vue.component('groups-component', {
 				<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
 			</li>
 			<li><h4>{{numberCooks}} chefs - {{numberDrivers}} distribuidores</h4></li>
+			<li><h4>{{ackPendingStat}} miembros para contactar</h4></li>
+
 		</ul>
 		<hr style="width:95%;">
 		<group-detail-printable :group="this.group"></group-detail-printable>
