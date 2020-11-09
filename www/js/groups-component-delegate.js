@@ -112,7 +112,14 @@ Vue.component('groups-component-delegate', {
 			<group-csv-link :group="this.group"></group-csv-link >
 		</div>
 
-		<table id="groupDetailTable" class="table table-striped">
+			<table id="groupDetailTable" class="table table-striped" style="table-layout: fixed; width: 100%;">
+				<colgroup>
+				<col style="width: 6%;">
+				<col style="width: 24%;">
+					<col style="width: 20%;">
+					<col style="width: 35%;">
+					<col style="width: 15%;">
+			</colgroup>
 			<tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Contacto</th><th>Rol(es)</th> </tr>
 			<tr v-for="member in members" :style="member.style" >
 				<td>{{ member.userId }}</td>
