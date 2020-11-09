@@ -275,6 +275,7 @@ function addUserRoleToGroup(user_id, role, group_id, groupName){
 			},
 			error: function() {
 				alert('Error, no se pudo agregar el usuario al grupo.');
+				console.log("error",user_id, group_id, role, groupName);
 			}
 		});
 }

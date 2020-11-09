@@ -15,19 +15,16 @@ Vue.component('split-group-form', {
 	template:`
 	<div>
 		<hr style="width:95%;">
-		<h3>Dividir grupo</h3>
+
 		<div v-if="splittingGroup">
-			Instrucciones: seleccionar los miembros del nuevo grupo, luego elegir el 
-			nombre del nuevo grupo y finalmente clickear en Dividir grupo.<br>
+			<h3>Dividir grupo</h3>
+			Instrucciones: seleccionar los miembros del nuevo grupo, elegir el 
+			nombre del nuevo grupo y finalmente clickear en "Dividir".<br>
 			Nombre para el nuevo grupo:&nbsp;&nbsp;
 			<input id="splitGroupName" type="text"></input><br><br>
-			<button @click="splitGroup">Dividir grupo</button>
+			<button @click="splitGroup">Dividir</button>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<button @click="splitGroupStop">Cancelar la división</button><br>
-		</div>
-		<div v-else>
-			<button id="startDividingGroupButton" @click="splitGroupStart">Quiero dividir el grupo</button>
-			<br>
 		</div>
 	</div>
 `,

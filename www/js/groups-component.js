@@ -93,11 +93,6 @@ Vue.component('groups-component', {
 		},
 	},
 	methods:{
-		changeName: function(){
-			var name = document.getElementById("changeNameTo").value;
-			var groupId = store.state.currentGroupId;
-			changeGroupName(groupId,name);
-		},
 		checkboxChange: function (){
 			var checkBox = event.target;
 			var uid = parseInt(checkBox.getAttribute("userId"),10);
@@ -126,6 +121,7 @@ Vue.component('groups-component', {
 					);
 				}
 			).catch(() => alert("Error: no se pudo dividir el grupo"));
+			this.group=null;
 			refreshEverything();
 		},
 		splitGroupStart: function(){
@@ -137,6 +133,9 @@ Vue.component('groups-component', {
 			console.log("split group stop");
 			this.currentlySplittingGroup=false;
 			this.userRolesNewGroup =  new Set();
+		},
+		renameGroupStart: function(){
+			$("#modalRenameGroup").modal("show");
 		},
 	},
 	template:`
@@ -159,15 +158,13 @@ Vue.component('groups-component', {
 		<group-csv-link :group="this.group"></group-csv-link >
 		<hr style="width:95%;">
 		<div v-if="adminSystem">
-			<h3> Cambiar el nombre del grupo</h3>
-			Nuevo nombre: <input id="changeNameTo"></input>
-			<button @click="changeName">Cambiar nombre</button>
+			<table style="width:100%;"><tr>
+			<td><button class="btn btn-primary float-left" @click="renameGroupStart" >Cambiar nombre</button></td>
+			<td><button type="button" class="btn btn-primary" @click="splitGroupStart">Dividir grupo</button></td>
+			<td><button-delete-group class="btn btn-danger float-right" :groupId="groupId">Borrar grupo</button-delete-group></td>
+			</tr></table>
 		</div>
-		<hr style="width:95%;">
-		<div v-if="adminSystem">
-			<h3> Borrar grupo</h3>
-			<button-delete-group :groupId="groupId"></button-delete-group>
-		</div>
+		<modal-rename-group :group="group"></modal-rename-group>
 		<split-group-form
 			v-if="adminSystem"
 			 :splittingGroup="splittingGroup"
