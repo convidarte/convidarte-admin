@@ -11,7 +11,7 @@ Vue.component('link-user-profile', {
 		},
 	},
 	template:`
-		<a v-if="adminSystem" href="#"  class="nav-link"@click="openProfile">@{{ userName }}</a>
+		<a v-if="adminSystem" href="#" @click="openProfile">@{{ userName }}</a>
 		<p v-else>@{{ userName }}</p>
 `,
 });

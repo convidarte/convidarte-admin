@@ -76,9 +76,9 @@ Vue.component('navbar-component', {
 			</li>
 		</ul>
 		<ul class="navbar-nav">
-			<login-component id="loginDiv" :style="displayIfNotLoggedIn"></login-component>
-			<li class="nav-link" id="adminUserName" :style="displayIfLoggedIn">
-				<link-user-profile :userName="adminDisplayName" :userId="adminUserId" ></link-user-profile>
+			<login-component :style="displayIfNotLoggedIn"></login-component>
+			<li :style="displayIfLoggedIn">
+				<link-user-profile :userName="adminDisplayName" class="nav-link" :userId="adminUserId" ></link-user-profile>
 			</li>
 			<li>
 				<a id="logout-link" class="nav-link" href="" onclick="logout()" :style="displayIfLoggedIn">

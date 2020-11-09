@@ -13,7 +13,7 @@ Vue.component('split-group-form', {
 		},
 	},
 	template:`
-	<div style="margin-left:15px;">
+	<div>
 		<hr style="width:95%;">
 		<h3>Dividir grupo</h3>
 		<div v-if="splittingGroup">
@@ -29,7 +29,6 @@ Vue.component('split-group-form', {
 			<button id="startDividingGroupButton" @click="splitGroupStart">Quiero dividir el grupo</button>
 			<br>
 		</div>
-	<hr style="width:95%;">
 	</div>
 `,
 });

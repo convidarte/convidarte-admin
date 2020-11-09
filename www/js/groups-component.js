@@ -142,32 +142,29 @@ Vue.component('groups-component', {
 	template:`
 <div id="groupsLeftPanel" :style="style">  
 	<div id="groupMembers" v-if="this.group">
-		<div>
-			<h2>{{ groupName }} </h2>
-			<div>
-				<ul>
-					<li>
-						<h4>Delegados: 
-							<link-user-profile v-for="delegate in delegates"
-								:userId="delegate.user_id"
-								:userName="delegate.user_name"
-							></link-user-profile>
-						</h4>
-						<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
-					</li>
-					<li><h4>{{numberCooks}} chefs - {{numberDrivers}} distribuidores</h4></li>
-				</ul>
-			</div>
-			<group-detail-printable :group="this.group"></group-detail-printable>
-			<group-csv-link :group="this.group"></group-csv-link >
-		</div>
-
-		<div style="margin-left:15px;" v-if="adminSystem">
+		<h2>#{{group.group_id}} - {{ group.name }} </h2>
+		<hr style="width:95%;">
+		<ul>
+			<li>
+				<h4>Delegados: <link-user-profile v-for="delegate in delegates"
+						:userId="delegate.user_id"
+						:userName="delegate.user_name"></link-user-profile>
+				</h4>
+				<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
+			</li>
+			<li><h4>{{numberCooks}} chefs - {{numberDrivers}} distribuidores</h4></li>
+		</ul>
+		<hr style="width:95%;">
+		<group-detail-printable :group="this.group"></group-detail-printable>
+		<group-csv-link :group="this.group"></group-csv-link >
+		<hr style="width:95%;">
+		<div v-if="adminSystem">
 			<h3> Cambiar el nombre del grupo</h3>
 			Nuevo nombre: <input id="changeNameTo"></input>
 			<button @click="changeName">Cambiar nombre</button>
 		</div>
-		<div style="margin-left:15px;" v-if="adminSystem">
+		<hr style="width:95%;">
+		<div v-if="adminSystem">
 			<h3> Borrar grupo</h3>
 			<button-delete-group :groupId="groupId"></button-delete-group>
 		</div>
