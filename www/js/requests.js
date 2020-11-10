@@ -1,20 +1,5 @@
 function getUserProfile(uid){
-	var urlAdminGroups = apiBaseUrl+"/users/"+uid.toString();
-	var response;
-	$.ajax({
-		method: "GET",
-		url: urlAdminGroups,
-		contentType: "application/json",
-		async: false,
-		headers : { "authorization" : ("Bearer " + store.state.token) },
-		success: function(data) {
-			response = data;
-		},
-		error: function() {
-			console.log('Get user profile falló');
-		}
-	});
-	return response;
+	return do_request("/users/"+uid.toString(), null, true,"GET");
 }
 
 
@@ -114,52 +99,31 @@ function deleteMemberDelegate(gid,uid,role){
 }
 
 function deleteMemberAndDeactivateAdmin(gid,uid,role){
-	var error = false;
-	groupName = getGroupNameById(gid);
+	var errorCount = 0;
+	var successCount=0;	
+	var groupName = getGroupNameById(gid);
 	var uidnumber = parseInt(uid,10);
-	if (gid!=""){
-		var updateGroup = { name : groupName, users_to_add : [  ], users_to_remove :[{user_id : uidnumber, role : role }] };
-		var url = apiBaseUrl+"/admin/groups/" + gid.toString(); 
-		$.ajax({
-			method: "PUT",
-			url: url,
-			data : JSON.stringify(updateGroup),
-			contentType: "application/json",
-			async: false,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data) {
-				return 0;
-			},
-			error: function() {
-				error = true;
-			}
-		});
-	}else{
-		error = true;
-	}
-
-	var updateGroup = { name : "Usuarios inactivos", users_to_add : [ {user_id : uidnumber, role : role } ], users_to_remove :[] };
-	var url = apiBaseUrl+"/admin/groups/1"; 
-	$.ajax({
-		method: "PUT",
-		url: url,
-		data : JSON.stringify(updateGroup),
-		contentType: "application/json",
-		async: false,
-		headers : { "authorization" : ("Bearer " + store.state.token) },
-		success: function(data) {
-
-		},
-		error: function() {
-			error = true;
+	var onError = function(){
+		if (errorCount==0){
+			alert("Error al quitar e inactivar.");
 		}
-	});
-	if (error){
-		alert("Error al quitar e inactivar.");
-		return;
+		errorCount++;
 	}
-	alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+role);
-	refreshEverything();
+	var onSuccess = function(){
+		successCount++;
+		if (successCount==2){
+			alert( "El usuario " + uid + " fue inactivado y removido del grupo " + gid.toString()+": "+encodeHTML(groupName) + "en su rol de "+roleInSpanish(role));
+			refreshEverything();
+		}
+	}
+	if (gid!=""){
+		var payloadRemove = { name : groupName, users_to_add : [  ], users_to_remove :[{user_id : uidnumber, role : role }] };
+		var urlRemove = "/admin/groups/" + gid.toString(); 
+		do_request(urlRemove, payloadRemove, true, "PUT").then(onSuccess).catch(onError);
+		var payloadAdd = { name : "Usuarios inactivos", users_to_add : [ {user_id : uidnumber, role : role } ], users_to_remove :[] };
+		var urlAdd = "/admin/groups/1"; 
+		do_request(urlAdd,payloadAdd,true,"PUT").then(onSuccess).catch(onError);
+	}
 }
 
 
@@ -259,25 +223,18 @@ function getGroup(groupId){
 }
 
 
-function addUserRoleToGroup(user_id, role, group_id, groupName){
-		var updateGroup = { name : groupName, users_to_add : [ {user_id : user_id, role : role } ], users_to_remove :[] };
-		var url = apiBaseUrl+"/admin/groups/" + group_id.toString(); 
-		$.ajax({
-			method: "PUT",
-			url: url,
-			data : JSON.stringify(updateGroup),
-			contentType: "application/json",
-			async: true,
-			headers : { "authorization" : ("Bearer " + store.state.token) },
-			success: function(data) {
-				alert( "El usuario " + user_id + " fue agregado al grupo " + group_id.toString()+": "+encodeHTML(groupName) ); 
-				refreshEverything();
-			},
-			error: function() {
-				alert('Error, no se pudo agregar el usuario al grupo.');
-				console.log("error",user_id, group_id, role, groupName);
-			}
-		});
+function addUserRoleToGroup(userId, role, groupId, groupName){
+	var payload = { name : groupName, users_to_add : [ {user_id : userId, role : role } ], users_to_remove :[] };
+	var url = "/admin/groups/" + groupId.toString();
+	var onSuccess = function(data) {
+		alert( "El usuario " + userId + " fue agregado al grupo " + groupId.toString()+": "+encodeHTML(groupName) ); 
+		refreshEverything();
+	}
+	var onError = function(){
+		alert('Error, no se pudo agregar el usuario al grupo.');
+		console.log("error",userId, groupId, role, groupName);
+	}
+	do_request(url, payload, true, "PUT").then(onSuccess).catch(onError);
 }
 
 
@@ -300,8 +257,8 @@ function addRole(uid,role){
 	});
 }
 
-function inactivateUserRole(uid,role){
-	addUserRoleToGroup(parseInt(uid,10), role, 1, "Usuarios inactivos"); // esto tiene que coincidir con las constantes del back, mas adelante vamos a tener un endpoint para que el front no necesite saber constantes del back!
+function inactivateUserRole(userId,role){
+	addUserRoleToGroup(parseInt(userId,10), role, 1, "Usuarios inactivos"); // esto tiene que coincidir con las constantes del back, mas adelante vamos a tener un endpoint para que el front no necesite saber constantes del back!
 }
 
 function getGroupNameById(groupId){

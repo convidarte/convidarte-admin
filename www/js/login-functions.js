@@ -51,22 +51,24 @@ function logout(){
 }
 
 function onLoginOk() {
-	p = getUserProfile(store.state.adminUserId);
-	if (store.state.currentSystem=="admin"){
-		if (p.roles.indexOf("admin")<0){
-			alert("Error: debe ser administrador para usar este sistema!")
-			logout();
-			return;
-		}
-		store.recoverStateFromLocalStorage();
-	}
-	if (store.state.currentSystem=="delegate"){
-		if (p.roles.indexOf("delegate")<0){
-			alert("Error: debe ser delegado para usar este sistema!")
-			logout();
-			return;
-		}
-	}
-	processQueryString();
-	refreshEverything();
+	getUserProfile(store.state.adminUserId).then(
+		function(p){
+			if (store.state.currentSystem=="admin"){
+				if (p.roles.indexOf("admin")<0){
+					alert("Error: debe ser administrador para usar este sistema!")
+					logout();
+					return;
+				}
+				store.recoverStateFromLocalStorage();
+			}
+			if (store.state.currentSystem=="delegate"){
+				if (p.roles.indexOf("delegate")<0){
+					alert("Error: debe ser delegado para usar este sistema!")
+					logout();
+					return;
+				}
+			}
+			processQueryString();
+			refreshEverything();
+		}).catch(err => console.log("GET user profile failed"));
 }
