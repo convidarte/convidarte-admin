@@ -153,8 +153,9 @@ function refreshGroupMarkers(){
 }
 
 function infoWindowTextForGroupMarker(g){
-	var infoWindowText = "Grupo " + g.group_id.toString() + " - "+ encodeHTML(g.name)+"<br/>";
+	var infoWindowText = 'Grupo ' + g.group_id.toString() + ' - ' + encodeHTML(g.name)+'<br>';
 	if (store.state.currentSystem=="admin"){
+		infoWindowText = 'Grupo #'+ g.group_id.toString() + ' - <a href="#" onclick="onClickShowGroup()" data-gid=' + g["group_id"].toString() + '>' + encodeHTML(g.name)+'</a><br>';
 		var gadmin = getGroupAdminEndpointById(g.group_id);
 		infoWindowText += gadmin.role_count.cook + " cocinero(s) <br/>" ;
 		infoWindowText += gadmin.role_count.driver+ " distribuidor(es)<br/>";
