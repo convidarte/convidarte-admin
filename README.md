@@ -1,5 +1,6 @@
-# Panel de administración
+# Panel de administración / delegados
 
+Bootstrap y Vue.js
 
 Para testear localmente los pasos son:
 
