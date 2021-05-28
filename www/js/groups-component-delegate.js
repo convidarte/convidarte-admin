@@ -50,6 +50,7 @@ Vue.component('groups-component-delegate', {
 					roleInGroup.roleInSpanish=roleInSpanish(role);
 					member.rolesInGroup.push(roleInGroup);
 				}
+				member.roleAck = member.rolesInGroup[0].role;
 				memberArray.push(member);
 			}
 			return memberArray;
