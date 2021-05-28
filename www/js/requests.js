@@ -224,7 +224,7 @@ function getGroup(groupId){
 
 
 function addUserRoleToGroup(userId, role, groupId, groupName){
-	var payload = { name : groupName, users_to_add : [ {user_id : userId, role : role } ], users_to_remove :[] };
+	var payload = { name : groupName, users_to_add : [ {user_id : parseInt(userId,10), role : role } ], users_to_remove :[] };
 	var url = "/admin/groups/" + groupId.toString();
 	var onSuccess = function(data) {
 		alert( "El usuario " + userId + " fue agregado al grupo " + groupId.toString()+": "+encodeHTML(groupName) ); 
@@ -232,8 +232,9 @@ function addUserRoleToGroup(userId, role, groupId, groupName){
 	}
 	var onError = function(){
 		alert('Error, no se pudo agregar el usuario al grupo.');
-		console.log("error",userId, groupId, role, groupName);
+		console.log("Error al agregar al grupo (userId,groupId,role,groupName): ",userId, groupId, role, groupName);
 	}
+	console.log("addUserRoleToGroup: ", url, payload);
 	do_request(url, payload, true, "PUT").then(onSuccess).catch(onError);
 }
 
