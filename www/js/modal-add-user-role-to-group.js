@@ -25,10 +25,10 @@ Vue.component('modal-add-user-role-to-group', {
 	methods:{
 		addUserRoleInGroup: function(){
 			var uid = store.state.currentUserId;
-			var gid = document.getElementById("newGroupId").value;
+			var newGroupId = document.getElementById("newGroupId").value;
 			var role = document.getElementById("newRole").value;
-			var groupName = getGroupNameById(gid);
-			addUserRoleToGroup(uid, role, gid, groupName);
+			var groupName = getGroupNameById(newGroupId);
+			addUserRoleToGroup(uid, role, newGroupId, groupName);
 			this.close();
 		},
 		close: function(){
