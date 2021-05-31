@@ -44,6 +44,22 @@ function deleteGroup(gid){
 		);
 }
 
+function combineGroups(gid1,gid2,combinedGroupName){
+	var url = "/admin/groups/combine";
+	var payload = { combined_group_name : combinedGroupName, first_group_id : gid1, second_group_id : gid2 };
+	do_request(url, payload, true, "POST").then(
+		function(data) {
+			alert('El grupo fue combinado correctamente');
+			store.setKey("currentGroupId", data["group_id"] );//TODO revisar esto
+			refreshEverything(); 
+		}).catch(
+			function() {
+				alert('Falló la combinación de grupos.');
+			}
+		);
+}
+
+
 function changeGroupName(gid,groupName){
 	if (gid==0){
 		alert("Error: group_id = 0");
