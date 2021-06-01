@@ -68,6 +68,7 @@ Vue.component('modal-group-combination', {
 			if( confirm("¿Realmente desea combinar los grupos "+ t1 + " y " + t2 + "?" )){
 				console.log("Combinar grupos:", gid1, gid2, newGroupName);
 				combineGroups(gid1,gid2,newGroupName);
+				$("#modalGroupCombination").modal('hide');
 				refreshEverything();
 			}else{
 			
@@ -108,18 +109,20 @@ Vue.component('modal-group-combination', {
 							<label for="groupList2"><span style="color:black">Segundo grupo:</span></label>
 							<input id="groupList2" v-on:click="clearText" style="height:25px;">
 						</div>
-
+						<br>
 						<div>
 						Nombre del nuevo grupo:						
 						<input type="text" id="combinedGroupName"></input>
 						</div>
 						{{ refreshOptions }}
-
+						<div>
+						<br>						<br>
 						<button
 							type="button"
 							class="btn btn-primary float-right"
 							@click="combineGroups" >Combinar los grupos
 						</button>
+						</div>
 						</div>
 					</div>
 				</div>
