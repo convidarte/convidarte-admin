@@ -46,11 +46,11 @@ Vue.component('filter-bar-component', {
 			<div class="filter-group" v-if="adminSystem">
 				<autocomplete-group-component id="autocompleteGroupComponent"></autocomplete-group-component>
 			</div>
-			<div class="filter-group"  v-if="adminSystem">
-				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
-			</div>
 			<div class="filter-group" v-if="adminSystem">
 				<group-combination-component></group-combination-component>
+			</div>
+			<div class="filter-group"  v-if="adminSystem">
+				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
 			</div>
 			<div class="filter-group" v-if="delegateSystem">
 				<group-list-delegate></group-list-delegate>
