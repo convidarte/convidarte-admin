@@ -57,7 +57,7 @@ Vue.component('groups-component', {
 				}
 				memberArray.push(member);
 			}
-			return memberArray;
+			return memberArray.reverse();
 		},
 		ackPendingStat: function(){
 			if(this.group==null) return 0;
