@@ -41,6 +41,7 @@ Vue.component('groups-component-delegate', {
 				member.nameToShow = nameToShow(u);
 				member.email = u.email;
 				member.cellphone = u.cellphone;
+				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
 				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
@@ -53,7 +54,7 @@ Vue.component('groups-component-delegate', {
 				member.roleAck = member.rolesInGroup[0].role;
 				memberArray.push(member);
 			}
-			return memberArray;
+			return memberArray.reverse();
 		},
 		ackPendingStat: function(){
 			if(this.group==null) return 0;
@@ -139,7 +140,8 @@ Vue.component('groups-component-delegate', {
 				<td><a :href="member.urlMaps" target="_blank"> {{ member.addressToShow }} </a></td>
 				<td style="word-wrap: break-word;width:5%;">
 					{{member.email}}<br>
-					{{member.cellphone}}
+					{{member.cellphone}}<br>
+					({{member.lastActiveDate}})
 				</td>
 				<td>
 					<p v-for="roleInGroup in member.rolesInGroup">

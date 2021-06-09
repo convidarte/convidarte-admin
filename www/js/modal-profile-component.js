@@ -15,6 +15,7 @@ Vue.component('modal-profile-component', {
 			this.user.fullName = fullName(this.user);
 			this.user.fullAddress = fullAddressToShow(this.user);
 			this.user.urlGoogleMaps = urlGoogleMaps(this.user);
+			// this.user.lastActiveDate = (new Date(this.user["last_active_date"])).toLocaleDateString());
 			var coords = { lat: parseFloat(this.user.address.latitude), lng: parseFloat(this.user.address.longitude) };
 			if(userMarkerMapProfile==null){
 				userMarkerMapProfile = new google.maps.Marker({});
@@ -116,6 +117,11 @@ Vue.component('modal-profile-component', {
 						</ul>
 					</div>
 				</div>
+				<!--
+				<div class="row" v-if="user">
+					<div class="col-md-8">Última actividad en el sistema: {{user.lastActiveDate}}</div>
+				</div>
+				-->
 				<div class="row" v-if="user">
 					<div class="col-md-8">{{user.fullAddress}}</div>
 					<div class="col-md-4">
