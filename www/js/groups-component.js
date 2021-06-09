@@ -41,6 +41,7 @@ Vue.component('groups-component', {
 				member.addressToShow = fullAddressToShow(u);
 				var addressGoogle = addressGoogleMaps(u);
 				member.urlMaps = urlGoogleMaps(u);
+				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
 				member.nameToShow = nameToShow(u); 
@@ -202,7 +203,8 @@ Vue.component('groups-component', {
 						v-bind:role="member.roleAck"
 					></button-ack-delegate>
 				</td>
-				<td><a :href="member.urlMaps" target="_blank"> {{ member.addressToShow }} </a></td>
+				<td><a :href="member.urlMaps" target="_blank"> {{ member.addressToShow }}  </a> <br>
+					({{member.lastActiveDate}})</td>
 				<td>
 					<table>
 						<tr v-for="roleInGroup in member.rolesInGroup">
