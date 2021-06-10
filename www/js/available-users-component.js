@@ -60,6 +60,7 @@ Vue.component('available-users-component', {
 				row.roleSpanish = roleInSpanish(u.role);
 				row.nameToShow = nameToShow(u);
 				row.linkProfileId = "viewProfileLink_"+uid.toString();
+				row.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
 				userRows.push(row);
 			}
 			return userRows;
@@ -93,7 +94,7 @@ Vue.component('available-users-component', {
 			<tr>
 				<th scope="col">ID</th>
 				<th scope="col">Rol</th>
-				<th scope="col">Nombre y apellido</th>
+				<th scope="col">Nombre y apellido / Disponible al</th>
 				<th scope="col">Dirección</th>
 				<th scope="col">Asignar grupo</th>
 			</tr>
@@ -104,7 +105,7 @@ Vue.component('available-users-component', {
 				<td>{{ row.roleSpanish }}</td>
 				<td>
 					<a :id="row.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
-						{{ row.nameToShow }}
+						{{ row.nameToShow }}<br>{{row.lastActiveDate}}
 					</a>
 				</td>
 				<td><a :href="row.urlMaps" target="_blank"> {{ row.address }} </a></td>
