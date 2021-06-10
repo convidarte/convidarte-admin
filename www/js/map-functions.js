@@ -73,6 +73,7 @@ function userMarkerContent(u,role){
 	s += "<div>" + roleInSpanish(role) + "</div>";
 	s += "<div>" + encodeHTML(u.address.street) + " " + u.address.number.toString() + ", "+encodeHTML(u.address.city)+"</div>";
 	if(store.state.currentTab=="users"){
+		s+= "<div>"+ (new Date(u["last_active_date"])).toLocaleDateString() +"</div>"; 
 		s+= getGroupSelectHTML( "selectGroup" + uid.toString() ) + "<br/>";
 		s+="<button id=\"agregar"+ uid.toString() + "\" onclick=\"assignGroup()\" value=\""+ uid.toString() +"\" name=\""+encodeHTML(u.user_name) +"\" visible=\"1\"  > Agregar </button></td>";
 	}
