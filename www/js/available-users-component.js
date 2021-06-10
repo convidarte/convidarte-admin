@@ -105,8 +105,10 @@ Vue.component('available-users-component', {
 				<td>{{ row.roleSpanish }}</td>
 				<td>
 					<a :id="row.linkProfileId" href="" class="viewProfileLink" v-on:click="openModalProfileOnClick" >
-						{{ row.nameToShow }}<br>{{row.lastActiveDate}}
+						{{ row.nameToShow }}
 					</a>
+					<br>
+					{{row.lastActiveDate}}
 				</td>
 				<td><a :href="row.urlMaps" target="_blank"> {{ row.address }} </a></td>
 				<td>
