@@ -177,6 +177,7 @@ Vue.component('groups-component', {
 			<td><button class="btn btn-primary float-left" @click="renameGroupStart" >Cambiar nombre</button></td>
 			<td><button type="button" class="btn btn-primary" @click="splitGroupStart">Dividir grupo</button></td>
 			<td><button-delete-group class="btn btn-danger float-right" :groupId="groupId">Borrar grupo</button-delete-group></td>
+			<td><button-delete-group-inactivate class="btn btn-danger float-right" :groupId="groupId">Borrar grupo e inactivar a todos</button-delete-group-inactivate></td>
 			</tr></table>
 		</div>
 		<modal-rename-group :group="group"></modal-rename-group>

@@ -50,6 +50,20 @@ Vue.component('button-delete-group',{
 	template:`<button type="button" @click="deleteGroup"> Borrar grupo</button>`,
 });
 
+Vue.component('button-delete-group-inactivate',{
+	props: ['groupId'],
+	methods:{
+		deleteGroup: function(){
+			if ( confirm("Seguro que quiere eliminar el grupo "+ this.groupId.toString() +" e inactivar a todos sus integrantes?") ){
+				deleteGroupAndInactivateMembers(this.groupId);
+			}
+		},
+	},
+	template:`<button type="button" @click="deleteGroup"> Borrar grupo e inactivar a todos</button>`,
+});
+
+
+
 Vue.component('button-ack-delegate',{
 	props: ['groupId','userId','role'],
 	methods:{
