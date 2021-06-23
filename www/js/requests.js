@@ -44,6 +44,28 @@ function deleteGroup(gid){
 		);
 }
 
+function deleteGroupAndInactivateMembers(gid){
+	if (gid==0){
+		alert("Error: group_id = 0");
+		return;
+	}
+	var url = "/admin/groups/"+gid+"/inactivate";
+	do_request(url, null, true, "DELETE").then(
+		function(data) {
+			alert('El grupo fue eliminado correctamente.');
+			if (store.state.currentGroupId.toString()==gid.toString()){
+				store.setKey("currentGroupId", 0);
+			}
+			refreshEverything();
+		}).catch(
+			function() {
+				alert('Falló la eliminación del grupo.');
+			}
+		);
+}
+
+
+
 function combineGroups(gid1,gid2,combinedGroupName){
 	var url = "/admin/groups/combine";
 	var payload = { combined_group_name : combinedGroupName, first_group_id : gid1, second_group_id : gid2 };
