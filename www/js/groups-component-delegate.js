@@ -149,11 +149,13 @@ Vue.component('groups-component-delegate', {
 						<button-delete-role-delegate
 							:groupId="groupId"
 							:userId="member.userId"
+							:nameToShow="member.nameToShow"
 							:role="roleInGroup.role"
 						></button-delete-role-delegate><br>
 						<button-delete-inactivate-role-delegate
 							:groupId="groupId"
 							:userId="member.userId"
+							:nameToShow="member.nameToShow"
 							:role="roleInGroup.role"
 						></button-delete-inactivate-role-delegate>
 					</p>			

@@ -29,10 +29,10 @@ Vue.component('button-delete-inactivate-role', {
 });
 
 Vue.component('button-delete-role-delegate', {
-	props: ['groupId','userId','role'],
+	props: ['groupId','userId','nameToShow','role'],
 	methods:{
 		deleteUserRole:function(){
-			if ( confirm("Seguro que quiere quitar al usuario #"+ this.userId.toString() +"?") ){
+			if ( confirm("Seguro que quiere quitar a " + this.nameToShow + "?") ){
 				deleteMemberDelegate(this.groupId, this.userId, this.role);
 				refreshEverything();
 			}
@@ -44,10 +44,10 @@ Vue.component('button-delete-role-delegate', {
 });
 
 Vue.component('button-delete-inactivate-role-delegate', {
-	props: ['groupId','userId','role'],
+	props: ['groupId','userId','nameToShow','role'],
 	methods:{
 		deleteAndInactivate:function(){
-			if ( confirm("Seguro que quiere quitar e inactivar al usuario #"+ this.userId.toString() +"?") ){
+			if ( confirm("Seguro que quiere quitar a " + this.nameToShow + "?") ){
 				deleteMemberAndDeactivateDelegate(this.groupId, this.userId, this.role);
 				refreshEverything();
 			}
