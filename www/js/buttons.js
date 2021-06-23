@@ -3,12 +3,7 @@ Vue.component('button-delete-role', {
 	methods:{
 		deleteUserRole:function(){
 			if ( confirm("Seguro que quiere quitar al usuario #"+ this.userId.toString() +"?") ){
-				if (store.state.currentSystem=="admin"){
-					deleteMember(this.groupId, this.userId, this.role);
-				}
-				if (store.state.currentSystem=="delegate"){
-					deleteMemberDelegate(this.groupId, this.userId, this.role);
-				}
+				deleteMember(this.groupId, this.userId, this.role);	
 				refreshEverything();
 			}
 		},
@@ -23,18 +18,43 @@ Vue.component('button-delete-inactivate-role', {
 	methods:{
 		deleteAndInactivate:function(){
 			if ( confirm("Seguro que quiere quitar e inactivar al usuario #"+ this.userId.toString() +"?") ){
-				if (store.state.currentSystem=="admin"){
-					deleteMemberAndDeactivateAdmin(this.groupId, this.userId, this.role);
-				}
-				if (store.state.currentSystem=="delegate"){
-					deleteMemberAndDeactivateDelegate(this.groupId, this.userId, this.role);
-				}
+				deleteMemberAndDeactivateAdmin(this.groupId, this.userId, this.role);
 				refreshEverything();
 			}
 		},
 	},
 	template:`
 <button type="button" @click="deleteAndInactivate">Quitar e inactivar usuario</button>
+`,
+});
+
+Vue.component('button-delete-role-delegate', {
+	props: ['groupId','userId','role'],
+	methods:{
+		deleteUserRole:function(){
+			if ( confirm("Seguro que quiere quitar al usuario #"+ this.userId.toString() +"?") ){
+				deleteMemberDelegate(this.groupId, this.userId, this.role);
+				refreshEverything();
+			}
+		},
+	},
+	template:`
+<button	type="button" v-on:click="deleteUserRole">No es mi zona</button>
+`,
+});
+
+Vue.component('button-delete-inactivate-role-delegate', {
+	props: ['groupId','userId','role'],
+	methods:{
+		deleteAndInactivate:function(){
+			if ( confirm("Seguro que quiere quitar e inactivar al usuario #"+ this.userId.toString() +"?") ){
+				deleteMemberAndDeactivateDelegate(this.groupId, this.userId, this.role);
+				refreshEverything();
+			}
+		},
+	},
+	template:`
+<button type="button" @click="deleteAndInactivate">Ya no participa</button>
 `,
 });
 

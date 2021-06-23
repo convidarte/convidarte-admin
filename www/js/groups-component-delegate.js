@@ -146,16 +146,16 @@ Vue.component('groups-component-delegate', {
 				<td>
 					<p v-for="roleInGroup in member.rolesInGroup">
 						{{ roleInGroup.roleInSpanish }}<br>
-						<button-delete-role
+						<button-delete-role-delegate
 							:groupId="groupId"
 							:userId="member.userId"
 							:role="roleInGroup.role"
-						></button-delete-role><br>
-						<button-delete-inactivate-role
+						></button-delete-role-delegate><br>
+						<button-delete-inactivate-role-delegate
 							:groupId="groupId"
 							:userId="member.userId"
 							:role="roleInGroup.role"
-						></button-delete-inactivate-role>
+						></button-delete-inactivate-role-delegate>
 					</p>			
 				</td>
 			</tr>
