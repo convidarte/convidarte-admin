@@ -247,7 +247,7 @@ function centerMapOnAverageListOfUsers(listUsers){
 }
 
 function averageCoords(listUsers){
-	var cooks = listUsers.filter(u => u.role="cook");
+	var cooks = listUsers.filter(u => u.role=="cook");
 	var lats = cooks.map( x=> x.address.latitude).filter(x=>x!=0);
 	var longs = cooks.map( x=> x.address.longitude).filter(x=>x!=0);
 	if (lats.length>0 && longs.length>0){
