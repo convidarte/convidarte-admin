@@ -146,7 +146,7 @@ function refreshAvailableUsersMarkers(){
 }
 
 function refreshGroupMarkers(){
-	var groups =store.state.groups;
+	var groups = store.state.groups;
 	for (var i = 0; i < groups.length; i++) {
 		var g = groups[i];
 		createGroupMarker(g);
@@ -247,8 +247,9 @@ function centerMapOnAverageListOfUsers(listUsers){
 }
 
 function averageCoords(listUsers){
-	var lats = listUsers.map( x=> x.address.latitude).filter(x=>x!=0);
-	var longs = listUsers.map( x=> x.address.longitude).filter(x=>x!=0);
+	var cooks = listUsers.filter(u => u.role="cook");
+	var lats = cooks.map( x=> x.address.latitude).filter(x=>x!=0);
+	var longs = cooks.map( x=> x.address.longitude).filter(x=>x!=0);
 	if (lats.length>0 && longs.length>0){
 		var lat = average(lats);
 		var lng = average(longs);

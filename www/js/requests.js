@@ -305,7 +305,7 @@ function getGroupNameById(groupId){
 	if( g === null ){
 		return "";
 	}
-	return g.name
+	return g["name"];
 }
 
 function getGroupAdminEndpointById(groupId){
