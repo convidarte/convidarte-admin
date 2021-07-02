@@ -96,20 +96,20 @@ function getGroupSelectHTML(selectId){
 
 
 function assignGroup(){
-	boton = event.target;
-	uid = boton.value;
-	u = getUserById(uid);
-	role = u.role; // cook
-	user_role_id = u.role_id; // uint
-	user_id = u.user_id; // uint
-	group_id = document.getElementById("selectGroup"+uid.toString()).value;
-	groupName = getGroupNameById(group_id);
-	if (group_id!=""){
-		addUserRoleToGroup(u.user_id, u.role, group_id, groupName);
-		refreshEverything();
-	}else{
-		alert("Debe seleccionar un grupo.");
-	}
+	var boton = event.target;
+	var uid = boton.value;
+	getUserProfile(uid).then( u =>{
+		var role = u.role; 
+		var user_id = u.user_id;
+		var group_id = document.getElementById("selectGroup"+uid.toString()).value;
+		var groupName = getGroupNameById(group_id);
+		if (group_id!=""){
+			addUserRoleToGroup(u.user_id, u.role, group_id, groupName);
+			refreshEverything();
+		}else{
+			alert("Debe seleccionar un grupo.");
+		}		
+	});
 }
 
 function createUserMarker(u, setClickListener){
