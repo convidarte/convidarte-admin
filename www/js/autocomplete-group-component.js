@@ -1,49 +1,63 @@
 Vue.component('autocomplete-group-component', {
 	data: function(){
 			return {
-				state: store.state,
+				autoCompleteResult: [],
+				autoCompleteProgress: false,
+				autoCompleteText: "name",
+				autoCompleteFieldId: "group_id"
 			}
 	},
-	computed: {
-		refreshOptions: function (){
-			var groups = store.state.groups;
-			var options = groups.map( g => g["group_id"]+": " + g["name"] );
-			$("#groupList").autocomplete({
-				source: options,
-				select: function(event,ui){
-							selectedOption = ui.item.label
-							document.getElementById("groupList").value = selectedOption;
-							num = parseFloat(selectedOption.split(":")[0]);
-							if (num.toString()!="NaN"){
-								store.setKey("currentGroupId",num);
-								showGroupById(num);
-							}
-						}
-			});
-			return "";
-		},
-		style : function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
+    props: {
+        placeHolderInputText: String,
+        onSelectedAutoCompleteEvent: Function,
+        containerStyle: String,
 	},
 	methods: {
-		clearText: function(event){
-			event.target.value="";
+		onKeyUpAutoCompleteEvent(keywordEntered){
+			this.autoCompleteResult = [];
+			this.autoCompleteProgress = false;
+			if(keywordEntered.length > 2){
+				this.autoCompleteProgress = true;
+				do_request("/admin/groups", null, true, "GET")
+				.then(response => {
+					var groups = response["groups"];
+					var newData = [];
+					groups.forEach(function(item, index){
+						if(item.name.toLowerCase().indexOf(keywordEntered.toLowerCase()) >= 0){
+							newData.push(item);
+						}
+					});
+					this.autoCompleteResult = newData;
+					this.autoCompleteProgress = false;
+				})
+				.catch(e => {
+					this.autoCompleteProgress = false;
+					this.autoCompleteResult = [];
+				})
+			}else{
+				this.autoCompleteProgress = false;
+				this.autoCompleteResult = [];
+			}
+		},
+		onSelectedAutoCompleteEventInternal(id,text){
+			this.autoCompleteProgress = false;
+			this.autoCompleteResult = [];
+			this.onSelectedAutoCompleteEvent(id,text);
 		},
 	},
 	template: `
-<div id="autocompleteGroupContainer" class="ui-widget" :style="style">
-	<label for="groupList"><span style="color:black">Ver grupo:</span></label>
-	<input id="groupList" v-on:click="clearText" style="height:25px;">
-	{{ refreshOptions }}
+<div class="ui-widget" :style="containerStyle">
+	<autocomplete 
+		:place-holder-text="placeHolderInputText"
+		:result-items="autoCompleteResult"
+		:on-key-up="onKeyUpAutoCompleteEvent"
+		:on-selected="onSelectedAutoCompleteEventInternal"
+		:auto-complete-progress="autoCompleteProgress"
+		:item-text="autoCompleteText"
+		:item-id="autoCompleteFieldId">
+	</autocomplete>
 </div>
 `
-})
+});
 
 

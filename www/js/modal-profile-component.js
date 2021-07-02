@@ -7,25 +7,28 @@ Vue.component('modal-profile-component', {
 	},
 	computed:{
 		refresh : function(){
+			console.log("refreshing user profile at", this.state.refreshTime);
 			var uid= store.state.currentUserId;
-			console.log("(",this.state.refreshTime,") refreshing profile for user #",uid);
-			this.user = getUserById(uid);
-			if( this.user == null ) return "";
-			this.user.stringRolesInSpanish = this.user.roles.map(roleInSpanish).join( ", " );
-			this.user.fullName = fullName(this.user);
-			this.user.fullAddress = fullAddressToShow(this.user);
-			this.user.urlGoogleMaps = urlGoogleMaps(this.user);
-			// this.user.lastActiveDate = (new Date(this.user["last_active_date"])).toLocaleDateString());
-			var coords = { lat: parseFloat(this.user.address.latitude), lng: parseFloat(this.user.address.longitude) };
-			if(userMarkerMapProfile==null){
-				userMarkerMapProfile = new google.maps.Marker({});
-			}
-			userMarkerMapProfile.setPosition(coords);
-			userMarkerMapProfile.setLabel({text: this.user["user_name"],fontWeight:"bold",fontSize: "18px"});
-			userMarkerMapProfile.setMap(mapProfile)
-			centerMapOn(mapProfile,coords.lat,coords.lng);
-			$('#modalProfile').on('shown.bs.modal', function (e) {
-				$('body').addClass('modal-open');
+			if(uid==0) return "";
+			var self = this;
+			getUserProfile(uid).then( user => {
+				user.stringRolesInSpanish = user.roles.map(roleInSpanish).join( ", " );
+				user.fullName = fullName(user);
+				user.fullAddress = fullAddressToShow(user);
+				user.urlGoogleMaps = urlGoogleMaps(user);
+				user.lastActiveDate = (new Date(user["last_active_date"])).toLocaleDateString();
+				var coords = { lat: parseFloat(user.address.latitude), lng: parseFloat(user.address.longitude) };
+				if(userMarkerMapProfile==null){
+					userMarkerMapProfile = new google.maps.Marker({});
+				}
+				userMarkerMapProfile.setPosition(coords);
+				userMarkerMapProfile.setLabel({text: user["user_name"],fontWeight:"bold",fontSize: "18px"});
+				userMarkerMapProfile.setMap(mapProfile)
+				centerMapOn(mapProfile,coords.lat,coords.lng);
+				$('#modalProfile').on('shown.bs.modal', function (e) {
+					$('body').addClass('modal-open');
+				});
+				self.user=user;
 			});
 			return "";
 		},
@@ -117,11 +120,7 @@ Vue.component('modal-profile-component', {
 						</ul>
 					</div>
 				</div>
-				<!--
-				<div class="row" v-if="user">
-					<div class="col-md-8">Última actividad en el sistema: {{user.lastActiveDate}}</div>
-				</div>
-				-->
+							
 				<div class="row" v-if="user">
 					<div class="col-md-8">{{user.fullAddress}}</div>
 					<div class="col-md-4">
@@ -130,6 +129,11 @@ Vue.component('modal-profile-component', {
 						</a>
 					</div>
 				</div>
+				
+				<div class="row" v-if="user">
+					<div class="col-md-8">Última actividad en el sistema: {{user.lastActiveDate}}</div>
+				</div>
+				
 				<div class="row">
 					<div class="col">
 						<div id="profileMap"></div>
@@ -138,7 +142,7 @@ Vue.component('modal-profile-component', {
 				<div class="row" v-if="user">
 					<div class="col">
 						<h3>Grupos</h3>
-						<table-users-groups :userId="userId"></table-users-groups>
+						<table-users-groups :userId="userId" ></table-users-groups>
 					</div>
 				</div>
 				<div class="row" v-if="user">

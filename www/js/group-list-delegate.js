@@ -2,6 +2,7 @@ Vue.component('group-list-delegate', {
 	data: function(){
 			return {
 				state: store.state,
+				groupsDelegate: [],
 			}
 	},
 	methods: {
@@ -14,14 +15,20 @@ Vue.component('group-list-delegate', {
 		},
 	},
 	computed: {
-		groupsDelegate: function(){
-			console.log("group delegate ",store.state.refreshTime);		
-			return getUserGroups(this.state.adminUserId).filter( function(g){ return g.roles.includes("delegate");} );
+		refresh: function(){
+			console.log("group delegate ",store.state.refreshTime);
+			var self = this;
+			if(!this.state.adminUserId) return "";
+			getUserGroups(this.state.adminUserId).then( response => {
+				self.groupsDelegate = response["groups"].filter( function(g){ return g.roles.includes("delegate");} );
+			});
+			return "";
 		},
 	},
 
 	template:`
 <div>
+	{{refresh}}
 	<ul>
 		<li class="filter-group">Mis grupos:</li>
 		<li class="filter-group" v-for="g in groupsDelegate" style="padding:6px;">

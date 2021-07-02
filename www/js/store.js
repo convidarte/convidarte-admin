@@ -14,7 +14,6 @@ var store = {
 
 		groups: [], // all groups
 		availableUserRoles: [], // all available user roles
-		users: [], // all users
 
 		token:"",
 		refreshTime:0,
@@ -92,33 +91,18 @@ var store = {
 			this.setKey("availableUserRoles", r);
 		}
 	},
-	// Users
-	setUsersBackend(){
-		var url = "/admin/users";;
-		do_request(url, null, true, "GET").then(
-			function(data) {
-				localStorage.setItem("storedUsers",JSON.stringify(data.users));
-				store.setKey("users", data.users);
-			}).catch( function(err) { console.log('Request falló: '+ url); })
-	},
-	setUsersLocalStorage(){
-		var r = JSON.parse(localStorage.getItem("storedUsers"));
-		if ( r !== null ){
-			this.setKey("users", r);
-		}
-	},
 	// function to recover everything from the local storage
 	recoverStateFromLocalStorage(){
 		console.log("recovering state from local storage");
 		this.setGroupsLocalStorage();
 		this.setAvailableUserRolesLocalStorage();
-		this.setUsersLocalStorage();
+		//this.setUsersLocalStorage();
 		store.setRefreshTime();
 	},
 	refreshEverythingBackend(){
 		this.setGroupsBackend();
 		this.setAvailableUserRolesBackend();
-		this.setUsersBackend();
+		//this.setUsersBackend();
 		this.setUsersFiltered();
 	}
 }

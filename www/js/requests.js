@@ -4,23 +4,8 @@ function getUserProfile(uid){
 
 
 function getUserGroups(uid){
-	if (! uid) {return [];}
-	var urlAdminUsersGroups = apiBaseUrl+"/users/"+uid.toString()+"/groups";
-	var userGroups;
-	$.ajax({
-		method: "GET",
-		url: urlAdminUsersGroups,
-		contentType: "application/json",
-		async: false,
-		headers : { "authorization" : ("Bearer " + store.state.token) },
-		success: function(data) {
-			userGroups = data.groups;
-		},
-		error: function() {
-			console.log('User\'s Groups falló');
-		}
-	});
-	return userGroups;
+	var urlAdminUsersGroups = "/users/"+uid.toString()+"/groups";
+	return do_request(urlAdminUsersGroups, null, true, "GET");
 }
 
 
@@ -72,7 +57,7 @@ function combineGroups(gid1,gid2,combinedGroupName){
 	do_request(url, payload, true, "POST").then(
 		function(data) {
 			alert('El grupo fue combinado correctamente');
-			store.setKey("currentGroupId", data["group_id"] );//TODO revisar esto
+			store.setKey("currentGroupId", data["group_id"] );
 			refreshEverything(); 
 		}).catch(
 			function() {
@@ -242,22 +227,8 @@ function removeUserRolesFromGroup(group_id, groupName, userRoles){
 
 
 function getGroup(groupId){
-	var urlAdminGroup = apiBaseUrl+"/groups/"+groupId.toString() ;
-	var group=null;
-	$.ajax({
-		method: "GET",
-		url: urlAdminGroup,
-		contentType: "application/json",
-		async: false,
-		headers : { "authorization" : ("Bearer " + store.state.token) },
-		success: function(data) {
-			group = data;
-		},
-		error: function() {
-			console.log('Get group falló');
-		}
-	});
-	return group;
+	var urlAdminGroup = "/groups/"+groupId.toString() ;
+	return do_request(urlAdminGroup, null, true, "GET");
 }
 
 
@@ -312,9 +283,6 @@ function getGroupAdminEndpointById(groupId){
 	return getElementInOrderedListById(store.state.groups, parseInt(groupId,10), "group_id");
 }
 
-function getUserById(uid){
-	return getElementInOrderedListById(store.state.users, uid, "user_id");
-}
 
 // xs an array of x such that its elements are strictly ordered by x[keyName]
 // returns the element x of xs such that x[keyName]=idElement

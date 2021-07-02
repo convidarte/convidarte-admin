@@ -2,49 +2,68 @@ Vue.component('autocomplete-user-component', {
 	data: function(){
 			return {
 				state: store.state,
+				autoCompleteResult: [],
+				autoCompleteProgress: false,
+				autoCompleteText: "text",
+				autoCompleteFieldId: "user_id",
+		        placeHolderInputText: "Buscar usuario",
 			}
 	},
 	computed: {
-		refreshOptions: function (){
-			console.log("completo opciones");
-			var allUsers = store.state.users;
-			optionList = new Array();
-			for ( var i=0; i<allUsers.length; i++){
-				u = allUsers[i];
-				optionList.push( tidySpaces(u.user_id.toString()+": "+ encodeHTML(u.user_name)	+ " ("+encodeHTML(u.name) + " " + encodeHTML(u.last_name)+" " +encodeHTML(u.cellphone) +")"));
-			}
-			$( "#userList" ).autocomplete({
-				source: optionList,
-				select: function(event,ui){
-					selectedOption = ui.item.label
-					document.getElementById("userList").value = selectedOption;
-					num = parseFloat(selectedOption.split(":")[0]);
-					if (num.toString()!="NaN"){
-						store.setKey("currentUserId",num);
-						showModalProfile(num);
-					}
-				},
-			});
-			return "";
-		},
-		style: function(){
+		containerStyle: function(){
 			if(this.state.token=="") return "display:none;"
 			return "";
 		}
 	},
-	methods: {
-		clearText: function(event){
-			event.target.value="";
+	methods:{
+		onKeyUpAutoCompleteEvent(keywordEntered){
+			this.autoCompleteResult = [];
+			this.autoCompleteProgress = false;
+			if(keywordEntered.length > 2){
+				this.autoCompleteProgress = true;
+				do_request("/search/users/"+keywordEntered, null, true, "GET")
+				.then(results => {
+					var newData = [];
+					results.forEach(function(item, index){
+						var x = {
+							user_id:item["user_id"],
+							text: tidySpaces(item["text"])
+						};
+						newData.push(x);
+
+					});
+					this.autoCompleteResult = newData;
+					this.autoCompleteProgress = false;
+				})
+				.catch(e => {
+					this.autoCompleteProgress = false;
+					this.autoCompleteResult = [];
+				});
+			}else{
+				this.autoCompleteProgress = false;
+				this.autoCompleteResult = [];
+			}
+		},
+		onSelectedAutoCompleteEvent(id,text){
+			this.autoCompleteProgress = false;
+			this.autoCompleteResult = [];
+			if (id.toString()!="NaN"){
+				store.setKey("currentUserId",id);
+				showModalProfile(id);
+			}
 		},
 	},
 	template: `
-	  <div id="userSearchBoxContainer" class="ui-widget" :style="style">
-		<label for="userList"><span style="color:black">Buscar usuario:</span></label>
-		<input id="userList" v-on:click="clearText" style="height:25px;">
-		{{ refreshOptions }}
-	  </div>
-`
-})
-
-
+<div class="ui-widget" :style="containerStyle">
+	<autocomplete 
+		:place-holder-text="placeHolderInputText"
+		:result-items="autoCompleteResult"
+		:on-key-up="onKeyUpAutoCompleteEvent"
+		:on-selected="onSelectedAutoCompleteEvent"
+		:auto-complete-progress="autoCompleteProgress"
+		:item-text="autoCompleteText"
+		:item-id="autoCompleteFieldId">
+	</autocomplete>
+</div>`
+});
 

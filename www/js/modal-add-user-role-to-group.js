@@ -2,24 +2,31 @@ Vue.component('modal-add-user-role-to-group', {
 	data: function(){
 			return {
 				state: store.state,
+				user: null,
 			}
 	},
 	computed:{
-		user: function(){
+		refresh: function(){
+			console.log("refreshing modal add user role to group at", this.state.refreshTime);
 			var uid = store.state.currentUserId;
-			var u = JSON.parse(JSON.stringify(getUserById(uid)));
-			if (u==null) return null;
-			u.fullName = fullName(u);
-			roles = [];
-			for (i in u.roles){
-				role = u.roles[i];
-				var data = {"role": role, "roleInSpanish": roleInSpanish(role) };
-				if (role!= "admin"){
-					roles.push( data );
+			var self = this;
+			if(uid==0) return "";
+			getUserProfile(uid).then( user => {
+				var u = JSON.parse(JSON.stringify(user));
+				if (u==null) return null;
+				u.fullName = fullName(u);
+				roles = [];
+				for (i in u.roles){
+					role = u.roles[i];
+					var data = {"role": role, "roleInSpanish": roleInSpanish(role) };
+					if (role!= "admin"){
+						roles.push( data );
+					}
 				}
-			}
-			u.roles = roles;
-			return u;
+				u.roles = roles;
+				self.user=u;
+			});
+			return "";
 		},
 	},
 	methods:{
@@ -38,7 +45,7 @@ Vue.component('modal-add-user-role-to-group', {
 		}
 	},
 	template:`
-<div>
+<div>{{refresh}}
 	<div class="modal fade" id="modalAddGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">

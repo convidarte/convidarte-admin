@@ -13,7 +13,8 @@ Vue.component('groups-component', {
 			var gid= store.state.currentGroupId;
 			this.currentlySplittingGroup=false;
 			if(gid!=0){
-				this.group = getGroup(gid);
+				var self = this;
+				getGroup(gid).then(group => {self.group=group;});
 			}else{
 				this.group=null;
 			}

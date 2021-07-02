@@ -19,9 +19,12 @@ Vue.component('map-component', {
 			}
 			if(tab=="groups"){
 				var gid = this.state.currentGroupId;
-				if( gid!=0 ){
-					this.group = getGroup(gid);
-					displayGroupOnMap(this.group);
+				if(gid!=0){
+					var self = this;
+					getGroup(gid).then(group => {
+						self.group=group;
+						displayGroupOnMap(group);
+					});
 				}else{
 					deleteMarkers();
 				}

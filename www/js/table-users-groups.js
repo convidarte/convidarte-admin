@@ -2,16 +2,26 @@ Vue.component('table-users-groups', {
 	data: function(){
 			return {
 				state: store.state,
+				userGroups: [],
 			}
 	},
 	props: ["userId"],
 	computed:{
+		refresh: function(){
+			console.log("Refreshing at",this.state.refreshTime);
+			var self = this;
+			if (this.userId==0) return "";
+			getUserGroups(parseInt(this.userId,10)).then(res => {
+				self.userGroups = res["groups"];
+			});
+			return "";
+		},
 		rolesInGroups: function(){
 			console.log("tablita grupos del usuario", this.state.refreshTime);
-			var userGroupsRequest = getUserGroups(parseInt(this.userId,10));
+			var userGroups = this.userGroups;
 			var urgs=[];
-			for ( var i=0; i<userGroupsRequest.length; i++){
-				var g = userGroupsRequest[i];
+			for ( var i=0; i<userGroups.length; i++){
+				var g = userGroups[i];
 				var groupId = g["group_id"];
 				for (var j = 0; j < g.roles.length; j++){
 					var urg={};
@@ -33,7 +43,7 @@ Vue.component('table-users-groups', {
 		},
 	},
 	template:`
-<div>
+<div>{{refresh}}
 <table v-if="rolesInGroups && (rolesInGroups.length)" class="table table-striped">
 	<thead>
 		<tr><th>Id grupo</th><th>Nombre grupo</th><th>Rol</th><th></th></tr>

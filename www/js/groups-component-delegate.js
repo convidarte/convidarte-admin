@@ -10,7 +10,10 @@ Vue.component('groups-component-delegate', {
 			console.log("(",this.state.refreshTime,") showing group #", this.state.currentGroupId);
 			var gid= store.state.currentGroupId;
 			if(gid!=0){
-				this.group = getGroup(gid);
+				var self = this;
+				getGroup(gid).then(group => {self.group=group;});
+			}else{
+				this.group=null;
 			}
 			return "";
 		},
@@ -102,6 +105,7 @@ Vue.component('groups-component-delegate', {
 							<link-user-profile v-for="delegate in delegates"
 								:userId="delegate.user_id"
 								:userName="delegate.user_name"
+								v-bind:key="delegate.userId"
 							></link-user-profile>
 						</h4>
 						<p v-if="delegates.length==0">El grupo no tiene delegados.</p>
@@ -123,7 +127,7 @@ Vue.component('groups-component-delegate', {
 					<col style="width: 15%;">
 			</colgroup>
 			<tr><th>Id</th> <th>Nombre</th><th>Dirección</th><th>Contacto</th><th>Rol(es)</th> </tr>
-			<tr v-for="member in members" :style="member.style" >
+			<tr v-for="member in members" :style="member.style" v-bind:key="member.userId" >
 				<td>{{ member.userId }}</td>
 				<td>
 					<link-user-profile

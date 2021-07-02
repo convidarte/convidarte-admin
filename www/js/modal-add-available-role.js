@@ -2,33 +2,39 @@ Vue.component('modal-add-available-role', {
 	data: function(){
 			return {
 				state: store.state,
+				user: null,
 			}
 	},
 	computed:{
-		user: function(){
+		refresh: function(){
 			console.log("refresh modal-add-available-role", this.state.refreshTime);
 			if (store.state.currentUserId==0){
 				return null
 			}
-			var u = JSON.parse(JSON.stringify(getUserById(store.state.currentUserId)));
-			if (u==null) return;
-			allRoles = ["cook","driver","delegate"];
-			styles = {
-				"cook":"background-color:Salmon;",
-				"driver":"background-color:SpringGreen;",
-				"delegate":"background-color:MediumPurple;",
-			};
-			roles = [];
-			for (i in allRoles){
-				role = allRoles[i];
-				if(u.roles.indexOf(role)<0){
-					var data = {"role": role, "style": styles[role], "roleInSpanish": roleInSpanish(role) };
-					roles.push( data );
+			var self = this;
+			if(store.state.currentUserId==0) return "";
+			getUserProfile(store.state.currentUserId).then( user => {
+				var u = JSON.parse(JSON.stringify(user));
+				if (u==null) return;
+				allRoles = ["cook","driver","delegate"];
+				styles = {
+					"cook":"background-color:Salmon;",
+					"driver":"background-color:SpringGreen;",
+					"delegate":"background-color:MediumPurple;",
+				};
+				roles = [];
+				for (i in allRoles){
+					role = allRoles[i];
+					if(u.roles.indexOf(role)<0){
+						var data = {"role": role, "style": styles[role], "roleInSpanish": roleInSpanish(role) };
+						roles.push( data );
+					}
 				}
-			}
-			u.fullName = fullName(u);
-			u.roles = roles;
-			return u;
+				u.fullName = fullName(u);
+				u.roles = roles;
+				self.user=u;
+			});
+			return "";
 		},
 	},
 	methods:{
@@ -44,7 +50,7 @@ Vue.component('modal-add-available-role', {
 		}
 	},
 	template:`
-<div>
+<div>{{refresh}}
 	<div class="modal fade" id="modalAddRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">

@@ -55,3 +55,58 @@ ul{list-style: none; margin: 0; padding: 0 }
 .ui-autocomplete.ui-menu {
   z-index: 3001;
 } 
+
+
+
+
+/*********** AUTO COMPLETE ************/
+.loading-circle {
+    background-color: #ffffff;
+    background-image: url("img/loading.gif");
+    background-size: 16px 16px;
+    background-position: right center;
+    background-repeat: no-repeat;
+}
+
+.hide-loading-circle {
+    background: none;
+}
+
+.form-textinput{
+	padding:8px 10px;
+	border-radius:5px;
+	border:solid 1px #ccc;
+}
+
+.autocomplete {
+    position: relative;
+    background-color: white;
+}
+
+.autocomplete-results {
+    padding: 0;
+    margin: 0;
+    border: 1px solid #eeeeee;
+    height: 120px;
+    /* overflow: auto;*/
+	background-color:#fdf8f3;
+	border-radius:5px;
+	position: absolute;
+	z-index:3001;
+}
+
+.autocomplete-result {
+    list-style: none;
+    text-align: left;
+    padding: 4px 10px;
+    cursor: pointer;
+    /*position: absolute;*/
+    z-index:3001;
+    background-color: white;
+}
+
+.autocomplete-result:hover {
+    background-color: #4AAE9B;
+    color: white;
+}
+/*********** END AUTO COMPLETE ************/
