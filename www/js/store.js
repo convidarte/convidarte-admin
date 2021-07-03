@@ -43,23 +43,19 @@ var store = {
 		var url = "/admin/users/roles?only_available=" + this.state.onlyAvailableFilterValue.toString();
 		var currentNeighborhood = this.state.neighborhoodFilterValue;
 		var currentCity = this.state.cityFilterValue;
+		var currentRole = this.state.roleFilterValue;
 		if(currentNeighborhood!=""){
 			url+="&neighborhood="+currentNeighborhood;
 		}
 		if(currentCity!=""){
 			url+="&city="+currentCity;
 		}
+		url+="&role="+currentRole;
 		do_request(url,null,true,"GET").then(
-			function(data){
-				currentRole = store.state.roleFilterValue;
-				function filterRoles(u){
-					return currentRole == u.role;
-				};
-				store.setKey("usersFiltered", data.user_roles.filter(filterRoles));
-			}
+			data => {store.setKey("usersFiltered", data.user_roles);}
 		).catch(
-			()=>console.log("error in setUsersFiltered")
-		)
+			() => console.log("error in setUsersFiltered")
+		);
 	},
 	// Groups
 	setGroupsBackend(){
