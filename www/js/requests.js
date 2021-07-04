@@ -110,10 +110,11 @@ function deleteMemberDelegate(gid,uid,role){
 		var url = "/delegate/remove/" + gid.toString(); 
 		var onSuccess = function(data) {
 			refreshEverything();
-			alert("El usuario fue removido del grupo");
+			//alert("El usuario fue removido del grupo");
 		}
 		var onError = function(err) {
-			alert('Error, no se pudo quitar el rol del usuario en el grupo.');
+			refreshEverything();
+			//alert('Error, no se pudo quitar el rol del usuario en el grupo.');
 		}
 		do_request(url,payload,true,"DELETE").then( onSuccess ).catch( onError );
 	}else{
@@ -162,10 +163,11 @@ function deleteMemberAndDeactivateDelegate(gid,uid,role){
 	var url = "/delegate/deactivate/" + gid.toString();
 	var onSuccess = function(data) {
 		refreshEverything();
-		alert( "El usuario fue inactivado y removido del grupo."); 
+		//alert( "El usuario fue inactivado y removido del grupo."); 
 	}
 	var onError = function(err) {
-		alert('Error, no se pudo quitar e inactivar.');
+		refreshEverything();
+		//alert('Error, no se pudo quitar e inactivar.');
 	}
 	do_request(url,payload,true,"DELETE").then( onSuccess ).catch( onError );
 }
