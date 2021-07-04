@@ -182,11 +182,12 @@ function ackDelegate(gid,uid,role){
 	var payload = { user_id : uidnumber, role : role };
 	var url = "/delegate/ack/" + gid.toString();
 	var onSuccess = function(data) {
-			alert( "El usuario " + uid + " fue marcado como contactado.");
+			//alert( "El usuario " + uid + " fue marcado como contactado.");
 			refreshEverything();
 	}
 	var onError = function(err) {
-			alert('Error, no se pudo marcar al usuario como contactado.');
+			//alert('Error, no se pudo marcar al usuario como contactado.');
+			refreshEverything();
 	}
 	do_request(url,payload,true,"POST").then( onSuccess ).catch( onError );
 }
