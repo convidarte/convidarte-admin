@@ -14,6 +14,6 @@ if (script.readyState){  //IE
 		//
     };
 }
-script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDD-__W-HWHW8b7VKeACWC_t8elR6cNEfE&callback=initMap";
+script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDD-__W-HWHW8b7VKeACWC_t8elR6cNEfE&callback=initMaps";
 document.getElementsByTagName("body")[0].appendChild(script);
 
