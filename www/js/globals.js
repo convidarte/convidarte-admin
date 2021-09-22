@@ -1,4 +1,4 @@
-var apiBaseUrl = "https://admin.testing.convidarte.com.ar/api/v1";
+var apiBaseUrl = "https://testing.convidarte.com.ar/api/v1";
 
 var map;
 var mapProfile;
