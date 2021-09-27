@@ -11,6 +11,7 @@ var store = {
 		roleFilterValue: "cook",
 		onlyAvailableFilterValue: true,
 		usersFiltered: [], // filtered user roles
+		systemUserRoles: [], // the roles of the user which is using the system
 
 		groups: [], // all groups
 		availableUserRoles: [], // all available user roles
@@ -87,24 +88,26 @@ var store = {
 			this.setKey("availableUserRoles", r);
 		}
 	},
+	
 	// function to recover everything from the local storage
 	recoverStateFromLocalStorage(){
 		console.log("recovering state from local storage");
-		this.setGroupsLocalStorage();
-		this.setAvailableUserRolesLocalStorage();
-		//this.setUsersLocalStorage();
-		store.setRefreshTime();
+		if( this.state.systemUserRoles.indexOf("admin")>=0 ){
+			this.setGroupsLocalStorage();
+			this.setAvailableUserRolesLocalStorage();
+			store.setRefreshTime();
+		}
 	},
 	refreshEverythingBackend(){
 		this.setGroupsBackend();
 		this.setAvailableUserRolesBackend();
-		//this.setUsersBackend();
 		this.setUsersFiltered();
 	}
 }
 
+
 function refreshEverything() {
-	if (store.state.currentSystem=="admin"){
+	if( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		store.refreshEverythingBackend();
 	}
 	store.setRefreshTime();

@@ -1,3 +1,9 @@
+function login(userName, password){
+	var loginData = { user_name: userName, password : password };
+	var url ="/auth/login";
+	return do_request(url, loginData, false, "POST");
+}
+
 function getUserProfile(uid){
 	return do_request("/users/"+uid.toString(), null, true,"GET");
 }

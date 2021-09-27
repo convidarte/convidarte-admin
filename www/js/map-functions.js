@@ -64,7 +64,7 @@ function showInfoWindow( marker, infoWindowContent){
 function userMarkerContent(u,role){
 	var uid = u.user_id;
 	var s = "";
-	if (store.state.currentSystem=="admin"){
+	if ( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		s+="<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name)+" " + encodeHTML(u.last_name) + "</a>";
 	}else{
 		s+=encodeHTML(u.name) + " " + encodeHTML(u.last_name);
@@ -155,7 +155,7 @@ function refreshGroupMarkers(){
 
 function infoWindowTextForGroupMarker(g){
 	var infoWindowText = 'Grupo ' + g.group_id.toString() + ' - ' + encodeHTML(g.name)+'<br>';
-	if (store.state.currentSystem=="admin"){
+	if ( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		infoWindowText = 'Grupo #'+ g.group_id.toString() + ' - <a href="#" onclick="onClickShowGroup()" data-gid=' + g["group_id"].toString() + '>' + encodeHTML(g.name)+'</a><br>';
 		var gadmin = getGroupAdminEndpointById(g.group_id);
 		infoWindowText += gadmin.role_count.cook + " cocinero(s) <br/>" ;
@@ -203,7 +203,7 @@ function centerMapOn(map, lat,long){
 function displayGroupOnMap(g){
 	deleteMarkers();
 	createGroupMarker(groupWithCoordinates(g));
-	var setClickListener = true;//store.state.currentSystem=="admin";
+	var setClickListener = true;
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
 		for (var j=0; j<u["roles_in_group"].length;j++){

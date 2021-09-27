@@ -26,7 +26,7 @@ Vue.component('login-component', {
 			</tbody>
 		</table>
 	</form>
-	<input type="submit" value="Acceder" onclick="login()" >
+	<input type="submit" value="Acceder" onclick="onClickLoginButton()" >
 </div>`
 })
 

@@ -6,21 +6,21 @@ Vue.component('main-component', {
 	},
 	computed: {
 		isLoggedIn: function(){
-			return store.state.token!="";
+			return this.state.token!="";
 		},
-		delegateSystem: function(){
-			return store.state.currentSystem=="delegate";
+		isDelegate: function(){
+			return this.state.systemUserRoles.indexOf("delegate")>=0;
 		},
-		adminSystem: function(){
-			return store.state.currentSystem=="admin";
+		isAdmin: function(){
+			return this.state.systemUserRoles.indexOf("admin")>=0;
 		},
 	},
 	template :`
 <main role="main" class="container-list-map" >
 	<div class="list-container" v-show="isLoggedIn">
 		<available-users-component>  </available-users-component>
-		<groups-component v-if="adminSystem"> </groups-component>
-		<groups-component-delegate v-if="delegateSystem"> </groups-component-delegate>
+		<groups-component v-if="isAdmin"> </groups-component>
+		<groups-component-delegate v-if="isDelegate"> </groups-component-delegate>
 	</div>
 	<div class="map-container" v-show="isLoggedIn">
 		<map-component id="map"></map-component>

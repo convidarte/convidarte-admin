@@ -45,7 +45,7 @@ Vue.component('groups-component-delegate', {
 				member.email = u.email;
 				member.cellphone = u.cellphone;
 				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
-				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
+				member.showAckButton = (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
@@ -84,10 +84,7 @@ Vue.component('groups-component-delegate', {
 		},
 
 		style: function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
+			if(this.state.currentTab=="mygroups"){
 				return "";
 			}
 			return "display:none;";

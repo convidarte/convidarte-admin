@@ -12,7 +12,7 @@ function showGroupById(groupId){
 	if (groupId!=0){
 		getGroup(groupId).then( group =>{
 			var url = urlGroup(group);
-			if( store.state.currentTab != "groups"){
+			if( !(store.state.currentTab in ["groups", "mygroups"]) ){
 				store.setKey("currentTab","groups");
 			}
 			window.history.pushState('grupos', '', url);
@@ -56,11 +56,13 @@ function processQueryString(){
 		store.setKey("currentTab", "groups");
 		return;
 	}
-	if( store.state.currentSystem=="admin"){
+	if( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		store.setKey("currentTab", "users");
+		return;
 	}
-	if( store.state.currentSystem=="delegate"){
+	if( store.state.systemUserRoles.indexOf("delegate")>=0 ){
 		store.setKey("currentTab", "groups");
+		return;
 	}
-
+	store.setKey("currentTab", "myprofile");
 }

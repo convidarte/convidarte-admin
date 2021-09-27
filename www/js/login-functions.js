@@ -1,9 +1,7 @@
-function login(){
-	var user = document.getElementById("username").value;
-	var pass = document.getElementById("password").value;
-	var loginData = { user_name: user, password : pass };
-	var url ="/auth/login";
-	do_request(url, loginData, false,"POST").then(
+function onClickLoginButton(){
+	var userName = document.getElementById("username").value;
+	var password = document.getElementById("password").value;
+	login(userName,password).then(
 		function(data){
 			store.setKey("adminUserId",data.user.user_id);
 			store.setKey("token", data.token);
@@ -53,21 +51,8 @@ function logout(){
 function onLoginOk() {
 	getUserProfile(store.state.adminUserId).then(
 		function(p){
-			if (store.state.currentSystem=="admin"){
-				if (p.roles.indexOf("admin")<0){
-					alert("Error: debe ser administrador para usar este sistema!")
-					logout();
-					return;
-				}
-				store.recoverStateFromLocalStorage();
-			}
-			if (store.state.currentSystem=="delegate"){
-				if (p.roles.indexOf("delegate")<0){
-					alert("Error: debe ser delegado para usar este sistema!")
-					logout();
-					return;
-				}
-			}
+			store.setKey("systemUserRoles", p.roles);
+			store.recoverStateFromLocalStorage();
 			processQueryString();
 			refreshEverything();
 		}).catch(err => console.log("GET user profile failed"));

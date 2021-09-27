@@ -46,7 +46,7 @@ Vue.component('groups-component', {
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
 				member.nameToShow = nameToShow(u); 
-				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
+				member.showAckButton = store.state.currentTab=="mygroups" && (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
@@ -85,19 +85,16 @@ Vue.component('groups-component', {
 		},
 
 		style: function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
 			if(this.state.currentTab=="groups"){
 				return "";
 			}
 			return "display:none;";
 		},
 		delegateSystem: function(){
-			return store.state.currentSystem=="delegate";
+			return store.state.currentTab=="mygroups";
 		},
 		adminSystem: function(){
-			return store.state.currentSystem=="admin";
+			return store.state.currentTab=="groups";
 		},
 		splittingGroup: function(){
 			return this.currentlySplittingGroup;

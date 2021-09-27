@@ -2,7 +2,7 @@ Vue.component('link-user-profile', {
 	props :["userId", "userName"],
 	computed:{
 		adminSystem: function(){
-			return store.state.currentSystem=="admin";
+			return store.state.systemUserRoles.indexOf("admin")>=0;
 		},
 	},
 	methods: {
