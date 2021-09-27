@@ -7,7 +7,7 @@ Vue.component('select-role-component', {
 	methods:{
 		selectRoleChanged: function (){
 			var role = document.getElementById("selectRole").value;
-			store.setRoleFilterValue(role)	
+			setRoleFilterValue(role)	
 			refreshEverything();
 		},
 	},

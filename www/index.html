@@ -16,6 +16,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+		<script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
+
 		<script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163205380-3"></script>
@@ -32,9 +34,9 @@
 		<script src="js/vendor/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 		<script src="mainCompiled.js"></script>
-		<script>store.setKey("currentSystem", "admin");</script>
+		<script>setKey("currentSystem", "admin");</script>
 		<script>
-			new Vue({ el:'#applicationComponent'});
+			new Vue({ el:'#applicationComponent', store: store});
 		</script>
 		<script async defer src="apikey.js"></script>
 	</body>

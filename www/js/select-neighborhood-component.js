@@ -25,7 +25,7 @@ Vue.component('select-neighborhood-component', {
 	methods: {
 		selectNeighborhoodChanged: function (){
 			var neighborhood = document.getElementById("selectNeighborhood").value;
-			store.setNeighborhoodFilterValue(neighborhood)	
+			setNeighborhoodFilterValue(neighborhood)	
 			refreshEverything();
 		},
 	},

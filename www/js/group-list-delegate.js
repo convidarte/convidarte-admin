@@ -9,7 +9,7 @@ Vue.component('group-list-delegate', {
 		showGroup: function(event){
 			var gid = parseFloat(event.target.getAttribute("data-gid"),10);
 			if (gid.toString()!="NaN"){
-				store.setKey("currentGroupId",gid);
+				setKey("currentGroupId",gid);
 				showGroupById(gid);
 			}
 		},

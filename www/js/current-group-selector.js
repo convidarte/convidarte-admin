@@ -19,7 +19,7 @@ Vue.component('current-group-selector', {
 	methods: {
 		onSelectedAutoCompleteEvent(id, text){
 			if (id.toString()!="NaN"){
-				store.setKey("currentGroupId",id);
+				setKey("currentGroupId",id);
 				showGroupById(id);
 			}
 		},

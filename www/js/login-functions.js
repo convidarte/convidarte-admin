@@ -5,10 +5,10 @@ function login(){
 	var url ="/auth/login";
 	do_request(url, loginData, false,"POST").then(
 		function(data){
-			store.setKey("adminUserId",data.user.user_id);
-			store.setKey("token", data.token);
-			store.setKey("usernameAdmin", data.user.user_name);
-			store.setKey("tokenExpiration", data.expiration);
+			setKey("adminUserId",data.user.user_id);
+			setKey("token", data.token);
+			setKey("usernameAdmin", data.user.user_name);
+			setKey("tokenExpiration", data.expiration);
 
 			setCookie("token-convidarte", store.state.token, 59*60*1000);
 			setCookie("username-convidarte", store.state.usernameAdmin, 59*60*1000);
@@ -32,9 +32,9 @@ function onLoadConvidarte () {
 	usernameCookie = getCookie("username-convidarte");
 	adminUserIdCookie = getCookie("userid-convidarte");
 	if( tokenCookie != ""){
-		store.setKey("token", tokenCookie);
-		store.setKey("usernameAdmin", usernameCookie);
-		store.setKey("adminUserId", adminUserIdCookie);
+		setKey("token", tokenCookie);
+		setKey("usernameAdmin", usernameCookie);
+		setKey("adminUserId", adminUserIdCookie);
 		onLoginOk(store.state.adminUserId);
 	}
 }
@@ -59,7 +59,7 @@ function onLoginOk() {
 					logout();
 					return;
 				}
-				store.recoverStateFromLocalStorage();
+				recoverStateFromLocalStorage();
 			}
 			if (store.state.currentSystem=="delegate"){
 				if (p.roles.indexOf("delegate")<0){

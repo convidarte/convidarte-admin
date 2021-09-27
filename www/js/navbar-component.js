@@ -6,12 +6,12 @@ Vue.component('navbar-component', {
 	},
 	methods: {
 		changeUsersTab: function(){
-			store.setKey("currentTab", "users");
+			setKey("currentTab", "users");
 			window.history.pushState('usuarios', '', '/?usuarios');
 			refreshEverything();
 		},
 		changeGroupsTab: function(){
-			store.setKey("currentTab", "groups");
+			setKey("currentTab", "groups");
 			window.history.pushState('grupos', '', '/?grupos');
 			refreshEverything();
 		},
