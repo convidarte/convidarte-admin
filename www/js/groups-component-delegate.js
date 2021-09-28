@@ -82,16 +82,9 @@ Vue.component('groups-component-delegate', {
 		numberDrivers: function(){
 			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="driver").length>0}).length;
 		},
-
-		style: function(){
-			if(this.state.currentTab=="mygroups"){
-				return "";
-			}
-			return "display:none;";
-		},
 	},
 	template:`
-<div id="groupsLeftPanel" :style="style">  
+<div id="groupsLeftPanel">  
 	<div id="groupMembers" v-if="this.group">
 		<div>
 			<h2>{{ groupName }} </h2>

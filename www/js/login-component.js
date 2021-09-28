@@ -1,12 +1,12 @@
 Vue.component('login-component', {
 	data: function(){
 			return {
-				state: store.state,
+				//state: store.state,
 			}
 	},
 	computed:{
 		style : function(){
-			if(this.state.token!="") return "display: none;";
+			if(store.state.token!="") return "display: none;";
 			return "";
 		},
 	},

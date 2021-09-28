@@ -13,19 +13,10 @@ Vue.component('group-combination-component', {
 		},
 	},
 	computed:{
-		style : function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
 	},
 	template:`
 <div>
-	<button	type="button" v-on:click="showModalGroupCombination" :style="style">Combinar dos grupos</button>
+	<button	type="button" v-on:click="showModalGroupCombination">Combinar dos grupos</button>
 	<modal-group-combination></modal-group-combination>
 </div>
 `,

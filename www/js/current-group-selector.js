@@ -5,21 +5,10 @@ Vue.component('current-group-selector', {
 				placeHolderInputText: 'Ver grupo',
 			}
 	},
-	computed: {
-		containerStyle : function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
-	},
 	methods: {
 		onSelectedAutoCompleteEvent(id, text){
 			if (id.toString()!="NaN"){
-				store.setKey("currentGroupId",id);
+				setKey("currentGroupId",id);
 				showGroupById(id);
 			}
 		},
@@ -27,8 +16,7 @@ Vue.component('current-group-selector', {
 	template:`
 <autocomplete-group-component
 	:on-selected-auto-complete-event="onSelectedAutoCompleteEvent"
-	:place-holder-input-text="placeHolderInputText"
-	:containerStyle="containerStyle">
+	:place-holder-input-text="placeHolderInputText">
 </autocomplete-group-component>
 `
 });

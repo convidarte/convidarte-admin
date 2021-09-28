@@ -48,7 +48,7 @@ Vue.component('autocomplete-user-component', {
 			this.autoCompleteProgress = false;
 			this.autoCompleteResult = [];
 			if (id.toString()!="NaN"){
-				store.setKey("currentUserId",id);
+				setKey("currentUserId",id);
 				showModalProfile(id);
 			}
 		},

@@ -1,15 +1,14 @@
 Vue.component('map-component', {
 	data: function(){
 			return {
-				state: store.state,
 				group: null,
 			}
 	},
 	computed:{
 		refresher(){
 			console.log("(",store.state.refreshTime ,") refreshing map ");
-			if(this.state.token=="") return "";
-			var tab = this.state.currentTab;
+			if(store.state.token=="") return "";
+			var tab = store.state.currentTab;
 			if(tab=="users"){
 				console.log("mostrando ",store.state.usersFiltered.length, " usuarios en el mapa.");
 				deleteMarkers();
@@ -17,8 +16,8 @@ Vue.component('map-component', {
 				refreshAvailableUsersMarkers();
 				return "";
 			}
-			if(tab=="groups"){
-				var gid = this.state.currentGroupId;
+			if(tab=="groups" || tab=="mygroups"){
+				var gid = store.state.currentGroupId;
 				if(gid!=0){
 					var self = this;
 					getGroup(gid).then(group => {
@@ -33,10 +32,10 @@ Vue.component('map-component', {
 			return "";
 		},
 		centerOnGroup(){
-			var gid = this.state.currentGroupId;
-			var tab = this.state.currentTab;
+			var gid = store.state.currentGroupId;
+			var tab = store.state.currentTab;
 			var g = this.group;
-			if(tab=="groups" && gid!=0 && g!==null){
+			if( (tab=="groups" || tab=="mygroups") && gid!=0 && g!==null){
 				centerMapOnGroup(g);
 			}
 			if(tab=="users"){
@@ -46,10 +45,10 @@ Vue.component('map-component', {
 			return "";
 		},
 		setZoom(){
-			if(this.state.currentTab=="users"){
+			if(store.state.currentTab=="users"){
 				map.setZoom(12);
 			}
-			if(this.state.currentTab=="groups"){
+			if( store.state.currentTab in ["groups", "mygroups"] ){
 				map.setZoom(15);
 			}
 			return "";

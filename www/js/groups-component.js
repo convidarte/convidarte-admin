@@ -45,8 +45,7 @@ Vue.component('groups-component', {
 				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
-				member.nameToShow = nameToShow(u); 
-				member.showAckButton = store.state.currentTab=="mygroups" && (!ack);
+				member.nameToShow = nameToShow(u);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
@@ -82,19 +81,6 @@ Vue.component('groups-component', {
 		},
 		numberDrivers: function(){
 			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="driver").length>0}).length;
-		},
-
-		style: function(){
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
-		delegateSystem: function(){
-			return store.state.currentTab=="mygroups";
-		},
-		adminSystem: function(){
-			return store.state.currentTab=="groups";
 		},
 		splittingGroup: function(){
 			return this.currentlySplittingGroup;
@@ -150,7 +136,7 @@ Vue.component('groups-component', {
 		},
 	},
 	template:`
-<div id="groupsLeftPanel" :style="style">  
+<div id="groupsLeftPanel">  
 	<div id="groupMembers" v-if="this.group">
 		<h2>#{{group.group_id}} - {{ group.name }} </h2>
 		<hr style="width:95%;">
@@ -195,12 +181,6 @@ Vue.component('groups-component', {
 						:userId="member.userId"
 						:userName="member.nameToShow"
 					></link-user-profile>
-					<button-ack-delegate
-						v-if="member.showAckButton"
-						v-bind:groupId="groupId"
-						v-bind:userId="member.userId"
-						v-bind:role="member.roleAck"
-					></button-ack-delegate>
 				</td>
 				<td><a :href="member.urlMaps" target="_blank"> {{ member.addressToShow }}  </a> <br>
 					({{member.lastActiveDate}})</td>

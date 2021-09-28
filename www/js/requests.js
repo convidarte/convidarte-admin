@@ -25,7 +25,7 @@ function deleteGroup(gid){
 		function(data) {
 			alert('El grupo fue eliminado.');
 			if (store.state.currentGroupId.toString()==gid.toString()){
-				store.setKey("currentGroupId", 0);
+				setKey("currentGroupId", 0);
 			}
 			refreshEverything();
 		}).catch(
@@ -45,7 +45,7 @@ function deleteGroupAndInactivateMembers(gid){
 		function(data) {
 			alert('El grupo fue eliminado correctamente.');
 			if (store.state.currentGroupId.toString()==gid.toString()){
-				store.setKey("currentGroupId", 0);
+				setKey("currentGroupId", 0);
 			}
 			refreshEverything();
 		}).catch(
@@ -63,7 +63,7 @@ function combineGroups(gid1,gid2,combinedGroupName){
 	do_request(url, payload, true, "POST").then(
 		function(data) {
 			alert('El grupo fue combinado correctamente');
-			store.setKey("currentGroupId", data["group_id"] );
+			setKey("currentGroupId", data["group_id"] );
 			refreshEverything(); 
 		}).catch(
 			function() {

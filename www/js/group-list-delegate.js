@@ -6,11 +6,11 @@ Vue.component('group-list-delegate', {
 			}
 	},
 	methods: {
-		showGroup: function(event){
+		showMyGroup: function(event){
 			var gid = parseFloat(event.target.getAttribute("data-gid"),10);
 			if (gid.toString()!="NaN"){
-				store.setKey("currentGroupId",gid);
-				showGroupById(gid);
+				setKey("currentGroupId",gid);
+				showMyGroupById(gid);
 			}
 		},
 	},
@@ -32,7 +32,7 @@ Vue.component('group-list-delegate', {
 	<ul>
 		<li class="filter-group">Mis grupos:</li>
 		<li class="filter-group" v-for="g in groupsDelegate" style="padding:6px;">
-			<a href="#" v-on:click="showGroup" :data-gid="g.group_id" > {{ g.name }} </a>
+			<a href="#" v-on:click="showMyGroup" :data-gid="g.group_id" > {{ g.name }} </a>
 		</li>
 	</ul>
 </div>

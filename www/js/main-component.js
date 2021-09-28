@@ -1,26 +1,29 @@
 Vue.component('main-component', {
 	data: function(){
 		return {
-			state: store.state,
 		}
 	},
 	computed: {
 		isLoggedIn: function(){
-			return this.state.token!="";
+			return store.state.token!="";
 		},
-		isDelegate: function(){
-			return this.state.systemUserRoles.indexOf("delegate")>=0;
+		showGroupsDelegate: function(){
+			return store.state.systemUserRoles.indexOf("delegate")>=0 && store.state.currentTab=="mygroups";
 		},
-		isAdmin: function(){
-			return this.state.systemUserRoles.indexOf("admin")>=0;
+		showGroupsAdmin: function(){
+			return store.state.systemUserRoles.indexOf("admin")>=0 && store.state.currentTab=="groups";
 		},
+		showUsersAdmin: function(){
+			return store.state.systemUserRoles.indexOf("admin")>=0 && store.state.currentTab=="users";
+		},
+
 	},
 	template :`
 <main role="main" class="container-list-map" >
-	<div class="list-container" v-show="isLoggedIn">
-		<available-users-component>  </available-users-component>
-		<groups-component v-if="isAdmin"> </groups-component>
-		<groups-component-delegate v-if="isDelegate"> </groups-component-delegate>
+	<div class="list-container" v-if="isLoggedIn">
+		<available-users-component v-if="showUsersAdmin"> </available-users-component>
+		<groups-component v-if="showGroupsAdmin"> </groups-component>
+		<groups-component-delegate v-if="showGroupsDelegate"> </groups-component-delegate>
 	</div>
 	<div class="map-container" v-show="isLoggedIn">
 		<map-component id="map"></map-component>
