@@ -1,33 +1,5 @@
 //TODO pintar los globos de usuarios que admiten varios roles de modo que esto sea claro.
 
-function initMaps() {
-	var centroMapa = {lat: -34.62, lng: -58.46};
-	map = new google.maps.Map(document.getElementById('mapDiv'), {
-		zoom: 12,
-		center: centroMapa,
-		mapTypeId: 'terrain'
-	});
-	var noPoi = [
-	{
-		featureType: "poi",
-		stylers: [
-		  { visibility: "off" }
-		]   
-	  }
-	];
-	map.setOptions({styles: noPoi});
-
-
-	// mapa modal profile
-	var mapProp= {
-	  center:new google.maps.LatLng(-34.608558, -58.392617),
-	  zoom:14,
-	};
-	mapProfile = new google.maps.Map(document.getElementById("profileMap"),mapProp);
-}
-
-
-
 
 // Adds a marker to the collection and push to the array.
 function addMarker(markerCollection, location,label,color) {

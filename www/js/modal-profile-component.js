@@ -3,34 +3,17 @@ Vue.component('modal-profile-component', {
 			return {
 				state: store.state,
 				user: null,
+				mapProfile: null,
+				userMarkerMapProfile:null
 			}
+	},
+	mounted(){
+		this.initMap();
 	},
 	computed:{
 		refresh : function(){
 			console.log("refreshing user profile at", this.state.refreshTime);
-			var uid= store.state.currentUserId;
-			if(uid==0) return "";
-			var self = this;
-			getUserProfile(uid).then( user => {
-				user.stringRolesInSpanish = user.roles.map(roleInSpanish).join( ", " );
-				user.fullName = fullName(user);
-				user.fullAddress = fullAddressToShow(user);
-				user.urlGoogleMaps = urlGoogleMaps(user);
-				user.lastActiveDate = (new Date(user["last_active_date"])).toLocaleDateString();
-				var coords = { lat: parseFloat(user.address.latitude), lng: parseFloat(user.address.longitude) };
-				if(userMarkerMapProfile==null){
-					userMarkerMapProfile = new google.maps.Marker({});
-				}
-				userMarkerMapProfile.setPosition(coords);
-				userMarkerMapProfile.setLabel({text: user["user_name"],fontWeight:"bold",fontSize: "18px"});
-				userMarkerMapProfile.setMap(mapProfile)
-				centerMapOn(mapProfile,coords.lat,coords.lng);
-				$('#modalProfile').on('shown.bs.modal', function (e) {
-					$('body').addClass('modal-open');
-				});
-				self.user=user;
-			});
-			return "";
+			this.displayUserData();
 		},
 		userId :function(){
 			return store.state.currentUserId;
@@ -58,6 +41,40 @@ Vue.component('modal-profile-component', {
 		launchAddToGroupModal:function(){
 			$("#modalProfile").modal('hide');
 			$("#modalAddGroup").modal();
+		},
+		initMap:function(){
+			var mapProp= {
+			  center:new google.maps.LatLng(-34.608558, -58.392617),
+			  zoom:14,
+			};
+			this.mapProfile = new google.maps.Map(document.getElementById("profileMap"),mapProp);
+		},
+		displayUserData:function(){
+			var uid= store.state.currentUserId;
+			if(uid==0) return "";
+			var self = this;
+			getUserProfile(uid).then( user => {
+				user.stringRolesInSpanish = user.roles.map(roleInSpanish).join( ", " );
+				user.fullName = fullName(user);
+				user.fullAddress = fullAddressToShow(user);
+				user.urlGoogleMaps = urlGoogleMaps(user);
+				user.lastActiveDate = (new Date(user["last_active_date"])).toLocaleDateString();
+				var coords = { lat: parseFloat(user.address.latitude), lng: parseFloat(user.address.longitude) };
+				if(this.mapProfile){
+					if(this.userMarkerMapProfile==null){
+						this.userMarkerMapProfile = new google.maps.Marker({});
+					}
+					this.userMarkerMapProfile.setPosition(coords);
+					this.userMarkerMapProfile.setLabel({text: user["user_name"],fontWeight:"bold",fontSize: "18px"});
+					this.userMarkerMapProfile.setMap(this.mapProfile)
+					centerMapOn(this.mapProfile,coords.lat,coords.lng);
+				}
+				$('#modalProfile').on('shown.bs.modal', function (e) {
+					$('body').addClass('modal-open');
+				});
+				self.user=user;
+			});
+			return "";
 		},
 	},
 	template:
