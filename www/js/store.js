@@ -1,8 +1,7 @@
-/*
 const vuexLocal = new window.VuexPersistence.VuexPersistence({
     storage: window.localStorage,
 });
-*/
+
 
 const store = new Vuex.Store({
 	state: {
@@ -10,6 +9,7 @@ const store = new Vuex.Store({
 		currentTab :"",
 		currentUserId: 0,
 		currentGroupId: 0,
+		currentMyGroupId: 0,
 		cityFilterValue: "",
 		neighborhoodFilterValue: "",
 		roleFilterValue: "cook",
@@ -85,44 +85,20 @@ function setGroupsBackend(){
 	var url = "/admin/groups";
 	do_request(url, null, true, "GET").then(
 		function(data) {
-			localStorage.setItem("storedGroups",JSON.stringify(data.groups));
 			setKey("groups",data.groups);
 		}).catch( function(err) { console.log('Request falló: '+ url); })
 }
 
-function setGroupsLocalStorage(){
-	var r = JSON.parse(localStorage.getItem("storedGroups"));
-	if ( r !== null ){
-		setKey("groups", r);
-	}
-}
 
 // Available user roles
 function setAvailableUserRolesBackend(){
 	var url = "/admin/users/roles?only_available=true";
 	do_request(url, null, true, "GET").then(
 		function(data) {
-			localStorage.setItem("storedUserRoles",JSON.stringify(data.user_roles));
 			setKey("availableUserRoles", data.user_roles);
 		}).catch( function(err) { console.log('Request falló: '+ url); })
 }
 
-
-function setAvailableUserRolesLocalStorage(){
-	var r = JSON.parse(localStorage.getItem("storedUserRoles"));
-	if ( r !== null ){
-		setKey("availableUserRoles", r);
-	}
-}
-	
-
-// function to recover everything from the local storage
-function recoverStateFromLocalStorage(){
-	console.log("recovering state from local storage");
-	setGroupsLocalStorage();
-	setAvailableUserRolesLocalStorage();
-	setRefreshTime();
-}
 
 function refreshEverythingBackend(){
 	if ( ["users","groups"].includes(store.state.currentTab) ){

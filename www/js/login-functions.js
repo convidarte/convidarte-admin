@@ -52,7 +52,6 @@ function onLoginOk() {
 	getUserProfile(store.state.adminUserId).then(
 		function(p){
 			setKey("systemUserRoles", p.roles);
-			recoverStateFromLocalStorage();
 			processQueryString();
 			refreshEverything();
 		}).catch(err => console.log("GET user profile failed"));
