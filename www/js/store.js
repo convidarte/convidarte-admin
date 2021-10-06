@@ -1,3 +1,9 @@
+/*
+const vuexLocal = new window.VuexPersistence.VuexPersistence({
+    storage: window.localStorage,
+});
+*/
+
 const store = new Vuex.Store({
 	state: {
 		debug: true,
@@ -24,7 +30,8 @@ const store = new Vuex.Store({
 			state.refreshTime+=1;
 		},
 	},
-	strict: true,
+	//plugins: [vuexLocal.plugin,],
+	//strict: true,
 });
 
 function setKey(key, value){
@@ -118,9 +125,13 @@ function recoverStateFromLocalStorage(){
 }
 
 function refreshEverythingBackend(){
-	setGroupsBackend();
-	setAvailableUserRolesBackend();
-	setUsersFiltered();
+	if ( ["users","groups"].includes(store.state.currentTab) ){
+		setGroupsBackend();
+	}
+	if (store.state.currentTab=="users"){
+		setAvailableUserRolesBackend();
+		setUsersFiltered();
+	}
 }
 
 function refreshEverything() {
