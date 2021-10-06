@@ -16,7 +16,7 @@ function showGroupById(groupId){
 	if (groupId!=0){
 		getGroup(groupId).then( group =>{
 			var url = urlGroup(group);
-			if( !(store.state.currentTab in ["groups", "mygroups"]) ){
+			if( !(["groups", "mygroups"].includes(store.state.currentTab)) ){
 				setKey("currentTab","groups");
 			}
 			window.history.pushState('grupos', '', url);

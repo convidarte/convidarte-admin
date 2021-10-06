@@ -156,7 +156,7 @@ Vue.component('groups-component', {
 		<group-detail-printable :group="this.group"></group-detail-printable>
 		<group-csv-link :group="this.group"></group-csv-link >
 		<hr style="width:95%;">
-		<div v-if="adminSystem">
+		<div>
 			<table style="width:100%;"><tr>
 			<td><button class="btn btn-primary float-left" @click="renameGroupStart" >Cambiar nombre</button></td>
 			<td><button type="button" class="btn btn-primary" @click="splitGroupStart">Dividir grupo</button></td>
@@ -166,7 +166,6 @@ Vue.component('groups-component', {
 		</div>
 		<modal-rename-group :group="group"></modal-rename-group>
 		<split-group-form
-			v-if="adminSystem"
 			 :splittingGroup="splittingGroup"
 			 @splitGroup="splitGroup"
 			 @splitGroupStart="splitGroupStart"

@@ -51,11 +51,11 @@ Vue.component('filter-bar-component', {
 				<group-combination-component></group-combination-component>
 			</div>
 			
-			<div class="filter-group" v-if="isAdmin && currentTab == 'groups' ">
+			<div class="filter-group" v-if="isAdmin && currentTab == 'groups'" style="float: right;">
 				<current-group-selector></current-group-selector>
 			</div>
 			
-			<div class="filter-group"  v-if="isAdmin && currentTab !='mygroups'">
+			<div class="filter-group"  v-if="isAdmin && currentTab !='mygroups'" style="float: right;" >
 				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
 			</div>
 			<div class="filter-group" v-if="isDelegate && currentTab == 'mygroups'">
