@@ -7,8 +7,8 @@ Vue.component('groups-component-delegate', {
 	},
 	computed:{
 		refresh: function(){
-			console.log("(",this.state.refreshTime,") showing group #", this.state.currentGroupId);
-			var gid= store.state.currentGroupId;
+			console.log("(",this.state.refreshTime,") showing my group #", this.state.currentMyGroupId);
+			var gid= store.state.currentMyGroupId;
 			if(gid!=0){
 				var self = this;
 				getGroup(gid).then(group => {self.group=group;});

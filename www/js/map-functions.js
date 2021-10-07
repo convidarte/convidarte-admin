@@ -2,7 +2,7 @@
 
 
 // Adds a marker to the collection and push to the array.
-function addMarker(markerCollection, location,label,color) {
+function addMarker(map, markerCollection, location,label,color) {
 	var marker = new google.maps.Marker({
 		position: location,
 		//label: {text:label,fontWeight:"bold",fontSize: "18px"},
@@ -84,7 +84,7 @@ function assignGroup(){
 	});
 }
 
-function createUserMarker(u, setClickListener){
+function createUserMarker(map, u, setClickListener){
 	if(parseFloat(u.address.latitude)){
 		var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
 		var label = " "; //u.user_id.toString()+": "+encodeHTML(u.user_name);
@@ -98,7 +98,7 @@ function createUserMarker(u, setClickListener){
 		if (u.role=="delegate"){
 			color = "purple";
 		}
-		var marker = addMarker(markers,coords,label,color);
+		var marker = addMarker(map, markers,coords,label,color);
 		if (setClickListener){
 			marker.addListener('click', () =>	showInfoWindow(marker, userMarkerContent( u, u.role) ) );
 		}
@@ -109,19 +109,19 @@ function createUserMarker(u, setClickListener){
 	}
 }
 
-function refreshAvailableUsersMarkers(){
+function refreshAvailableUsersMarkers(map){
 	var availableUsers = store.state.usersFiltered;
 	for (var i = 0; i < availableUsers.length; i++) {
 		u = availableUsers[i];	
-		createUserMarker(u,true);
+		createUserMarker(map,u,true);
 	}
 }
 
-function refreshGroupMarkers(){
+function refreshGroupMarkers(map){
 	var groups = store.state.groups;
 	for (var i = 0; i < groups.length; i++) {
 		var g = groups[i];
-		createGroupMarker(g);
+		createGroupMarker(map,g);
 	}
 }
 
@@ -138,11 +138,11 @@ function infoWindowTextForGroupMarker(g){
 	return infoWindowText;
 }
 
-function createGroupMarker(g){
+function createGroupMarker(map,g){
 	var coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
 	var label = " ";// g.group_id.toString() + ": "+ encodeHTML(g.name);
 	var color = "yellow";
-	var marker = addMarker(groupMarkers, coords,label,color);
+	var marker = addMarker(map, groupMarkers, coords,label,color);
 	//marker.group_id = parseInt(g.group_id,10);
 	var gid = g.group_id;
 	marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(g) ) );
@@ -172,9 +172,9 @@ function centerMapOn(map, lat,long){
 	map.setCenter(new google.maps.LatLng(lat, long));
 }
 
-function displayGroupOnMap(g){
+function displayGroupOnMap(map,g){
 	deleteMarkers();
-	createGroupMarker(groupWithCoordinates(g));
+	createGroupMarker(map,groupWithCoordinates(g));
 	var setClickListener = true;
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
@@ -182,12 +182,12 @@ function displayGroupOnMap(g){
 			var r = u["roles_in_group"][j].role;
 			var ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
-			createUserMarker(ur,setClickListener);
+			createUserMarker(map,ur,setClickListener);
 		}
 	}
 }
 
-function centerMapOnGroup(g){
+function centerMapOnGroup(map,g){
 	g = groupWithCoordinates(g);
 	centerMapOn(map, g.average_latitude, g.average_longitude);
 }
@@ -209,11 +209,11 @@ function groupWithCoordinates(g){
 
 
 
-function centerMapOnAverageAvailableUsers(){
-	centerMapOnAverageListOfUsers(store.state.usersFiltered);
+function centerMapOnAverageAvailableUsers(map){
+	centerMapOnAverageListOfUsers(map, store.state.usersFiltered);
 }
 
-function centerMapOnAverageListOfUsers(listUsers){
+function centerMapOnAverageListOfUsers(map, listUsers){
 	var coords = averageCoords(listUsers);
 	centerMapOn(map, coords["lat"], coords["lng"]);
 }

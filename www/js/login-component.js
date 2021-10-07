@@ -4,6 +4,11 @@ Vue.component('login-component', {
 				//state: store.state,
 			}
 	},
+	methods: {
+		openResetPassword: function(){
+			$("#modalResetPassword").modal('show');
+		},
+	},
 	computed:{
 		style : function(){
 			if(store.state.token!="") return "display: none;";
@@ -26,7 +31,10 @@ Vue.component('login-component', {
 			</tbody>
 		</table>
 	</form>
-	<input type="submit" value="Acceder" onclick="onClickLoginButton()" >
+	<input type="submit" value="Acceder" onclick="onClickLoginButton()" > <a href="#" @click="openResetPassword" style="color:white" >¿Olvidaste tu contraseña?</a>
+	<modal-reset-password></modal-reset-password>
 </div>`
-})
+});
+
+
 

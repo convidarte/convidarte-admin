@@ -1,6 +1,7 @@
+/*
 const vuexLocal = new window.VuexPersistence.VuexPersistence({
     storage: window.localStorage,
-});
+});*/
 
 
 const store = new Vuex.Store({
@@ -31,7 +32,7 @@ const store = new Vuex.Store({
 		},
 	},
 	//plugins: [vuexLocal.plugin,],
-	//strict: true,
+	strict: true,
 });
 
 function setKey(key, value){

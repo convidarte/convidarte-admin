@@ -26,7 +26,7 @@ function showGroupById(groupId){
 
 function showMyGroupById(groupId){
 	console.log("showMyGroupById",groupId);
-	setKey("currentGroupId",groupId);
+	setKey("currentMyGroupId",groupId);
 	if (groupId!=0){
 		getGroup(groupId).then( group =>{
 			var url = urlMyGroup(group);

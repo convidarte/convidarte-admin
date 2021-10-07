@@ -81,7 +81,7 @@ Vue.component('navbar-component', {
 		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
 			<li :class="classLinkUsers"  v-if="adminSystem" >
 				<a id="nav-link-users"  class="nav-link" href="#" @click="changeUsersTab" >
-					Usuarios sin grupo<span class="sr-only">(current)</span>
+					Voluntarios sin grupo<span class="sr-only">(current)</span>
 				</a>
 			</li>
 			<li :class="classLinkGroups" v-if="adminSystem" >

@@ -2,6 +2,7 @@ Vue.component('map-component', {
 	data: function(){
 			return {
 				group: null,
+				state: store.state,
 				//map:null,
 				//markers: [],
 				//groupMarkers: [],
@@ -13,24 +14,24 @@ Vue.component('map-component', {
 	},
 	computed:{
 		refresher(){
-			console.log("(",store.state.refreshTime ,") refreshing map ");
+			console.log("(", this.state.refreshTime ,") refreshing map ");
 			if(store.state.token=="") return "";
 			if(!(map)) return "";
 			var tab = store.state.currentTab;
 			if(tab=="users"){
 				console.log("mostrando ",store.state.usersFiltered.length, " usuarios en el mapa.");
 				deleteMarkers();
-				refreshGroupMarkers();
-				refreshAvailableUsersMarkers();
+				refreshGroupMarkers(map);
+				refreshAvailableUsersMarkers(map);
 				return "";
 			}
 			if(tab=="groups" || tab=="mygroups"){
-				var gid = store.state.currentGroupId;
+				var gid = (tab=="groups") ? store.state.currentGroupId : store.state.currentMyGroupId;
 				if(gid!=0){
 					var self = this;
 					getGroup(gid).then(group => {
 						self.group=group;
-						displayGroupOnMap(group);
+						displayGroupOnMap(map,group);
 					});
 				}else{
 					deleteMarkers();
@@ -41,14 +42,14 @@ Vue.component('map-component', {
 		},
 		centerOnGroup(){
 			if(!(map)) return "";
-			var gid = store.state.currentGroupId;
 			var tab = store.state.currentTab;
+			var gid = (tab=="groups") ? store.state.currentGroupId : store.state.currentMyGroupId;
 			var g = this.group;
 			if( (tab=="groups" || tab=="mygroups") && gid!=0 && g!==null){
-				centerMapOnGroup(g);
+				centerMapOnGroup(map,g);
 			}
 			if(tab=="users"){
-				//centerMapOnAverageAvailableUsers();
+				//centerMapOnAverageAvailableUsers(map);
 				//centerMapOn(-34.62, -58.46);
 			}
 			return "";
@@ -88,7 +89,7 @@ Vue.component('map-component', {
 	<div id="mapDiv"></div>
 	{{ refresher }}
 	{{ centerOnGroup }}
-	{{ setZoom }}
+	{{ setZoom }}   
 </div>`
 })
 
