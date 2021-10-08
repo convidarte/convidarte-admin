@@ -33,7 +33,7 @@ Vue.component('main-component', {
 	</div>
 	<div class="map-container" v-show="screenHasMap">
 		<!--<map-component-users id="map-users" v-if="screenIsUsersAdmin" ></map-component-users>-->
-		<map-component id="map" v-if="screenHasMap"></map-component>
+		<map-component id="map" v-show="screenHasMap"></map-component>
 	</div>
 	<delegate-list v-if="screenIsDelegateList"></delegate-list>
 	<by-convidartech></by-convidartech>

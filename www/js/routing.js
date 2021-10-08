@@ -85,6 +85,10 @@ function processQueryString(){
 		setKey("currentTab", "mygroups");
 		return;
 	}
+	if(queryString.startsWith("?listado-delegados")){
+		setKey("currentTab", "delegatelist");
+		return;
+	}	
 	if( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		setKey("currentTab", "users");
 		return;
