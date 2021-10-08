@@ -33,12 +33,19 @@ Vue.component('delegate-list', {
 		<tr v-for="g in delegateData.groups" >
 			<td><link-view-group :groupId="g.group_id" :groupName="g.name"/></td>
 			<td>
-				<table class="table table-borderless">
+				<table class="table table-borderless" style="">
+				    <colgroup>
+					   <col span="1" style="width: 30%;">
+					   <col span="1" style="width: 40%;">
+					   <col span="1" style="width: 30%;">
+					</colgroup>
+					<tbody>    
 					<tr v-for="u in g.delegates">
-						<td style="padding:0px;"> <link-user-profile :userId="u.user_id" :userName="u.user_name"></link-user-profile></td>
-						<td style="padding:0px;">{{u.name}} {{u.last_name}}</td>
-						<td style="padding:0px;">{{u.cellphone}}</td>
+						<td style="padding:0px 2px;"> <link-user-profile :userId="u.user_id" :userName="u.user_name"></link-user-profile></td>
+						<td style="padding:0px 2px;">{{u.name}} {{u.last_name}}</td>
+						<td style="padding:0px 2px;">{{u.cellphone}}</td>
 					</tr>
+					</tbody>
 				</table>
 			</td>
 			<td v-if="userIsAdmin" >{{g.member_count}}</td>
