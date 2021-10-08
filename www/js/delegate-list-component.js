@@ -30,7 +30,7 @@ Vue.component('delegate-list', {
 				<table class="table table-borderless">
 					<tr v-for="u in g.delegates">
 						<td style="padding:0px;"> <link-user-profile :userId="u.user_id" :userName="u.user_name"></link-user-profile></td>
-						<td style="padding:0px;">({{u.name}} {{u.last_name}})</td>
+						<td style="padding:0px;">{{u.name}} {{u.last_name}}</td>
 						<td style="padding:0px;">{{u.cellphone}}</td>
 					</tr>
 				</table>

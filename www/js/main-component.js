@@ -17,7 +17,7 @@ Vue.component('main-component', {
 			return store.state.systemUserRoles.indexOf("admin")>=0 && store.state.currentTab=="users";
 		},
 		screenIsDelegateList: function(){
-			return store.state.systemUserRoles.indexOf("admin")>=0 && store.state.currentTab=="delegatelist";
+			return (store.state.systemUserRoles.indexOf("admin")>=0||store.state.systemUserRoles.indexOf("delegate")>=0) && store.state.currentTab=="delegatelist";
 		},
 		screenHasMap: function(){
 			return store.state.currentTab=="mygroups" || store.state.currentTab=="groups" || store.state.currentTab=="users";

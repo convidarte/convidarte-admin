@@ -30,8 +30,9 @@ Vue.component('link-view-group', {
 	},
 	template:`
 <div>
-	#{{groupId}} -
-	<a v-if="adminSystem" href="#" @click="showGroup"> {{ groupName }}</a>
+	<div v-if="adminSystem">
+	#{{groupId}} <a href="#" @click="showGroup"> {{ groupName }}</a>
+	</div>
 	<p v-else>{{ groupName }}</p>
 </div>
 `,
