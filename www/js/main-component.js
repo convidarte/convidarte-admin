@@ -16,8 +16,8 @@ Vue.component('main-component', {
 		screenIsUsersAdmin: function(){
 			return store.state.systemUserRoles.indexOf("admin")>=0 && store.state.currentTab=="users";
 		},
-		screenIsDelegateList: function(){
-			return (store.state.systemUserRoles.indexOf("admin")>=0||store.state.systemUserRoles.indexOf("delegate")>=0) && store.state.currentTab=="delegatelist";
+		screenIsPhonebook: function(){
+			return (store.state.systemUserRoles.indexOf("admin")>=0||store.state.systemUserRoles.indexOf("delegate")>=0) && store.state.currentTab=="phonebook";
 		},
 		screenHasMap: function(){
 			return store.state.currentTab=="mygroups" || store.state.currentTab=="groups" || store.state.currentTab=="users";
@@ -35,7 +35,7 @@ Vue.component('main-component', {
 		<!--<map-component-users id="map-users" v-if="screenIsUsersAdmin" ></map-component-users>-->
 		<map-component id="map" v-show="screenHasMap"></map-component>
 	</div>
-	<delegate-list v-if="screenIsDelegateList"></delegate-list>
+	<delegate-list v-if="screenIsPhonebook"></delegate-list>
 	<by-convidartech></by-convidartech>
 </main>`
 })

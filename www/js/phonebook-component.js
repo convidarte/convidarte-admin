@@ -12,17 +12,23 @@ Vue.component('delegate-list', {
 			do_request("/information/delegates", null, true, "GET").then( data =>{self.delegateData = data;});
 		},
 	},
+	computed:{
+		userIsAdmin(){
+			return store.state.systemUserRoles.indexOf("admin")>=0;
+		},
+	},
 	mounted(){
 		this.displayUserData();
 	},
 	template :`
 <div class="list-container" style="width:100%;">
+	<h2>Agenda de grupos y delegados </h2>
 	<table class="table table-striped">
 		<tr>
 			<th>Grupo</th>
 			<th>Delegados</th>
-			<th>#Voluntarios</th>
-			<th>#Voluntarios pendientes de contactar</th>
+			<th v-if="userIsAdmin" >#Voluntarios</th>
+			<th v-if="userIsAdmin" >#Voluntarios pendientes de contactar</th>
 		</tr>
 		<tr v-for="g in delegateData.groups" >
 			<td><link-view-group :groupId="g.group_id" :groupName="g.name"/></td>
@@ -35,8 +41,8 @@ Vue.component('delegate-list', {
 					</tr>
 				</table>
 			</td>
-			<td>{{g.member_count}}</td>
-			<td>{{g.pending_ack_count}}</td>					
+			<td v-if="userIsAdmin" >{{g.member_count}}</td>
+			<td v-if="userIsAdmin" >{{g.pending_ack_count}}</td>					
 		</tr>
 	</table>
 </div>

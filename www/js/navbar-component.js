@@ -20,9 +20,9 @@ Vue.component('navbar-component', {
 			window.history.pushState('misgrupos', '', '/?mis-grupos');
 			refreshEverything();
 		},
-		changeDelegateListTab: function(){
-			setKey("currentTab", "delegatelist");
-			window.history.pushState('listadodelegados', '', '/?listado-delegados');
+		changePhonebookTab: function(){
+			setKey("currentTab", "phonebook");
+			window.history.pushState('agenda', '', '/?agenda');
 			refreshEverything();
 		},
 	},
@@ -49,8 +49,8 @@ Vue.component('navbar-component', {
 			}
 			return "nav-item"
 		},
-		classLinkDelegateList: function(){
-			if( this.state.currentTab=="delegatelist"){
+		classLinkPhonebook: function(){
+			if( this.state.currentTab=="phonebook"){
 				return "nav-item active"
 			}
 			return "nav-item"
@@ -101,8 +101,8 @@ Vue.component('navbar-component', {
 			<li :class="classLinkMyGroups" v-if="isDelegate">
 				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeMyGroupsTab" >Mis grupos</a>
 			</li>
-			<li :class="classLinkDelegateList" v-if="isDelegate || isAdmin">
-				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeDelegateListTab" >Delegados</a>
+			<li :class="classLinkPhonebook" v-if="isDelegate || isAdmin">
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changePhonebookTab" >Agenda</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav">
