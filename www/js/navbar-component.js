@@ -20,6 +20,11 @@ Vue.component('navbar-component', {
 			window.history.pushState('misgrupos', '', '/?mis-grupos');
 			refreshEverything();
 		},
+		changeDelegateListTab: function(){
+			setKey("currentTab", "delegatelist");
+			window.history.pushState('listadodelegados', '', '/?listado-delegados');
+			refreshEverything();
+		},
 	},
 	computed:{
 		refresh: function(){
@@ -44,6 +49,12 @@ Vue.component('navbar-component', {
 			}
 			return "nav-item"
 		},
+		classLinkDelegateList: function(){
+			if( this.state.currentTab=="delegatelist"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
 		displayIfLoggedIn: function(){
 			if( this.state.token=="") return "display:none;"
 			return "";
@@ -61,10 +72,10 @@ Vue.component('navbar-component', {
 			if( this.state.token!="") return store.state.adminUserId;;
 			return "";
 		},
-		delegateSystem: function(){
+		isDelegate: function(){
 			return this.state.systemUserRoles.indexOf("delegate")>=0;
 		},
-		adminSystem: function(){
+		isAdmin: function(){
 			return this.state.systemUserRoles.indexOf("admin")>=0;
 		},
 	},
@@ -79,16 +90,19 @@ Vue.component('navbar-component', {
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
-			<li :class="classLinkUsers"  v-if="adminSystem" >
+			<li :class="classLinkUsers"  v-if="isAdmin" >
 				<a id="nav-link-users"  class="nav-link" href="#" @click="changeUsersTab" >
 					Voluntarios sin grupo<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li :class="classLinkGroups" v-if="adminSystem" >
+			<li :class="classLinkGroups" v-if="isAdmin" >
 				<a id="nav-link-groups" class="nav-link" href="#" @click="changeGroupsTab" >Grupos</a>
 			</li>
-			<li :class="classLinkMyGroups" v-if="delegateSystem">
+			<li :class="classLinkMyGroups" v-if="isDelegate">
 				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeMyGroupsTab" >Mis grupos</a>
+			</li>
+			<li :class="classLinkDelegateList" v-if="isDelegate || isAdmin">
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeDelegateListTab" >Delegados</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav">

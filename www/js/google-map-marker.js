@@ -11,22 +11,17 @@ Vue.component('google-map-marker',{
     marker: {
       type: Object,
       required: true
-    }
+    },
+    clickListener: null,
   },
   mounted() {
     const { Marker } = this.google.maps;
     this.marker.map=this.map;
-    new Marker(this.marker);
-/*    var m = new Marker(this.marker);
-    m.setMap(this.map);*/
-/*
-    new Marker({
-      position: this.marker.position,
-      marker: this.marker,
-      map: this.map,
-      //icon: POINT_MARKER_ICON_CONFIG
-    });
-    */
+    var m = new Marker(this.marker);
+    if(this.clickListener!= null){
+    	m.addListener('click', this.clickListener(m));
+    }
+    
   },
 
   render() {}

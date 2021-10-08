@@ -26,6 +26,9 @@ Vue.component('filter-bar-component', {
 		isLoggedIn: function(){
 			return this.state.token!="";
 		},
+		showUserSearchBox: function(){
+			return (this.state.systemUserRoles.indexOf("admin")>=0)&& (this.state.currentTab=="users" || this.state.currentTab=="groups" );
+		},
 	},
 	template:
 `
@@ -55,7 +58,7 @@ Vue.component('filter-bar-component', {
 				<current-group-selector></current-group-selector>
 			</div>
 			
-			<div class="filter-group"  v-if="isAdmin && currentTab !='mygroups'" style="float: right;" >
+			<div class="filter-group"  v-if="showUserSearchBox" style="float: right;" >
 				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
 			</div>
 			<div class="filter-group" v-if="isDelegate && currentTab == 'mygroups'">
