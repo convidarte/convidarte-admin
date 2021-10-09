@@ -102,10 +102,11 @@ function setAvailableUserRolesBackend(){
 
 
 function refreshEverythingBackend(){
-	if ( ["users","groups"].includes(store.state.currentTab) ){
+	if(store.state.currentTab=="groups"){
 		setGroupsBackend();
 	}
 	if (store.state.currentTab=="users"){
+		setGroupsBackend();
 		setAvailableUserRolesBackend();
 		setUsersFiltered();
 	}
