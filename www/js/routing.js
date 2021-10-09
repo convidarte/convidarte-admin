@@ -97,5 +97,5 @@ function processQueryString(){
 		setKey("currentTab", "groups");
 		return;
 	}
-	setKey("currentTab", "myprofile");
+	setKey("currentTab", "editprofile");
 }

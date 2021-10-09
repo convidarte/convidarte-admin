@@ -1,4 +1,4 @@
-Vue.component('delegate-list', {
+Vue.component('phonebook', {
 	data: function(){
 		return {
 			delegateData: {

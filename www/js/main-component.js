@@ -21,8 +21,10 @@ Vue.component('main-component', {
 		},
 		screenHasMap: function(){
 			return store.state.currentTab=="mygroups" || store.state.currentTab=="groups" || store.state.currentTab=="users";
+		},
+		screenIsEditProfile: function(){
+			return store.state.currentTab=="editprofile";
 		}
-
 	},
 	template :`
 <main role="main" class="container-list-map" v-if="isLoggedIn">
@@ -35,7 +37,8 @@ Vue.component('main-component', {
 		<!--<map-component-users id="map-users" v-if="screenIsUsersAdmin" ></map-component-users>-->
 		<map-component id="map" v-if="screenHasMap"></map-component>
 	</div>
-	<delegate-list v-if="screenIsPhonebook"></delegate-list>
+	<phonebook v-if="screenIsPhonebook"></phonebook>
+	<edit-profile v-if="screenIsEditProfile"></edit-profile>
 	<by-convidartech></by-convidartech>
 </main>`
 })
