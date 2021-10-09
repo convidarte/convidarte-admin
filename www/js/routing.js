@@ -81,7 +81,7 @@ function processQueryString(){
 	}
 	if(queryString.startsWith("?mi-grupo")){
 		var gid = parseInt(queryString.split("/")[1],10);
-		setKey("currentGroupId", gid);
+		setKey("currentMyGroupId", gid);
 		setKey("currentTab", "mygroups");
 		return;
 	}
