@@ -55,6 +55,7 @@ function showModalProfile(uid){
 function processQueryString(){
 	const queryString = window.location.search;
 	console.log(queryString);
+
 	if(queryString.startsWith("?perfil/")){
 		var uid = parseInt(queryString.split("/")[1],10);
 		setKey("currentTab", "users");
@@ -85,10 +86,15 @@ function processQueryString(){
 		setKey("currentTab", "mygroups");
 		return;
 	}
+	if(queryString.startsWith("?edit-profile")){
+		setKey("currentTab", "editprofile");
+		return;
+	}
 	if(queryString.startsWith("?agenda")){
 		setKey("currentTab", "phonebook");
 		return;
-	}	
+	}
+	// default tab segun el rol 
 	if( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		setKey("currentTab", "users");
 		return;

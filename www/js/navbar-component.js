@@ -25,6 +25,13 @@ Vue.component('navbar-component', {
 			window.history.pushState('agenda', '', '/?agenda');
 			refreshEverything();
 		},
+		changeEditProfileTab: function(){
+			setKey("currentTab", "editprofile");
+			window.history.pushState('editarperfil', '', '/?editar-perfil');
+			refreshEverything();
+		},
+
+		
 	},
 	computed:{
 		refresh: function(){
@@ -51,6 +58,12 @@ Vue.component('navbar-component', {
 		},
 		classLinkPhonebook: function(){
 			if( this.state.currentTab=="phonebook"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
+		classEditProfile: function(){
+			if( this.state.currentTab=="editprofile"){
 				return "nav-item active"
 			}
 			return "nav-item"
@@ -90,6 +103,10 @@ Vue.component('navbar-component', {
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
+			<li :class="classLinkEditProfile">
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeEditProfileTab" >Editar perfil</a>
+			</li>
+
 			<li :class="classLinkUsers"  v-if="isAdmin" >
 				<a id="nav-link-users"  class="nav-link" href="#" @click="changeUsersTab" >
 					Voluntarios sin grupo<span class="sr-only">(current)</span>
