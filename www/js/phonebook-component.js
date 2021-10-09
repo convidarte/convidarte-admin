@@ -3,13 +3,46 @@ Vue.component('delegate-list', {
 		return {
 			delegateData: {
 				groups: []
-			}
+			},
+			orderBy: "group_id",
+			reverseOrder: false,
 		}
 	},
 	methods: {
 		displayUserData(){
 			var self=this;
-			do_request("/information/delegates", null, true, "GET").then( data =>{self.delegateData = data;});
+			do_request("/information/delegates", null, true, "GET").then( data =>{
+				if(self.orderBy!=""){
+					var compare=function(g1,g2){
+						var s = self.reverseOrder ? -1 : 1;
+						return s*(g1[self.orderBy]<g2[self.orderBy] ? -1 : (g1[self.orderBy]==g2[self.orderBy] ? 0 : 1));
+					}
+					data.groups.sort(compare);
+					/*
+					var gs = data.groups;
+					gs = gs.sort(compare);
+					self.delegateData = {groups: gs};
+					console.log(gs);
+					return;*/
+				}
+				self.delegateData = data;
+				
+			});
+		},
+		orderByGroupId(){
+			this.orderBy="group_id";
+			this.reverseOrder=  !(this.reverseOrder);
+			this.displayUserData();
+		},
+		orderByMemberCount(){
+			this.orderBy="member_count";
+			this.reverseOrder= !(this.reverseOrder);
+			this.displayUserData();
+		},
+		orderByPendingAckCount(){
+			this.orderBy="pending_ack_count";
+			this.reverseOrder= !(this.reverseOrder);
+			this.displayUserData();
 		},
 	},
 	computed:{
@@ -25,10 +58,10 @@ Vue.component('delegate-list', {
 	<h2>Agenda de grupos y delegados </h2>
 	<table class="table table-striped">
 		<tr>
-			<th>Grupo</th>
+			<th @click="orderByGroupId">Grupo</th>
 			<th>Delegados</th>
-			<th v-if="userIsAdmin" >#Voluntarios</th>
-			<th v-if="userIsAdmin" >#Voluntarios pendientes de contactar</th>
+			<th v-if="userIsAdmin"><a href="#" @click="orderByMemberCount">#Voluntarios</a></th>
+			<th v-if="userIsAdmin"><a href="#" @click="orderByPendingAckCount">#Voluntarios pendientes de contactar</a></th>
 		</tr>
 		<tr v-for="g in delegateData.groups" >
 			<td><link-view-group :groupId="g.group_id" :groupName="g.name"/></td>
