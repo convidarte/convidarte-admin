@@ -62,7 +62,7 @@ Vue.component('navbar-component', {
 			}
 			return "nav-item"
 		},
-		classEditProfile: function(){
+		classLinkEditProfile: function(){
 			if( this.state.currentTab=="editprofile"){
 				return "nav-item active"
 			}

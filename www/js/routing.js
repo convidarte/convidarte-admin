@@ -86,7 +86,7 @@ function processQueryString(){
 		setKey("currentTab", "mygroups");
 		return;
 	}
-	if(queryString.startsWith("?edit-profile")){
+	if(queryString.startsWith("?editar-perfil")){
 		setKey("currentTab", "editprofile");
 		return;
 	}
