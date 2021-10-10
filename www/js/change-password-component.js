@@ -1,10 +1,11 @@
 Vue.component('change-password', {
 	data: function(){
 		return {
-			messageResult: "",
 			messageValidation: "",
-			classResult:"",
 			classValidation:"",
+			messageResult: "",
+			classResult:"",
+
 		}
 	},
 	methods: {

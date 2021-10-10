@@ -1,0 +1,194 @@
+[
+  {
+    "label": "Agronomia",
+    "value": "AGRONOMIA"
+  },
+  {
+    "label": "Almagro",
+    "value": "ALMAGRO"
+  },
+  {
+    "label": "Balvanera",
+    "value": "BALVANERA"
+  },
+  {
+    "label": "Barracas",
+    "value": "BARRACAS"
+  },
+  {
+    "label": "Belgrano",
+    "value": "BELGRANO"
+  },
+  {
+    "label": "Boca",
+    "value": "BOCA"
+  },
+  {
+    "label": "Boedo",
+    "value": "BOEDO"
+  },
+  {
+    "label": "Caballito",
+    "value": "CABALLITO"
+  },
+  {
+    "label": "Chacarita",
+    "value": "CHACARITA"
+  },
+  {
+    "label": "Coghlan",
+    "value": "COGHLAN"
+  },
+  {
+    "label": "Colegiales",
+    "value": "COLEGIALES"
+  },
+  {
+    "label": "Constitucion",
+    "value": "CONSTITUCION"
+  },
+  {
+    "label": "Flores",
+    "value": "FLORES"
+  },
+  {
+    "label": "Floresta",
+    "value": "FLORESTA"
+  },
+  {
+    "label": "Liniers",
+    "value": "LINIERS"
+  },
+  {
+    "label": "Mataderos",
+    "value": "MATADEROS"
+  },
+  {
+    "label": "Monserrat",
+    "value": "MONSERRAT"
+  },
+  {
+    "label": "Monte Castro",
+    "value": "MONTE CASTRO"
+  },
+  {
+    "label": "Nueva Pompeya",
+    "value": "NUEVA POMPEYA"
+  },
+  {
+    "label": "Nuñez",
+    "value": "NUÑEZ"
+  },
+  {
+    "label": "Palermo",
+    "value": "PALERMO"
+  },
+  {
+    "label": "Parque Avellaneda",
+    "value": "PARQUE AVELLANEDA"
+  },
+  {
+    "label": "Parque Chacabuco",
+    "value": "PARQUE CHACABUCO"
+  },
+  {
+    "label": "Parque Chas",
+    "value": "PARQUE CHAS"
+  },
+  {
+    "label": "Parque Patricios",
+    "value": "PARQUE PATRICIOS"
+  },
+  {
+    "label": "Paternal",
+    "value": "PATERNAL"
+  },
+  {
+    "label": "Puerto Madero",
+    "value": "PUERTO MADERO"
+  },
+  {
+    "label": "Recoleta",
+    "value": "RECOLETA"
+  },
+  {
+    "label": "Retiro",
+    "value": "RETIRO"
+  },
+  {
+    "label": "Saavedra",
+    "value": "SAAVEDRA"
+  },
+  {
+    "label": "San Cristobal",
+    "value": "SAN CRISTOBAL"
+  },
+  {
+    "label": "San Nicolas",
+    "value": "SAN NICOLAS"
+  },
+  {
+    "label": "San Telmo",
+    "value": "SAN TELMO"
+  },
+  {
+    "label": "Velez Sarsfield",
+    "value": "VELEZ SARSFIELD"
+  },
+  {
+    "label": "Versalles",
+    "value": "VERSALLES"
+  },
+  {
+    "label": "Villa Crespo",
+    "value": "VILLA CRESPO"
+  },
+  {
+    "label": "Villa Del Parque",
+    "value": "VILLA DEL PARQUE"
+  },
+  {
+    "label": "Villa Devoto",
+    "value": "VILLA DEVOTO"
+  },
+  {
+    "label": "Villa General Mitre",
+    "value": "VILLA GENERAL MITRE"
+  },
+  {
+    "label": "Villa Lugano",
+    "value": "VILLA LUGANO"
+  },
+  {
+    "label": "Villa Luro",
+    "value": "VILLA LURO"
+  },
+  {
+    "label": "Villa Ortuzar",
+    "value": "VILLA ORTUZAR"
+  },
+  {
+    "label": "Villa Pueyrredon",
+    "value": "VILLA PUEYRREDON"
+  },
+  {
+    "label": "Villa Real",
+    "value": "VILLA REAL"
+  },
+  {
+    "label": "Villa Riachuelo",
+    "value": "VILLA RIACHUELO"
+  },
+  {
+    "label": "Villa Santa Rita",
+    "value": "VILLA SANTA RITA"
+  },
+  {
+    "label": "Villa Soldati",
+    "value": "VILLA SOLDATI"
+  },
+  {
+    "label": "Villa Urquiza",
+    "value": "VILLA URQUIZA"
+  }
+]

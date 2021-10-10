@@ -4,7 +4,7 @@ Vue.component('edit-profile', {
 			isEditingProfile : false,
 			messageUpdatingProfile: "",
 			showVehicleSelector:false,
-			
+			locationList:[],
 			classResult:"",
 			
 			name:"",
@@ -67,7 +67,22 @@ Vue.component('edit-profile', {
 			console.log("refreshing edit-profile data",store.state.refreshTime);
 			if(!this.isEditingProfile) this.displayUserData();
 			this.refreshReadOnly();
-		},	
+		},
+		resetLocationOptions(){
+			var url="";
+			if(this.province=="CABA"){
+				url = "./assets/caba_neighborhoods.json";
+			}
+			if(this.province=="BUENOS AIRES"){
+				url = "./assets/buenos_aires_cities.json";
+			}
+			if(url!=""){
+				fetch(url)
+					.then(response => response.json())
+					.then( data => {this.locationList = data;} );
+			}
+			return "";
+		},
 	},
 	methods: {
 		startEditingProfile(){
@@ -80,6 +95,7 @@ Vue.component('edit-profile', {
 			this.validation.result.message="";
 			this.displayUserData();
 			this.refreshReadOnly();
+			this.clearValidationMessages();
 		},
 		refreshReadOnly(){
 			if ((!this.$refs) || (!this.$refs["fieldset"])) return;
@@ -90,7 +106,7 @@ Vue.component('edit-profile', {
 			}
 		},
 		updateProfile(){
-			var payload=this.getPayload();
+			var payload = this.getPayload();
 			var result = this.validatePutProfilePayload(payload);
 			if(!result){
 				this.validation.result.message = "No se pudo actualizar.";
@@ -107,7 +123,14 @@ Vue.component('edit-profile', {
 				}
 			).catch(
 				data =>{
-					// TODO cubrir este caso: {"code":"email_already_taken","message":"email already taken"}
+					if(data.code=="email_already_taken"){
+						this.validation.email.message="El email ya corresponde a otro usuario de Convidarte";
+						this.validation.email.class = "text-danger";
+					}
+					if(data.code=="email_validation_is_email"){
+						this.validation.email.message="El email ingresado es inválido";
+						this.validation.email.class = "text-danger";
+					}
 					this.validation.result.message = "Error al actualizar el perfil.";
 					this.validation.result.class = "text-danger";
 				}
@@ -189,12 +212,50 @@ Vue.component('edit-profile', {
 			};
 		},
 		validatePutProfilePayload(payload){
-			// TODO Mostrar feedback validacion
-			//return false;
-			return true;
+			var validationOK = true;
+			this.clearValidationMessages();
+			if(payload.name == ""){
+				this.validation.name.message="El nombre ingresado no es válido.";
+				this.validation.name.class="text-danger";
+				validationOK = false;
+			}
+			if(payload.last_name == ""){
+				this.validation.last_name.message="El apellido ingresado no es válido.";
+				this.validation.last_name.class="text-danger";
+				validationOK = false;
+			}
+			if(payload.cellphone == ""){
+				this.validation.cellphone.message="El celular ingresado no es válido.";
+				this.validation.cellphone.class="text-danger";
+				validationOK = false;
+			}
+			if(payload.email == ""){
+				this.validation.email.message="El email ingresado no es válido.";
+				this.validation.email.class="text-danger";
+				validationOK = false;
+			}
+			if(payload.street == ""){
+				this.validation.street.message="La calle ingresada no es válida.";
+				this.validation.street.class="text-danger";
+				validationOK = false;
+			}
+			if( parseFloat(payload.number,10)==0 ){
+				this.validation.number.message="El número ingresado no es válido.";
+				this.validation.number.class="text-danger";
+				validationOK = false;
+			}
+			if(payload.roles.includes("driver") && (payload.driver.vehicle=="") ){
+				this.validation.vehicle.message="El vehículo ingresado no es válido.";
+				this.validation.vehicle.class="text-danger";
+				validationOK = false;
+			}									
+			return validationOK;
 		},
 		toggleShowVehicleSelector(){
 			this.showVehicleSelector=!(this.showVehicleSelector);
+		},
+		clearValidationMessages(){
+			Object.keys(this.validation).forEach(k=> {if(k!="result") this.validation[k].message="";});
 		},
 	},
 	mounted(){
@@ -262,9 +323,12 @@ Vue.component('edit-profile', {
 					</select>
 					<div :class="validation.province.class">{{validation.province.message}}</div>
 				</div>
+				{{resetLocationOptions}}
 				<div class="form-group col-md-6">
 					<label for="location">Localidad/Barrio</label>
-					<input type="text" class="form-control" id="location" v-model="location"></input><br>
+					<select class="form-control" id="location" v-model="location">
+						<option v-for="l in locationList" :value="l.value" selected>{{l.label}}</option>
+					</select><br>
 					<div :class="validation.location.class">{{validation.location.message}}</div>
 				</div>
 			</div>	
