@@ -7,8 +7,8 @@ Vue.component('groups-component-delegate', {
 	},
 	computed:{
 		refresh: function(){
-			console.log("(",this.state.refreshTime,") showing group #", this.state.currentGroupId);
-			var gid= store.state.currentGroupId;
+			console.log("(",this.state.refreshTime,") showing my group #", this.state.currentMyGroupId);
+			var gid= store.state.currentMyGroupId;
 			if(gid!=0){
 				var self = this;
 				getGroup(gid).then(group => {self.group=group;});
@@ -45,7 +45,7 @@ Vue.component('groups-component-delegate', {
 				member.email = u.email;
 				member.cellphone = u.cellphone;
 				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
-				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
+				member.showAckButton = (!ack);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
@@ -82,19 +82,9 @@ Vue.component('groups-component-delegate', {
 		numberDrivers: function(){
 			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="driver").length>0}).length;
 		},
-
-		style: function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
 	},
 	template:`
-<div id="groupsLeftPanel" :style="style">  
+<div id="groupsLeftPanel">  
 	<div id="groupMembers" v-if="this.group">
 		<div>
 			<h2>{{ groupName }} </h2>

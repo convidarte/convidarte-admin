@@ -25,7 +25,7 @@ Vue.component('select-city-component', {
 	methods:{
 		selectCityChanged: function (){
 			var city = document.getElementById("selectCity").value;
-			store.setCityFilterValue(city)	
+			setCityFilterValue(city)	
 			refreshEverything();
 		},
 	},

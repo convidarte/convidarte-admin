@@ -3,38 +3,25 @@ Vue.component('modal-profile-component', {
 			return {
 				state: store.state,
 				user: null,
+				marker:{},
+				centerMap: null,
 			}
 	},
 	computed:{
 		refresh : function(){
 			console.log("refreshing user profile at", this.state.refreshTime);
-			var uid= store.state.currentUserId;
-			if(uid==0) return "";
-			var self = this;
-			getUserProfile(uid).then( user => {
-				user.stringRolesInSpanish = user.roles.map(roleInSpanish).join( ", " );
-				user.fullName = fullName(user);
-				user.fullAddress = fullAddressToShow(user);
-				user.urlGoogleMaps = urlGoogleMaps(user);
-				user.lastActiveDate = (new Date(user["last_active_date"])).toLocaleDateString();
-				var coords = { lat: parseFloat(user.address.latitude), lng: parseFloat(user.address.longitude) };
-				if(userMarkerMapProfile==null){
-					userMarkerMapProfile = new google.maps.Marker({});
-				}
-				userMarkerMapProfile.setPosition(coords);
-				userMarkerMapProfile.setLabel({text: user["user_name"],fontWeight:"bold",fontSize: "18px"});
-				userMarkerMapProfile.setMap(mapProfile)
-				centerMapOn(mapProfile,coords.lat,coords.lng);
-				$('#modalProfile').on('shown.bs.modal', function (e) {
-					$('body').addClass('modal-open');
-				});
-				self.user=user;
-			});
-			return "";
+			this.displayUserData();
 		},
 		userId :function(){
 			return store.state.currentUserId;
-		}
+		},
+		mapConfig:function(){
+			var mapProp= {
+			  center:new google.maps.LatLng(-34.608558, -58.392617),
+			  zoom:14,
+			};
+			return mapProp;
+		},
 	},
 	methods:{
 		open: function(){
@@ -58,6 +45,31 @@ Vue.component('modal-profile-component', {
 		launchAddToGroupModal:function(){
 			$("#modalProfile").modal('hide');
 			$("#modalAddGroup").modal();
+		},
+		displayUserData:function(){
+			var uid= store.state.currentUserId;
+			if(uid==0) return "";
+			var self = this;
+			getUserProfile(uid).then( user => {
+				user.stringRolesInSpanish = user.roles.map(roleInSpanish).join( ", " );
+				user.fullName = fullName(user);
+				user.fullAddress = fullAddressToShow(user);
+				user.urlGoogleMaps = urlGoogleMaps(user);
+				user.lastActiveDate = (new Date(user["last_active_date"])).toLocaleDateString();
+				var coords = { lat: parseFloat(user.address.latitude), lng: parseFloat(user.address.longitude) };
+				this.centerMap = coords;
+				this.marker={
+					id: "user_profile_marker_" + (user["user_id"]).toString(),
+					position: coords,
+					title: user["user_name"],
+					label: {text: user["user_name"],fontWeight:"bold",fontSize: "18px"},
+				};
+				$('#modalProfile').on('shown.bs.modal', function (e) {
+					$('body').addClass('modal-open');
+				});
+				self.user=user;
+			});
+			return "";
 		},
 	},
 	template:
@@ -135,8 +147,17 @@ Vue.component('modal-profile-component', {
 				</div>
 				
 				<div class="row">
-					<div class="col">
-						<div id="profileMap"></div>
+					<div class="col">		
+						<google-map-loader :mapConfig="mapConfig" class="profile-map" :center="centerMap">
+							<template slot-scope="{ google, map }">
+							  <google-map-marker
+							  	:key="marker.id"
+								:marker="marker"
+								:google="google"
+								:map="map"
+							  />
+							</template>
+						</google-map-loader>						
 					</div>
 				</div>
 				<div class="row" v-if="user">

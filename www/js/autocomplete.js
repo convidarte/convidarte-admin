@@ -11,7 +11,7 @@ var autoCompleteComponent = Vue.component('autocomplete', {
 
     data() {
         return {
-            keywordSearch: ''
+            keywordSearch: '',
         }
     },
 	methods:{

@@ -1,36 +1,8 @@
 //TODO pintar los globos de usuarios que admiten varios roles de modo que esto sea claro.
 
-function initMaps() {
-	var centroMapa = {lat: -34.62, lng: -58.46};
-	map = new google.maps.Map(document.getElementById('mapDiv'), {
-		zoom: 12,
-		center: centroMapa,
-		mapTypeId: 'terrain'
-	});
-	var noPoi = [
-	{
-		featureType: "poi",
-		stylers: [
-		  { visibility: "off" }
-		]   
-	  }
-	];
-	map.setOptions({styles: noPoi});
-
-
-	// mapa modal profile
-	var mapProp= {
-	  center:new google.maps.LatLng(-34.608558, -58.392617),
-	  zoom:14,
-	};
-	mapProfile = new google.maps.Map(document.getElementById("profileMap"),mapProp);
-}
-
-
-
 
 // Adds a marker to the collection and push to the array.
-function addMarker(markerCollection, location,label,color) {
+function addMarker(map, markerCollection, location,label,color) {
 	var marker = new google.maps.Marker({
 		position: location,
 		//label: {text:label,fontWeight:"bold",fontSize: "18px"},
@@ -51,20 +23,17 @@ function addMarker(markerCollection, location,label,color) {
 	return marker;
 }
 
-function showInfoWindow( marker, infoWindowContent){
-	if (currentInfoWindow== null){
-		currentInfoWindow =  new google.maps.InfoWindow({});
-	}
-	currentInfoWindow.close();
-	currentInfoWindow.setContent(infoWindowContent);
-	currentInfoWindow.open(marker.map, marker);
+function showInfoWindow(infowindow, marker, content){
+	infowindow.close();
+	infowindow.setContent(content);
+	infowindow.open(marker.map, marker);
 }
 
 
 function userMarkerContent(u,role){
 	var uid = u.user_id;
 	var s = "";
-	if (store.state.currentSystem=="admin"){
+	if ( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		s+="<a href=\"#\" data-uid=\""+uid.toString()+"\" onclick=\"showModalProfileTooltip()\">"+ encodeHTML(u.name)+" " + encodeHTML(u.last_name) + "</a>";
 	}else{
 		s+=encodeHTML(u.name) + " " + encodeHTML(u.last_name);
@@ -112,7 +81,7 @@ function assignGroup(){
 	});
 }
 
-function createUserMarker(u, setClickListener){
+function createUserMarker(map, u, infowindow=false, markerCollection){
 	if(parseFloat(u.address.latitude)){
 		var coords = { lat: parseFloat(u.address.latitude), lng: parseFloat(u.address.longitude) };
 		var label = " "; //u.user_id.toString()+": "+encodeHTML(u.user_name);
@@ -126,9 +95,9 @@ function createUserMarker(u, setClickListener){
 		if (u.role=="delegate"){
 			color = "purple";
 		}
-		var marker = addMarker(markers,coords,label,color);
-		if (setClickListener){
-			marker.addListener('click', () =>	showInfoWindow(marker, userMarkerContent( u, u.role) ) );
+		var marker = addMarker(map, markerCollection, coords, label, color);
+		if (infowindow!=false){
+			marker.addListener('click', () =>	showInfoWindow(infowindow, marker, userMarkerContent( u, u.role) ) );
 		}
 		if (u.role=="admin"){ // ocultamos los markers para los roles de admin
 			marker.setMap(null);
@@ -137,25 +106,25 @@ function createUserMarker(u, setClickListener){
 	}
 }
 
-function refreshAvailableUsersMarkers(){
+function refreshAvailableUsersMarkers(map, infowindow, markerCollection){
 	var availableUsers = store.state.usersFiltered;
 	for (var i = 0; i < availableUsers.length; i++) {
 		u = availableUsers[i];	
-		createUserMarker(u,true);
+		createUserMarker(map, u, infowindow, markerCollection);
 	}
 }
 
-function refreshGroupMarkers(){
+function refreshGroupMarkers(map,infowindow, markerCollection){
 	var groups = store.state.groups;
 	for (var i = 0; i < groups.length; i++) {
 		var g = groups[i];
-		createGroupMarker(g);
+		createGroupMarker(map,g,infowindow, markerCollection);
 	}
 }
 
 function infoWindowTextForGroupMarker(g){
 	var infoWindowText = 'Grupo ' + g.group_id.toString() + ' - ' + encodeHTML(g.name)+'<br>';
-	if (store.state.currentSystem=="admin"){
+	if ( store.state.systemUserRoles.indexOf("admin")>=0 ){
 		infoWindowText = 'Grupo #'+ g.group_id.toString() + ' - <a href="#" onclick="onClickShowGroup()" data-gid=' + g["group_id"].toString() + '>' + encodeHTML(g.name)+'</a><br>';
 		var gadmin = getGroupAdminEndpointById(g.group_id);
 		infoWindowText += gadmin.role_count.cook + " cocinero(s) <br/>" ;
@@ -166,14 +135,16 @@ function infoWindowTextForGroupMarker(g){
 	return infoWindowText;
 }
 
-function createGroupMarker(g){
+function createGroupMarker(map, g, infowindow=false, markerCollection){
 	var coords = { lat: parseFloat(g.average_latitude), lng: parseFloat(g.average_longitude) };
 	var label = " ";// g.group_id.toString() + ": "+ encodeHTML(g.name);
 	var color = "yellow";
-	var marker = addMarker(groupMarkers, coords,label,color);
+	var marker = addMarker(map, markerCollection, coords,label,color);
 	//marker.group_id = parseInt(g.group_id,10);
 	var gid = g.group_id;
-	marker.addListener('click', () =>	showInfoWindow(marker, infoWindowTextForGroupMarker(g) ) );
+	if(infowindow!=false){
+		marker.addListener('click', () =>	showInfoWindow(infowindow,marker, infoWindowTextForGroupMarker(g) ) );
+	}
 }
 
 // Sets the map on all markers in the array.
@@ -188,34 +159,25 @@ function clearMarkers(markerCollection) {
 	setMapOnAll(markerCollection,null);
 }
 
-// Deletes all markers in the map
-function deleteMarkers() {
-	clearMarkers(markers);
-	clearMarkers(groupMarkers);
-	markers = [];
-	groupMarkers = [];
-}
 
 function centerMapOn(map, lat,long){
 	map.setCenter(new google.maps.LatLng(lat, long));
 }
 
-function displayGroupOnMap(g){
-	deleteMarkers();
-	createGroupMarker(groupWithCoordinates(g));
-	var setClickListener = true;//store.state.currentSystem=="admin";
+function displayGroupOnMap(map,g,infowindow, markerCollection){
+	createGroupMarker(map,groupWithCoordinates(g),infowindow, markerCollection);
 	for (var i=0; i < g.members.length; i++){
 		var u = g.members[i];
 		for (var j=0; j<u["roles_in_group"].length;j++){
 			var r = u["roles_in_group"][j].role;
 			var ur = JSON.parse(JSON.stringify(u));
 			ur.role = r;
-			createUserMarker(ur,setClickListener);
+			createUserMarker(map,ur,infowindow, markerCollection);
 		}
 	}
 }
 
-function centerMapOnGroup(g){
+function centerMapOnGroup(map,g){
 	g = groupWithCoordinates(g);
 	centerMapOn(map, g.average_latitude, g.average_longitude);
 }
@@ -237,11 +199,11 @@ function groupWithCoordinates(g){
 
 
 
-function centerMapOnAverageAvailableUsers(){
-	centerMapOnAverageListOfUsers(store.state.usersFiltered);
+function centerMapOnAverageAvailableUsers(map){
+	centerMapOnAverageListOfUsers(map, store.state.usersFiltered);
 }
 
-function centerMapOnAverageListOfUsers(listUsers){
+function centerMapOnAverageListOfUsers(map, listUsers){
 	var coords = averageCoords(listUsers);
 	centerMapOn(map, coords["lat"], coords["lng"]);
 }

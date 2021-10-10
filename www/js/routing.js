@@ -6,19 +6,38 @@ function urlGroup(g){
 	return '/?grupo/'+g["group_id"].toString()+"/"+g["name"].trim();
 }
 
+function urlMyGroup(g){
+	return '/?mi-grupo/'+g["group_id"].toString()+"/"+g["name"].trim();
+}
+
 function showGroupById(groupId){
 	console.log("showGroupById",groupId);
-	store.setKey("currentGroupId",groupId);
+	setKey("currentGroupId",groupId);
 	if (groupId!=0){
 		getGroup(groupId).then( group =>{
 			var url = urlGroup(group);
-			if( store.state.currentTab != "groups"){
-				store.setKey("currentTab","groups");
+			if( !(["groups", "mygroups"].includes(store.state.currentTab)) ){
+				setKey("currentTab","groups");
 			}
 			window.history.pushState('grupos', '', url);
 		});
 	}
 }
+
+function showMyGroupById(groupId){
+	console.log("showMyGroupById",groupId);
+	setKey("currentMyGroupId",groupId);
+	if (groupId!=0){
+		getGroup(groupId).then( group =>{
+			var url = urlMyGroup(group);
+			if(store.state.currentTab!="mygroups"){
+				setKey("currentTab","mygroups");
+			}
+			window.history.pushState('mis-grupos', '', url);
+		});
+	}
+}
+
 
 function onClickShowGroup(){
 	event.preventDefault();
@@ -28,7 +47,7 @@ function onClickShowGroup(){
 }
 
 function showModalProfile(uid){
-	store.setKey("currentUserId",uid);
+	setKey("currentUserId",uid);
 	$("#modalProfile").modal('show');
 	getUserProfile(uid).then( user => { window.history.pushState('perfil', '', urlUserProfile(user)); });	
 }
@@ -38,29 +57,45 @@ function processQueryString(){
 	console.log(queryString);
 	if(queryString.startsWith("?perfil/")){
 		var uid = parseInt(queryString.split("/")[1],10);
-		store.setKey("currentTab", "users");
+		setKey("currentTab", "users");
 		showModalProfile(uid);
 		return;
 	}
 	if(queryString.startsWith("?grupos")){
-		store.setKey("currentTab", "groups");
+		setKey("currentTab", "groups");
+		return;	
+	}
+	if(queryString.startsWith("?mis-grupos")){
+		setKey("currentTab", "mygroups");
 		return;	
 	}
 	if(queryString.startsWith("?usuarios")){
-		store.setKey("currentTab", "users");
+		setKey("currentTab", "users");
 		return;	
 	}
 	if(queryString.startsWith("?grupo")){
 		var gid = parseInt(queryString.split("/")[1],10);
-		store.setKey("currentGroupId", gid);
-		store.setKey("currentTab", "groups");
+		setKey("currentGroupId", gid);
+		setKey("currentTab", "groups");
 		return;
 	}
-	if( store.state.currentSystem=="admin"){
-		store.setKey("currentTab", "users");
+	if(queryString.startsWith("?mi-grupo")){
+		var gid = parseInt(queryString.split("/")[1],10);
+		setKey("currentMyGroupId", gid);
+		setKey("currentTab", "mygroups");
+		return;
 	}
-	if( store.state.currentSystem=="delegate"){
-		store.setKey("currentTab", "groups");
+	if(queryString.startsWith("?agenda")){
+		setKey("currentTab", "phonebook");
+		return;
+	}	
+	if( store.state.systemUserRoles.indexOf("admin")>=0 ){
+		setKey("currentTab", "users");
+		return;
 	}
-
+	if( store.state.systemUserRoles.indexOf("delegate")>=0 ){
+		setKey("currentTab", "groups");
+		return;
+	}
+	setKey("currentTab", "myprofile");
 }

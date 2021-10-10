@@ -11,11 +11,9 @@ Vue.component('available-users-component', {
 		refresh : function(){
 			console.log("refrescando usuarios disponibles ", store.state.refreshTime);
 			if(this.state.token=="") return "";
-			if(this.state.currentTab=="users"){
-				var numberUsers = this.state.usersFiltered.length;
-				this.numberPages = Math.ceil(numberUsers/this.rowsPerPage);
-				if ( this.currentPage >= this.numberPages ) this.currentPage = 0;
-			}
+			var numberUsers = this.state.usersFiltered.length;
+			this.numberPages = Math.ceil(numberUsers/this.rowsPerPage);
+			if ( this.currentPage >= this.numberPages ) this.currentPage = 0;
 			return "";
 		},
 		numberPagesToShow: function(){
@@ -32,15 +30,6 @@ Vue.component('available-users-component', {
 			title +=  (filters.length > 0) ? " en "+ filters.join(", ") :  " en todas las localidades";
 			title += " ("+ this.state.usersFiltered.length +")";
 			return title;
-		},
-		style: function(){
-			if(this.state.currentTab=="groups"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="users"){
-				return "";
-			}
-			return "display:none;";
 		},
 		rows : function (){
 			var availableUsers = this.state.usersFiltered;
@@ -85,7 +74,7 @@ Vue.component('available-users-component', {
 		},
 	},
 	template:`
-<div id="usersLeftPanel" :style="style">
+<div>
 	{{ refresh }}
     <h2 id="usersListTitle">{{title}}</h2>
     <div id="usersList">

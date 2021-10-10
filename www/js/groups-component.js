@@ -45,8 +45,7 @@ Vue.component('groups-component', {
 				member.lastActiveDate = (new Date(u["last_active_date"])).toLocaleDateString();
 				var ack = u.roles_in_group[0].ack_delegate;// el ack del primer rol que tenga el usuario en el grupo
 				member.style = ack ? "" : "background-color:lightgreen;";
-				member.nameToShow = nameToShow(u); 
-				member.showAckButton = store.state.currentSystem=="delegate" && (!ack);
+				member.nameToShow = nameToShow(u);
 				member.rolesInGroup = [];
 				for (var j =0;  j< u.roles_in_group.length; j++){
 					var roleInGroup = {};
@@ -82,22 +81,6 @@ Vue.component('groups-component', {
 		},
 		numberDrivers: function(){
 			return this.group.members.filter( function(u){ return u.roles_in_group.filter(r => r["role"]=="driver").length>0}).length;
-		},
-
-		style: function(){
-			if(this.state.currentTab=="users"){
-				return "display: none;";
-			}
-			if(this.state.currentTab=="groups"){
-				return "";
-			}
-			return "display:none;";
-		},
-		delegateSystem: function(){
-			return store.state.currentSystem=="delegate";
-		},
-		adminSystem: function(){
-			return store.state.currentSystem=="admin";
 		},
 		splittingGroup: function(){
 			return this.currentlySplittingGroup;
@@ -153,7 +136,7 @@ Vue.component('groups-component', {
 		},
 	},
 	template:`
-<div id="groupsLeftPanel" :style="style">  
+<div id="groupsLeftPanel">  
 	<div id="groupMembers" v-if="this.group">
 		<h2>#{{group.group_id}} - {{ group.name }} </h2>
 		<hr style="width:95%;">
@@ -173,7 +156,7 @@ Vue.component('groups-component', {
 		<group-detail-printable :group="this.group"></group-detail-printable>
 		<group-csv-link :group="this.group"></group-csv-link >
 		<hr style="width:95%;">
-		<div v-if="adminSystem">
+		<div>
 			<table style="width:100%;"><tr>
 			<td><button class="btn btn-primary float-left" @click="renameGroupStart" >Cambiar nombre</button></td>
 			<td><button type="button" class="btn btn-primary" @click="splitGroupStart">Dividir grupo</button></td>
@@ -183,7 +166,6 @@ Vue.component('groups-component', {
 		</div>
 		<modal-rename-group :group="group"></modal-rename-group>
 		<split-group-form
-			v-if="adminSystem"
 			 :splittingGroup="splittingGroup"
 			 @splitGroup="splitGroup"
 			 @splitGroupStart="splitGroupStart"
@@ -198,12 +180,6 @@ Vue.component('groups-component', {
 						:userId="member.userId"
 						:userName="member.nameToShow"
 					></link-user-profile>
-					<button-ack-delegate
-						v-if="member.showAckButton"
-						v-bind:groupId="groupId"
-						v-bind:userId="member.userId"
-						v-bind:role="member.roleAck"
-					></button-ack-delegate>
 				</td>
 				<td><a :href="member.urlMaps" target="_blank"> {{ member.addressToShow }}  </a> <br>
 					({{member.lastActiveDate}})</td>

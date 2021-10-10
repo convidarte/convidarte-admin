@@ -14,21 +14,28 @@ Vue.component('filter-bar-component', {
 			}
 			return "display:none;";
 		},
-		delegateSystem: function(){
-			return store.state.currentSystem=="delegate";
+		currentTab: function(){
+			return this.state.currentTab;
 		},
-		adminSystem: function(){
-			return store.state.currentSystem=="admin";
+		isDelegate: function(){
+			return this.state.systemUserRoles.indexOf("delegate")>=0;
+		},
+		isAdmin: function(){
+			return this.state.systemUserRoles.indexOf("admin")>=0;
 		},
 		isLoggedIn: function(){
-			return store.state.token!="";
+			return this.state.token!="";
+		},
+		showUserSearchBox: function(){
+			return (this.state.systemUserRoles.indexOf("admin")>=0)&& (this.state.currentTab=="users" || this.state.currentTab=="groups" );
 		},
 	},
 	template:
-`<div class="container-fluid" v-if="isLoggedIn">
+`
+<div class="container-fluid" v-if="isLoggedIn">
 	<div class="row">
 		<div id="filter-bar">
-			<div id="filterLocation" :style="styleFilterLocation" class="filter-group" v-if="adminSystem">
+			<div id="filterLocation" :style="styleFilterLocation" class="filter-group" v-if="isAdmin && currentTab=='users' ">
 				<div class="filter-group">
 					<select-role-component></select-role-component>
 				</div>
@@ -39,25 +46,24 @@ Vue.component('filter-bar-component', {
 					<select-neighborhood-component id="selectNeighborhoodComponent"></select-neighborhood-component>
 				</div>
 			</div>
-			<div class="filter-group" v-if="adminSystem">
+			<div class="filter-group" v-if="isAdmin && currentTab == 'groups'">
 				<new-group-component></new-group-component>
 			</div>
 
-			<div class="filter-group" v-if="adminSystem">
+			<div class="filter-group" v-if="isAdmin && currentTab =='groups' ">
 				<group-combination-component></group-combination-component>
 			</div>
 			
-			<div class="filter-group" v-if="adminSystem">
+			<div class="filter-group" v-if="isAdmin && currentTab == 'groups'" style="float: right;">
 				<current-group-selector></current-group-selector>
 			</div>
 			
-			<div class="filter-group"  v-if="adminSystem">
+			<div class="filter-group"  v-if="showUserSearchBox" style="float: right;" >
 				<autocomplete-user-component id="autocompleteUserComponent"></autocomplete-user-component>
 			</div>
-			<div class="filter-group" v-if="delegateSystem">
+			<div class="filter-group" v-if="isDelegate && currentTab == 'mygroups'">
 				<group-list-delegate></group-list-delegate>
 			</div>
-			
 		</div>
 	</div>
 </div>`

@@ -6,17 +6,31 @@ Vue.component('navbar-component', {
 	},
 	methods: {
 		changeUsersTab: function(){
-			store.setKey("currentTab", "users");
+			setKey("currentTab", "users");
 			window.history.pushState('usuarios', '', '/?usuarios');
 			refreshEverything();
 		},
 		changeGroupsTab: function(){
-			store.setKey("currentTab", "groups");
+			setKey("currentTab", "groups");
 			window.history.pushState('grupos', '', '/?grupos');
+			refreshEverything();
+		},
+		changeMyGroupsTab: function(){
+			setKey("currentTab", "mygroups");
+			window.history.pushState('misgrupos', '', '/?mis-grupos');
+			refreshEverything();
+		},
+		changePhonebookTab: function(){
+			setKey("currentTab", "phonebook");
+			window.history.pushState('agenda', '', '/?agenda');
 			refreshEverything();
 		},
 	},
 	computed:{
+		refresh: function(){
+			console.log("Refreshing navbar-component at", this.state.refreshTime);
+			return "";
+		},
 		classLinkUsers: function(){
 			if( this.state.currentTab=="users"){
 				return "nav-item active"
@@ -25,6 +39,18 @@ Vue.component('navbar-component', {
 		},
 		classLinkGroups: function(){
 			if( this.state.currentTab=="groups"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
+		classLinkMyGroups: function(){
+			if( this.state.currentTab=="mygroups"){
+				return "nav-item active"
+			}
+			return "nav-item"
+		},
+		classLinkPhonebook: function(){
+			if( this.state.currentTab=="phonebook"){
 				return "nav-item active"
 			}
 			return "nav-item"
@@ -46,15 +72,16 @@ Vue.component('navbar-component', {
 			if( this.state.token!="") return store.state.adminUserId;;
 			return "";
 		},
-		delegateSystem: function(){
-			return store.state.currentSystem=="delegate";
+		isDelegate: function(){
+			return this.state.systemUserRoles.indexOf("delegate")>=0;
 		},
-		adminSystem: function(){
-			return store.state.currentSystem=="admin";
+		isAdmin: function(){
+			return this.state.systemUserRoles.indexOf("admin")>=0;
 		},
 	},
 	template:`
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+{{refresh}}
 	<a class="navbar-brand" href=".">
 		<img src="img/convidarte-logo.svg" alt="Convidarte" height="40">
 	</a>
@@ -63,16 +90,19 @@ Vue.component('navbar-component', {
 	</button>
 	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav mr-auto" :style="displayIfLoggedIn">
-			<li :class="classLinkUsers"  v-if="adminSystem" >
+			<li :class="classLinkUsers"  v-if="isAdmin" >
 				<a id="nav-link-users"  class="nav-link" href="#" @click="changeUsersTab" >
-					Usuarios sin grupo<span class="sr-only">(current)</span>
+					Voluntarios sin grupo<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li :class="classLinkGroups" v-if="adminSystem" >
+			<li :class="classLinkGroups" v-if="isAdmin" >
 				<a id="nav-link-groups" class="nav-link" href="#" @click="changeGroupsTab" >Grupos</a>
 			</li>
-			<li :class="classLinkGroups" v-if="delegateSystem">
-				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeGroupsTab" >Mis grupos</a>
+			<li :class="classLinkMyGroups" v-if="isDelegate">
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changeMyGroupsTab" >Mis grupos</a>
+			</li>
+			<li :class="classLinkPhonebook" v-if="isDelegate || isAdmin">
+				<a id="nav-link-my-groups" class="nav-link" href="#" @click="changePhonebookTab" >Agenda</a>
 			</li>
 		</ul>
 		<ul class="navbar-nav">

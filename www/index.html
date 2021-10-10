@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Convidarte - Panel de administración</title>
+		<title>Convidarte - Panel</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="icon" href="https://convidarte.com.ar/wp-content/uploads/2020/04/cropped-Sin-título-32x32.png" sizes="32x32" />
@@ -16,6 +16,14 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+		<script src="https://unpkg.com/vuex@3.6.2/dist/vuex.js"></script>
+
+<!--		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/vuex-persist@2.2.0"></script>-->
+
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDD-__W-HWHW8b7VKeACWC_t8elR6cNEfE&callback"></script>
+
+
 		<script src="https://kit.fontawesome.com/6d79ac8ee7.js" crossorigin="anonymous"></script>
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-163205380-3"></script>
@@ -32,11 +40,7 @@
 		<script src="js/vendor/bootstrap.bundle.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 		<script src="mainCompiled.js"></script>
-		<script>store.setKey("currentSystem", "admin");</script>
-		<script>
-			new Vue({ el:'#applicationComponent'});
-		</script>
-		<script async defer src="apikey.js"></script>
+		<script src="vueLoader.js"></script>
 	</body>
 </html>
 

@@ -88,9 +88,7 @@ Vue.component('button-ack-delegate',{
 	props: ['groupId','userId','role'],
 	methods:{
 		sendAck: function(){
-			if (store.state.currentSystem=="delegate"){
-				ackDelegate(this.groupId,this.userId,this.role);
-			}
+			ackDelegate(this.groupId,this.userId,this.role);
 		},
 	},
 	template: `
