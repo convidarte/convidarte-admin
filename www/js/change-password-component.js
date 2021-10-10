@@ -50,7 +50,7 @@ Vue.component('change-password', {
 			<div :class="classValidation">{{messageValidation}}</div>
 		</div>
 	  </div>
-	  <button type="submit" class="btn btn-primary" @click="updatePassword">Cambiar contraseña</button> 
+	  <button type="button" class="btn btn-primary" @click="updatePassword">Cambiar contraseña</button> 
 	  <div :class="classResult">{{messageResult}}</div>
 	</form>
 </div>

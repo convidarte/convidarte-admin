@@ -357,12 +357,12 @@ Vue.component('edit-profile', {
 		<br>
 		<div class="form-row">
 			<div class="form-group col-md-2" >
-				<button type="submit" class="btn btn-primary"  @click="startEditingProfile" v-show="!isEditingProfile">Editar</button>
-				<button type="submit" class="btn btn-primary"  @click="updateProfile"  v-show="isEditingProfile">Guardar</button> 
+				<button type="button" class="btn btn-primary"  @click="startEditingProfile" v-show="!isEditingProfile">Editar</button>
+				<button type="button" class="btn btn-primary"  @click="updateProfile"  v-show="isEditingProfile">Guardar</button> 
 			 	<div :class="validation.result.class">{{validation.result.message}}</div>		
 		 	</div>
 			<div class="form-group col-md-2" v-show="isEditingProfile">
-				<button type="submit" class="btn btn-danger"  @click="stopEditingProfile">Cancelar</button>
+				<button type="button" class="btn btn-danger"  @click="stopEditingProfile">Cancelar</button>
 			</div>
 		</div>
 	</form>
