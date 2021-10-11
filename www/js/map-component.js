@@ -66,6 +66,11 @@ Vue.component('map-component', {
 					});
 				}else{
 					this.deleteMarkers();
+					if(tab=="groups"){
+						refreshGroupMarkers(this.map, this.infowindow, this.markers);
+						this.setCenter();
+						this.setZoom();
+					}
 				}
 				return "";
 			}
@@ -92,7 +97,13 @@ Vue.component('map-component', {
 			if(store.state.currentTab=="users"){
 				this.map.setZoom(12);
 			}
-			if(["groups", "mygroups"].includes(store.state.currentTab) ){
+			if(store.state.currentTab=="groups"){
+				if(store.state.currentGroupId==0)
+					this.map.setZoom(12);
+				else
+					this.map.setZoom(15);
+			}
+			if(store.state.currentTab=="mygroups"){
 				this.map.setZoom(15);
 			}
 			return "";

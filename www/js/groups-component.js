@@ -134,10 +134,21 @@ Vue.component('groups-component', {
 		renameGroupStart: function(){
 			$("#modalRenameGroup").modal("show");
 		},
+		closeGroup:function(){
+			this.splitGroupStop();
+			setKey("currentGroupId",0);
+			refreshEverything();
+		},
 	},
 	template:`
-<div id="groupsLeftPanel">  
+<div id="groupsLeftPanel">
 	<div id="groupMembers" v-if="this.group">
+		<div style="float: right;">
+			<button type="button" class="close btn-close" aria-label="Close" style="height:1em;width:1em;" @click="closeGroup">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
 		<h2>#{{group.group_id}} - {{ group.name }} </h2>
 		<hr style="width:95%;">
 		<ul>
