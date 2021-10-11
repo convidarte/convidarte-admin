@@ -56,7 +56,7 @@ Vue.component('phonebook', {
 	template :`
 <div class="list-container" style="width:100%;">
 	<h2>Agenda de grupos y delegados </h2>
-	<table class="table table-striped">
+	<table class="table">
 		<tr>
 			<th @click="orderByGroupId">Grupo</th>
 			<th>Delegados</th>
