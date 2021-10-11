@@ -1,29 +1,3 @@
-function onClickLoginButton(){
-	var userName = document.getElementById("username").value;
-	var password = document.getElementById("password").value;
-	login(userName,password).then(
-		function(data){
-			setKey("adminUserId",data.user.user_id);
-			setKey("token", data.token);
-			setKey("usernameAdmin", data.user.user_name);
-			setKey("tokenExpiration", data.expiration);
-
-			setCookie("token-convidarte", store.state.token, 59*60*1000);
-			setCookie("username-convidarte", store.state.usernameAdmin, 59*60*1000);
-			setCookie("userid-convidarte", store.state.adminUserId, 59*60*1000);
-			try {
-				onLoginOk();
-			} catch (error) {
-			  console.error(error);
-			}
-	}).catch(
-		function() {
-			alert('Datos de login incorrectos');
-			logout();
-		}
-	)
-}
-
 function onLoadConvidarte () {
 	if (store.state.token!="") return;
 	tokenCookie = getCookie("token-convidarte");
