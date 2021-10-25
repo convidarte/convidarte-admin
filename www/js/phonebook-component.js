@@ -4,6 +4,9 @@ Vue.component('phonebook', {
 			delegateData: {
 				groups: []
 			},
+			phonebookData:{
+				phonebook: []
+			},
 			orderBy: "group_id",
 			reverseOrder: false,
 		}
@@ -11,6 +14,9 @@ Vue.component('phonebook', {
 	methods: {
 		displayUserData(){
 			var self=this;
+			do_request("/information/phonebook", null, true, "GET").then( data =>{
+				self.phonebookData = data;
+			});
 			do_request("/information/delegates", null, true, "GET").then( data =>{
 				if(self.orderBy!=""){
 					var compare=function(g1,g2){
@@ -55,7 +61,27 @@ Vue.component('phonebook', {
 	},
 	template :`
 <div class="list-container" style="width:100%;">
-	<h2>Agenda de grupos y delegados </h2>
+
+	<h2>Teléfonos útiles</h2>
+	<table class="table">
+		<tr>
+			<th>Usuario</th>
+			<th>Nombre</th>
+			<th>Teléfono</th>
+			<th>Rol</th>
+			<th>Consultar por</th>
+		</tr>
+		<tr v-for="u in phonebookData.phonebook" >
+			<td><link-user-profile :userId="u.user_id" :userName="u.user_name"></link-user-profile></td>
+			<td>{{u.name}} {{u.last_name}}</td>
+			<td>{{u.cellphone}}</td>
+			<td>{{u.position}}</td>
+			<td>{{u.description}}</td>
+		</tr>
+	</table>
+
+
+	<h2>Grupos y delegados </h2>
 	<table class="table">
 		<tr>
 			<th @click="orderByGroupId">Grupo</th>
